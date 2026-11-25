@@ -1,0 +1,1062 @@
+{% extends "base.html" %}
+
+{% block header %}
+<title>
+ Checkout – Secure Payment | US Vesta
+</title>
+<meta content="Complete your purchase securely at US Vesta. Fast delivery, safe payment options &amp; premium product quality guaranteed." name="description"/>
+<link href="{{current_url}}" rel="canonical"/>
+<meta content="Checkout – Secure Payment | US Vesta" property="og:title"/>
+<meta content="Complete your order securely with US Vesta. Fast delivery &amp; safe payments." property="og:description"/>
+<meta content="{{current_url}}" property="og:url"/>
+<meta content="Checkout – Secure Payment | US Vesta" name="twitter:title"/>
+<meta content="Complete your order securely with US Vesta. Fast delivery &amp; safe payments." name="twitter:description"/>
+<link href="/static/css/checkout_phone_Degn.css" rel="stylesheet"/>
+{% endblock header %}
+
+{% block mainbody %}
+<div class="d-none d-sm-block">
+ <!-- Main Content -->
+ <div class="mx-5 my-2">
+  <h1 class="mb-4 text-primary-custom fw-bold">
+   <i class="bi bi-cart-check me-2">
+   </i>
+   Checkout
+  </h1>
+  <!-- Progress Steps -->
+  <form id="checkoutForm" method="post">
+   {% csrf_token %}
+   <div class="row">
+    <!-- Order Summary -->
+    <div class="col-lg-5 mb-4">
+     <div class="card shadow-sm">
+      <div class="card-header card-header-custom">
+       <h5 class="mb-0 text-white">
+        <i class="bi bi-receipt me-2">
+        </i>
+        Order Summary
+       </h5>
+      </div>
+      <div class="card-body">
+       {% if product_main or product_inner %}
+                                {% include "singal_checkout.html" %}
+                            {% else %}
+                                {% include "cardproduct_checkout.html" %}
+       <input hidden="" name="product_card_wala_he" readonly="" required="" type="text" value="{{product_main.id}}"/>
+       {% endif %}
+       <div class="order-summary-item">
+        <span>
+         Shipping
+        </span>
+        <span class="text-success fw-bold">
+         FREE
+        </span>
+       </div>
+       <div class="order-summary-item order-total">
+        <span>
+         Total
+        </span>
+        {% if amount %}
+        <span id="total_amount_for_pay">
+         ₹{{amount}}
+        </span>
+        {% else %}
+        <span id="total_amount_for_pay_forcart">
+         ₹ {{totalfinal}}
+        </span>
+        {% endif %}
+       </div>
+       {% if amount %}
+       <input hidden="" id="product_total_bill" name="product_total_bill" required="" type="text" value="{{amount}}"/>
+       {% else %}
+       <input hidden="" id="total_amount_for_paycart" name="product_total_bill" required="" type="text" value="{{totalfinal}}"/>
+       {% endif %}
+       <input hidden="" id="razorpay_payment_id" name="razorpay_payment_id" readonly="" type="text" value=""/>
+       <input hidden="" id="razorpay_order_id" name="razorpay_order_id" readonly="" type="text" value=""/>
+       <input hidden="" id="chashfree_payment_id_usingdecstop" name="chashfree_payment_id_usingdecstop" readonly="" type="text" value=""/>
+       <input hidden="" id="chashfree_order_id_usingdecstop" name="chashfree_order_id_usingdecstop" readonly="" type="text" value=""/>
+       <input hidden="" name="product_id" readonly="" required="" type="text" value="{{product_main.id}}"/>
+       <input hidden="" name="inner_product_id" readonly="" required="" type="text" value="{{product_inner.id}}"/>
+       <input hidden="" name="product_size" readonly="" required="" type="text" value="{{size}}"/>
+      </div>
+     </div>
+     <!-- Delivery Information -->
+     <div class="card shadow-sm mt-4">
+      <div class="card-header card-header-custom d-flex justify-content-between align-items-center">
+       <h5 class="mb-0 text-white">
+        <i class="bi bi-truck me-2">
+        </i>
+        Delivery Information
+       </h5>
+       <button class="btn btn-outline-light mt-2" data-bs-target="#dekstop_addres" data-bs-toggle="modal" type="button">
+        <i class="bi bi-plus-circle ms-2">
+        </i>
+        Add Address
+       </button>
+      </div>
+      <div class="card-body" id="address_list" style="overflow-y: scroll;height:300px">
+       {% include "address_list.html" %}
+      </div>
+     </div>
+    </div>
+    <!-- Payment Form -->
+    <div class="col-lg-7">
+     <div class="card shadow-sm">
+      <div class="card-header card-header-custom">
+       <h5 class="mb-0 text-white">
+        <i class="bi bi-credit-card me-2">
+        </i>
+        Payment Method
+       </h5>
+      </div>
+      <div class="card-body">
+       <div class="mb-4">
+        <h6 class="section-title fw-bold text-dark mb-3">
+         Select Payment Method
+        </h6>
+        
+        <!-- 1. UPI Payment (Veno Gateway) -->
+        <div class="payment-method active p-3 border rounded mb-2" style="cursor: pointer;">
+         <input checked="" class="form-check-input me-3" id="desktop_veno_upi_payment" name="desktop_payment_method" type="radio" value="upi"/>
+         <label class="form-check-label d-flex align-items-center w-100 mb-0" for="desktop_veno_upi_payment" style="cursor: pointer;">
+          <img alt="UPI Gateway" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/3840px-UPI-Logo-vector.svg.png" width="40" class="me-3"/>
+          <div>
+           <div class="fw-bold text-dark">Instant UPI &amp; Dynamic QR (Veno Gateway)</div>
+           <small class="text-muted" style="font-size: 0.78rem;">Google Pay, PhonePe, Paytm, BHIM &amp; UPI QR Code</small>
+          </div>
+         </label>
+        </div>
+
+        <!-- 2. Credit & Debit Cards (Cashfree Gateway) -->
+        <div class="payment-method p-3 border rounded mb-2" style="cursor: pointer;">
+         <input class="form-check-input me-3" id="desktop_cashfree_card_payment" name="desktop_payment_method" type="radio" value="card"/>
+         <label class="form-check-label d-flex align-items-center w-100 mb-0" for="desktop_cashfree_card_payment" style="cursor: pointer;">
+          <i class="bi bi-credit-card-2-front-fill fs-3 text-primary me-3"></i>
+          <div>
+           <div class="fw-bold text-dark">Credit &amp; Debit Card (Cashfree Gateway)</div>
+           <small class="text-muted" style="font-size: 0.78rem;">Visa, Mastercard, RuPay, Maestro &amp; NetBanking</small>
+          </div>
+         </label>
+        </div>
+
+        <!-- 3. Cash on Delivery (COD) -->
+        <div class="payment-method p-3 border rounded mb-2" style="cursor: pointer;">
+         <input class="form-check-input me-3" id="desktop_cod_payment" name="desktop_payment_method" type="radio" value="cod"/>
+         <label class="form-check-label d-flex align-items-center w-100 mb-0" for="desktop_cod_payment" style="cursor: pointer;">
+          <i class="bi bi-cash-coin fs-3 text-success me-3"></i>
+          <div>
+           <div class="fw-bold text-dark">Cash on Delivery (COD)</div>
+           <small class="text-muted" style="font-size: 0.78rem;">Pay cash when package arrives at your doorstep</small>
+          </div>
+         </label>
+        </div>
+       </div>
+
+       <div class="d-grid gap-2">
+        <button class="btn btn-accent btn-lg py-2 fw-bold" onclick="process_checkout_payment('desktop')" type="button">
+         <i class="bi bi-lock-fill me-2"></i>
+         Complete Order
+        </button>
+       </div>
+      </div>
+     </div>
+     <!-- Security Notice -->
+     <div class="alert alert-info mt-4 d-flex align-items-center" role="alert">
+      <i class="bi bi-shield-check me-3 fs-4">
+      </i>
+      <div>
+       <h6 class="alert-heading mb-1">
+        Secure Payment
+       </h6>
+       Your payment information is secure and encrypted. We do not store your payment details.
+      </div>
+     </div>
+    </div>
+   </div>
+  </form>
+ </div>
+ <!-- Modal -->
+ <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="dekstop_addres" style="z-index:9000" tabindex="-1">
+  <div class="modal-dialog">
+   <div class="modal-content border-0 shadow-lg rounded-4">
+    <div class="modal-header bg-black border-0 pb-3" style="border-radius: 1rem 1rem 0 0;">
+     <h5 class="modal-title text-white" id="exampleModalLabel">
+      Add New Address
+     </h5>
+     <button aria-label="Close" class="btn-close bg-light" data-bs-dismiss="modal" type="button">
+     </button>
+    </div>
+    <div class="modal-body">
+     <form hx-on="htmx:afterRequest: hideModal()" hx-post="/checkout" hx-swap="innerHTML" hx-target="#address_list" id="model_form_address" method="post">
+      {% csrf_token %}
+      <div class="row mb-3">
+       <div class="col-md-6">
+        <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="fullName">
+         Full Name *
+        </label>
+        <input class="form-control bg-light border-0 px-3 py-2" id="fullName" name="fullname" required="" type="text" value=""/>
+       </div>
+       <div class="col-md-6">
+        <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="fullName">
+         Phone Number *
+        </label>
+        <input class="form-control bg-light border-0 px-3 py-2" id="phone_nummber" name="phone_nummber" required="" type="number" value=""/>
+       </div>
+      </div>
+      <div class="mb-3">
+       <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="fullName">
+        Email *
+       </label>
+       <input class="form-control bg-light border-0 px-3 py-2" id="email_if_in_addres" name="email_if_in_addres" required="" type="email" value=""/>
+      </div>
+      <div class="mb-3">
+       <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="addressLine1">
+        Address *
+       </label>
+       <input class="form-control bg-light border-0 px-3 py-2" id="addressLine1" name="address" required="" type="text" value=""/>
+      </div>
+      <div class="row mb-3">
+       <div class="col-md-6">
+        <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="state">
+         State *
+        </label>
+        <input class="form-control bg-light border-0 px-3 py-2" id="state" name="state" required="" type="text" value=""/>
+       </div>
+       <div class="col-md-6">
+        <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="zipCode">
+         ZIP Code *
+        </label>
+        <input class="form-control bg-light border-0 px-3 py-2" id="zipCode" name="zipcode" required="" type="text" value=""/>
+       </div>
+      </div>
+      <div class="mb-3">
+       <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="landmark">
+        Landmark *
+       </label>
+       <input class="form-control bg-light border-0 px-3 py-2" id="landmark" name="landmark" required="" type="text" value=""/>
+      </div>
+      <button class="btn w-100 btn-dark btn-lg fw-bold rounded-pill" style="letter-spacing: 0.5px;" type="submit">
+       Save address
+      </button>
+     </form>
+    </div>
+   </div>
+  </div>
+ </div>
+ <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+  <div aria-atomic="true" aria-live="assertive" class="toast align-items-center text-white bg-success border-0" id="addressToast" role="alert">
+   <div class="d-flex">
+    <div class="toast-body">
+     ✅ Address added successfully!
+    </div>
+    <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" type="button">
+    </button>
+   </div>
+  </div>
+ </div>
+</div>
+<!-- stad phone code here  -->
+<div class="d-block d-sm-none">
+ <form id="checkoutForm_phone" method="post">
+  {% csrf_token %}
+  <!-- Checkout Container -->
+  <div class="checkout-container">
+   <!-- Address Section -->
+   <div class="checkout-card">
+    <div class="address-header">
+     <div class="deliver-to">
+      Deliver to:
+     </div>
+     <button class="change-btn" id="changeAddressBtn" type="button">
+      Change
+     </button>
+    </div>
+    <div id="phone_address_list">
+     {% include "phone_address_list.html" %}
+    </div>
+   </div>
+   <!-- Order Summary -->
+   <div class="order-summary-card">
+    <div class="section-title">
+     Order Summary
+    </div>
+    <!-- Product 1 -->
+    {% if product_main %}
+    <div class="product-item">
+     <img alt="{{product_main.product_name}}" class="product-img" loading="lazy" src="{{product_main.product_image.url}}"/>
+     <div class="product-details">
+      <div>
+       <div class="product-name">
+        {{product_main.product_name|truncatechars:20}}
+       </div>
+       <div class="product-pricing">
+        <span class="sale-price" id="ptotal_amount{{product_main.id}}">
+         ₹ {{amount}}
+        </span>
+        <span class="regular-price">
+         ₹ {{product_main.discount_price}}
+        </span>
+        <span class="discount">
+         {{product_main.get_discount_percentage}} % OFF
+        </span>
+       </div>
+       <span class="quantity-labe">
+        Color: {{product_main.color}} Size: {{size}}
+       </span>
+      </div>
+      <div class="quantity-controls">
+       <span class="quantity-label">
+        Quantity:
+       </span>
+       <div class="quantity-buttons">
+        <button class="qty-btn" onclick="phone_decrease_quantity({{product_main.id}},{{amount}},{{product_main.product_quantity_offer}},{{product_main.product_amount_offer}})" type="button">
+         -
+        </button>
+        <input class="quantity-input" id="pquantity_inputval{{product_main.id}}" name="totalquantity" readonly="" type="text" value="{{quanityt}}"/>
+        <button class="qty-btn" onclick="phone_increase_quantity({{product_main.id}},{{amount}},{{product_main.product_quantity_offer}},{{product_main.product_amount_offer}})" type="button">
+         +
+        </button>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="offer-box mt-2">
+     <div id="poffer_Session{{product_main.id}}">
+      <span class="fw-semibold text-dark">
+       🎉 Special Offer!
+      </span>
+      <span class="text-muted">
+       Add More
+       <b>
+        {{product_main.product_quantity_offer}}
+       </b>
+       &amp; Pay Only
+      </span>
+      <span class="text-success fw-bold">
+       ₹{{product_main.product_amount_offer}}
+      </span>
+     </div>
+    </div>
+    {% elif product_inner %}
+    <div class="product-item">
+     <img alt="{{product_inner.product.product_name}}" class="product-img" loading="lazy" src="{% if product_inner.color_images %}{{product_inner.color_images.url}}{% endif %} "/>
+     <div class="product-details">
+      <div>
+       <div class="product-name">
+        {{product_inner.product.product_name|truncatechars:20}}
+       </div>
+       <div class="product-pricing">
+        <span class="sale-price" id="ptotal_amount{{product_inner.id}}">
+         ₹ {{amount}}
+        </span>
+        <span class="regular-price">
+         ₹ {{product_inner.product.discount_price}}
+        </span>
+        <span class="discount">
+         {{product_inner.product.get_discount_percentage}} % OFF
+        </span>
+       </div>
+       <span class="quantity-labe">
+        Color: {{product_inner.color}} Size: {{size}}
+       </span>
+      </div>
+      <div class="quantity-controls">
+       <span class="quantity-label">
+        Quantity:
+       </span>
+       <div class="quantity-buttons">
+        <button class="qty-btn" onclick="phone_decrease_quantity({{product_inner.id}},{{amount}},{{product_inner.product.product_quantity_offer}},{{product_inner.product.product_amount_offer}})" type="button">
+         -
+        </button>
+        <input class="quantity-input" id="pquantity_inputval{{product_inner.id}}" name="totalquantity" readonly="" type="text" value="{{quanityt}}"/>
+        <button class="qty-btn" onclick="phone_increase_quantity({{product_inner.id}},{{amount}},{{product_inner.product.product_quantity_offer}},{{product_inner.product.product_amount_offer}})" type="button">
+         +
+        </button>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="offer-box mt-2">
+     <div id="poffer_Session{{product_inner.id}}">
+      <span class="fw-semibold text-dark">
+       🎉 Special Offer!
+      </span>
+      <span class="text-muted">
+       Add More
+       <b>
+        {{product_inner.product.product_quantity_offer}}
+       </b>
+       &amp; Pay Only
+      </span>
+      <span class="text-success fw-bold">
+       ₹{{product_inner.product.product_amount_offer}}
+      </span>
+     </div>
+    </div>
+    {% else %}
+    <input hidden="" name="product_card_wala_he" readonly="" required="" type="text" value="{{product_main.id}}"/>
+    {% for a in cart_products %}
+                {% if a.product %}
+    <div class="product-item">
+     <img alt="{{a.product.product_name}}" class="product-img" loading="lazy" src="{{a.product.product_image.url}}"/>
+     <div class="product-details">
+      <div>
+       <div class="product-name">
+        {{a.product.product_name|truncatechars:20}}
+       </div>
+       <div class="product-pricing">
+        <span class="sale-price" dir="pper_product_price" id="pcard_total_amount{{a.id}}">
+         ₹ {{a.total_price}}
+        </span>
+        <span class="regular-price">
+         ₹ {{a.product.discount_price}}
+        </span>
+        <span class="discount">
+         {{a.product.get_discount_percentage}} % OFF
+        </span>
+       </div>
+       <span class="quantity-labe">
+        Color: {{a.product.color}} Size: {{a.size}}
+       </span>
+      </div>
+      <div class="quantity-controls">
+       <span class="quantity-label">
+        Quantity:
+       </span>
+       <div class="quantity-buttons">
+        <button class="qty-btn" onclick="phone_decrease_quantity_for_card({{a.id}},{{a.product.b2c_price}},{{a.product.product_quantity_offer}},{{a.product.product_amount_offer}})" type="button">
+         -
+        </button>
+        <input class="quantity-input" id="pcard_quantity_inputval{{a.id}}" name="totalquantity" readonly="" type="text" value="{{a.quantity}}"/>
+        <button class="qty-btn" onclick="phone_increase_quantity_for_cart({{a.id}},{{a.product.b2c_price}},{{a.product.product_quantity_offer}},{{a.product.product_amount_offer}})" type="button">
+         +
+        </button>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="offer-box mt-2">
+     <div id="poffer_Session{{a.id}}">
+      <span class="fw-semibold text-dark">
+       🎉 Special Offer!
+      </span>
+      <span class="text-muted">
+       Add More
+       <b>
+        {{a.product.product_quantity_offer}}
+       </b>
+       &amp; Pay Only
+      </span>
+      <span class="text-success fw-bold">
+       ₹{{a.product.product_amount_offer}}
+      </span>
+     </div>
+    </div>
+    {% elif a.inner_products_card %}
+    <div class="product-item">
+     <img alt="{{a.inner_products_card.product_name}}" class="product-img" loading="lazy" src="{% if a.inner_products_card.color_images %}{{a.inner_products_card.color_images.url}}{% endif %} "/>
+     <div class="product-details">
+      <div>
+       <div class="product-name">
+        {{a.inner_products_card.product_name|truncatechars:20}}
+       </div>
+       <div class="product-pricing">
+        <span class="sale-price" dir="pper_product_price" id="pcard_total_amount{{a.id}}">
+         ₹ {{a.total_inner_product_price}}
+        </span>
+        <span class="regular-price">
+         ₹ {{a.inner_products_card.discount_price}}
+        </span>
+        <span class="discount">
+         {{a.inner_products_card.get_discount_percentage}} % OFF
+        </span>
+       </div>
+       <span class="quantity-labe">
+        Color: {{a.inner_products_card.color}} Size: {{a.size}}
+       </span>
+      </div>
+      <div class="quantity-controls">
+       <span class="quantity-label">
+        Quantity:
+       </span>
+       <div class="quantity-buttons">
+        <button class="qty-btn" onclick="phone_decrease_quantity_for_card({{a.id}},{{a.inner_products_card.product.b2c_price}},{{a.inner_products_card.product.product_quantity_offer}},{{a.inner_products_card.product.product_amount_offer}})" type="button">
+         -
+        </button>
+        <input class="quantity-input" id="pcard_quantity_inputval{{a.id}}" name="totalquantity" readonly="" type="text" value="{{a.quantity}}"/>
+        <button class="qty-btn" onclick="phone_increase_quantity_for_cart({{a.id}},{{a.inner_products_card.product.b2c_price}},{{a.inner_products_card.product.product_quantity_offer}},{{a.inner_products_card.product.product_amount_offer}})" type="button">
+         +
+        </button>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="offer-box mt-2">
+     <div id="poffer_Session{{a.id}}">
+      <span class="fw-semibold text-dark">
+       🎉 Special Offer!
+      </span>
+      <span class="text-muted">
+       Add More
+       <b>
+        {{a.inner_products_card.product_quantity_offer}}
+       </b>
+       &amp; Pay Only
+      </span>
+      <span class="text-success fw-bold">
+       ₹{{a.inner_products_card.product_amount_offer}}
+      </span>
+     </div>
+    </div>
+    {% endif %}
+                {% endfor %}
+
+
+            {% endif %}
+   </div>
+   <!-- Price Details -->
+   <div class="checkout-card">
+    <div class="checkout-title">
+     <i class="fas fa-receipt">
+     </i>
+     Price Details
+    </div>
+    <div class="price-details">
+     <div class="price-row">
+      <span>
+       Shipping
+      </span>
+      <span>
+       FREE
+      </span>
+     </div>
+     <div class="price-row price-total">
+      <span>
+       Total Amount
+      </span>
+      {% if amount %}
+      <span id="ptotal_amount_for_pays">
+       ₹ {{amount}}
+      </span>
+      <input hidden="" id="sending_price_in_django_view" name="sending_price_in_django_view" type="text" value="{{amount}}"/>
+      {% else %}
+      <span id="ptotal_amount_for_pay">
+       ₹ {{totalfinal}}
+      </span>
+      {% endif %}
+     </div>
+    </div>
+    <input hidden="" id="pproduct_total_bill" name="product_total_bill" required="" type="text" value="{% if amount %} {{amount}} {% else %} {{totalfinal}} {% endif %}"/>
+    <input hidden="" id="razorpay_payment_id" name="razorpay_payment_id" type="text" value=""/>
+    <input hidden="" id="razorpay_order_id" name="razorpay_order_id" type="text" value=""/>
+    <input hidden="" name="product_id" readonly="" required="" type="text" value="{{product_main.id}}"/>
+    <input hidden="" name="inner_product_id" readonly="" required="" type="text" value="{{product_inner.id}}"/>
+    <input hidden="" name="product_size" readonly="" required="" type="text" value="{{size}}"/>
+    <input hidden="" id="cashfree_order_id_phone" name="chashfree_order_id_usingdecstop" type="text"/>
+    <input hidden="" id="cashfree_payment_id_phone" name="chashfree_payment_id_usingdecstop" type="text"/>
+   </div>
+  </div>
+  <br/>
+  <br/>
+  <!-- Footer with Total -->
+  <div class="checkout-footer" style="z-index: 9000;">
+   <div>
+    <div class="text-muted">
+     Total Amount
+    </div>
+    {% if amount %}
+    <div class="total-amount" id="total_bill_of_phone_i_place_buttons">
+     ₹ {{amount}}
+    </div>
+    {% else %}
+    <div class="total-amount" id="total_bill_of_phone_i_place_button">
+     ₹  {{totalfinal}}
+    </div>
+    {% endif %}
+   </div>
+   <button class="btn btn-dark px-4 py-2 fw-bold" onclick="check_address_axist_before_payment()" type="button" style="border-radius: 8px;">
+    Place Order
+   </button>
+  </div>
+  <!-- Payment Offcanvas -->
+  <div aria-labelledby="paymentLabel" class="offcanvas offcanvas-end" id="offcanvasRightpaymet_method" style="z-index: 9000; width: 100%; max-width: 420px;" tabindex="-1">
+   <!-- Header -->
+   <div class="offcanvas-header border-bottom">
+    <button class="btn" data-bs-dismiss="offcanvas" type="button">
+     <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <h5 class="fw-bold mb-0 ms-2" id="paymentLabel">
+     Choose Payment Method
+    </h5>
+   </div>
+   <!-- Body -->
+   <div class="offcanvas-body d-flex flex-column p-0">
+    <div class="list-group list-group-flush payment-list">
+      <!-- 1. UPI Payment (Veno Gateway) -->
+      <label class="list-group-item d-flex align-items-center gap-3">
+       <input checked="" class="form-check-input payment-radio" id="veno_upi_payment_chek" name="payment_method" type="radio" value="upi"/>
+       <img alt="UPI Gateway" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/3840px-UPI-Logo-vector.svg.png" width="32"/>
+       <div>
+        <div class="fw-bold text-dark">
+         Instant UPI &amp; Dynamic QR (Veno Gateway)
+        </div>
+        <small class="text-muted">
+         Pay instantly via GPay, PhonePe, Paytm, BHIM &amp; UPI QR Code
+        </small>
+       </div>
+      </label>
+      
+      <!-- 2. Credit & Debit Cards (Cashfree Gateway) -->
+      <label class="list-group-item d-flex align-items-center gap-3">
+       <input class="form-check-input payment-radio" id="cashfree_payment_chek" name="payment_method" type="radio" value="card"/>
+       <i class="bi bi-credit-card-2-front-fill fs-3 text-primary"></i>
+       <div>
+        <div class="fw-bold text-dark">
+         Credit &amp; Debit Card (Cashfree Gateway)
+        </div>
+        <small class="text-muted">
+         Pay securely using Visa, Mastercard, RuPay, Maestro &amp; NetBanking
+        </small>
+       </div>
+      </label>
+      
+      <!-- 3. COD (Cash on Delivery) -->
+      <label class="list-group-item d-flex align-items-center gap-3">
+       <input class="form-check-input payment-radio" id="cod_payment_check" name="payment_method" type="radio" value="cod"/>
+       <i class="bi bi-cash-coin fs-3 text-success"></i>
+       <div>
+        <div class="fw-semibold text-dark">
+         Cash on Delivery (COD)
+        </div>
+        <small class="text-muted">
+         Pay cash when your package arrives at your doorstep
+        </small>
+       </div>
+      </label>
+     </div>
+    <!-- Bottom Button -->
+    <div class="checkout-footer" style="z-index: 9000;">
+     <div>
+      <div class="text-muted">
+       Total Amount
+      </div>
+      {% if amount %}
+      <div class="total-amount" id="total_bill_of_phone_i_place_button_upi_screens">
+       ₹ {{amount}}
+      </div>
+      {% else %}
+      <div class="total-amount" id="total_bill_of_phone_i_place_button_upi_screen">
+       ₹ {{totalfinal}}
+      </div>
+      {% endif %}
+     </div>
+     <button class="btn btn-primary btn-lg fw-bold" onclick="process_checkout_payment('mobile')" type="button">
+      Process
+     </button>
+    </div>
+   </div>
+  </div>
+  {% comment %} address model i offcanvas {% endcomment %}
+ </form>
+</div>
+<div aria-labelledby="offcanvasRightLabel" class="offcanvas offcanvas-end w-100" id="offcanvasRightaddresphone" style="z-index:9000;" tabindex="-1">
+ <div class="offcanvas-header bg-black text-white border-bottom-0">
+  <button aria-label="Close" class="btn text-white" data-bs-dismiss="offcanvas" type="button">
+   <i class="fa-solid fa-arrow-left">
+   </i>
+  </button>
+  <h5 id="offcanvasRightLabel">
+   Add New Address
+  </h5>
+ </div>
+ <div class="offcanvas-body">
+  <form hx-on::after-request="phonehideModal()" hx-post="/checkout" hx-swap="innerHTML" hx-target="#phone_address_list" method="post">
+   {% csrf_token %}
+   <div class="mb-3">
+    <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="fullName">
+     Full Name
+    </label>
+    <input class="form-control bg-light border-0 px-3 py-2" id="fullName" name="fullname" required="" type="text"/>
+   </div>
+   <div class="row mb-3">
+    <div class="col-md-6">
+     <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="email_if_in_addres">
+      Email
+     </label>
+     <input class="form-control bg-light border-0 px-3 py-2" id="email_if_in_addres" name="email_if_in_addres" required="" type="email"/>
+    </div>
+   </div>
+   <div class="row mb-3">
+    <div class="col-md-6">
+     <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="phone_nummber">
+      Phone Number
+     </label>
+     <input class="form-control bg-light border-0 px-3 py-2" id="phone_nummber" name="phone_nummber" required="" type="number"/>
+    </div>
+   </div>
+   <div class="mb-3">
+    <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="addressLine1">
+     Address
+    </label>
+    <input class="form-control bg-light border-0 px-3 py-2" id="addressLine1" name="address" required="" type="text"/>
+   </div>
+   <div class="row mb-3">
+    <div class="col-md-6">
+     <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="state">
+      State
+     </label>
+     <input class="form-control bg-light border-0 px-3 py-2" id="state" name="state" required="" type="text"/>
+    </div>
+    <div class="col-md-6">
+     <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="zipCode">
+      ZIP Code
+     </label>
+     <input class="form-control bg-light border-0 px-3 py-2" id="zipCode" name="zipcode" required="" type="text"/>
+    </div>
+   </div>
+   <div class="row mb-3">
+    <div class="col-md-6">
+     <label class="form-label text-muted small fw-bold text-uppercase mb-1" for="landmark">
+      Landmark
+     </label>
+     <input class="form-control bg-light border-0 px-3 py-2" id="landmark" name="landmark" required="" type="text"/>
+     <input id="phone_addresS" name="phone_addresS" type="hidden" value="phone_addresS"/>
+    </div>
+   </div>
+   <button class="btn btn-dark w-100 btn-lg fw-bold rounded-pill mt-2" style="letter-spacing: 0.5px;" type="submit">
+    Save address
+   </button>
+  </form>
+ </div>
+</div>
+<!-- paymet of cavas  -->
+<!-- const form = document.getElementById("checkoutForm"); -->
+<script src="https://sdk.cashfree.com/js/v3/cashfree.js">
+</script>
+<script>
+ function showLoader() {
+    let loader = document.getElementById("paymentLoader");
+    if (loader) loader.style.display = "flex";
+}
+
+async function cashfree_fm(targetForm) {
+    showLoader();
+    let activeForm = targetForm || (window.innerWidth <= 768 ? document.getElementById("checkoutForm_phone") : document.getElementById("checkoutForm")) || document.getElementById("checkoutForm");
+    
+    let input = activeForm ? (activeForm.querySelector("[name='chasfreeamount']") || activeForm.querySelector("[name='amount']")) : null;
+    let t_amount = input ? input.value : (document.getElementById("pproduct_total_bill") || document.getElementById("product_total_bill") || {value: 999}).value;
+    let csrf_token = document.querySelector("[name='csrfmiddlewaretoken']").value;
+
+    let formdata = activeForm ? new FormData(activeForm) : new FormData();
+    if (!formdata.has("chasfreeamount")) formdata.append("chasfreeamount", t_amount);
+    
+    if (!formdata.get("address_id") && formdata.get("address_ids")) {
+        formdata.append("address_id", formdata.get("address_ids"));
+    }
+
+    try {
+        let response = await fetch("/create-cashfree-order", {
+            method: "POST",
+            body: formdata,
+            headers: { "X-CSRFToken": csrf_token }
+        });
+        let data = await response.json();
+        if (data.status === "success" && data.payment_session_id) {
+            try {
+                const cashfree = Cashfree({ mode: "production" });
+                cashfree.checkout({ 
+                    paymentSessionId: data.payment_session_id,
+                    redirectTarget: "_modal"
+                }).then(function(result) {
+                    if (result.error) {
+                        alert(result.error.message || "Payment Failed");
+                        let loader = document.getElementById("paymentLoader");
+                        if (loader) loader.style.display = "none";
+                    }
+                    if (result.paymentDetails) {
+                        window.location.href = "/payment/success/?order_id=" + data.order_id;
+                    }
+                });
+            } catch(e) {
+                if (data.checkout_url) {
+                    window.location.href = data.checkout_url;
+                } else {
+                    window.location.href = "https://payments.cashfree.com/order/#/" + data.payment_session_id;
+                }
+            }
+        } else if (data.checkout_url) {
+            window.location.href = data.checkout_url;
+        } else {
+            alert(data.message || "Unable to launch Cashfree checkout.");
+            let loader = document.getElementById("paymentLoader");
+            if (loader) loader.style.display = "none";
+        }
+    } catch(err) {
+        console.error(err);
+        alert("Payment Gateway Error: " + err);
+        let loader = document.getElementById("paymentLoader");
+        if (loader) loader.style.display = "none";
+    }
+}
+
+async function phone_cashfree_fm() {
+    let form = document.getElementById("checkoutForm_phone");
+    cashfree_fm(form);
+}
+
+async function veno_upi_fm(targetForm) {
+    showLoader();
+    let activeForm = targetForm || (window.innerWidth <= 768 ? document.getElementById("checkoutForm_phone") : document.getElementById("checkoutForm")) || document.getElementById("checkoutForm");
+
+    let input = activeForm ? (activeForm.querySelector("[name='chasfreeamount']") || activeForm.querySelector("[name='amount']")) : null;
+    let t_amount = input ? input.value : (document.getElementById("pproduct_total_bill") || document.getElementById("product_total_bill") || {value: 999}).value;
+    let csrf_token = document.querySelector("[name='csrfmiddlewaretoken']").value;
+
+    let formdata = activeForm ? new FormData(activeForm) : new FormData();
+    if (!formdata.has("chasfreeamount")) formdata.append("chasfreeamount", t_amount);
+
+    if (!formdata.get("address_id") && formdata.get("address_ids")) {
+        formdata.append("address_id", formdata.get("address_ids"));
+    }
+
+    try {
+        let response = await fetch("/create-veno-order", {
+            method: "POST",
+            body: formdata,
+            headers: { "X-CSRFToken": csrf_token }
+        });
+        let data = await response.json();
+        if (data.status === "success" && data.checkout_url) {
+            window.location.href = data.checkout_url;
+        } else {
+            alert(data.message || "Unable to launch Veno Gateway UPI checkout.");
+            let loader = document.getElementById("paymentLoader");
+            if (loader) loader.style.display = "none";
+        }
+    } catch(err) {
+        console.error(err);
+        alert("Veno Gateway Error: " + err);
+        let loader = document.getElementById("paymentLoader");
+        if (loader) loader.style.display = "none";
+    }
+}
+</script>
+<!-- Bootstrap JS -->
+<script>
+ // Payment method selection
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentMethods = document.querySelectorAll('.payment-method');
+
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function () {
+                // Remove active class from all methods
+                paymentMethods.forEach(m => m.classList.remove('active'));
+                // Add active class to clicked method
+                this.classList.add('active');
+                // Check the corresponding radio button
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+            });
+        });
+
+        // Address selection
+        const addressCards = document.querySelectorAll('.address-card');
+        addressCards.forEach(card => {
+            card.addEventListener('click', function () {
+                // Remove active class from all cards
+                addressCards.forEach(c => c.classList.remove('active'));
+                // Add active class to clicked card
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize totals
+    });
+</script>
+<script>
+ // 🚀 PHONE ADDRESS DROPDOWN + ADD ADDRESS HANDLER
+function initPhoneAddressSystem() {
+    const changeBtn = document.getElementById("changeAddressBtn");
+    const addressDropdown = document.getElementById("addressDropdown");
+
+    function getAddressOptions() {
+        return document.querySelectorAll(".address-option");
+    }
+
+    function updateButtonText() {
+        if (getAddressOptions().length === 0) {
+            changeBtn.textContent = "Add Address";
+        } else {
+            changeBtn.textContent = "Change";
+        }
+    }
+
+    // Initial load
+    updateButtonText();
+
+    // 🌟 Global click handler
+    document.addEventListener("click", function (e) {
+
+        // -------------------------
+        // 1️⃣ Change / Add Address / Close Button
+        // -------------------------
+        if (e.target.id === "changeAddressBtn") {
+
+            const options = getAddressOptions();
+
+            if (options.length === 0) {
+                // Open Add Address Offcanvas (No address exists)
+                const el = document.getElementById("offcanvasRightaddresphone");
+                let offcanvas = new bootstrap.Offcanvas(el);
+                offcanvas.show();
+                return;
+            }
+
+            // Toggle dropdown
+            addressDropdown.classList.toggle("show");
+
+            // Set button text
+            changeBtn.textContent = addressDropdown.classList.contains("show")
+                ? "Close"
+                : "Change";
+        }
+
+        // -------------------------
+        // 2️⃣ Address Selection
+        // -------------------------
+        const option = e.target.closest(".address-option");
+        if (option) {
+            const selectedAddress = document.getElementById("selectedAddress");
+
+            document.querySelectorAll(".address-option")
+                .forEach(o => o.classList.remove("selected"));
+
+            option.classList.add("selected");
+
+            selectedAddress.innerHTML = option.innerHTML;
+
+            addressDropdown.classList.remove("show");
+            changeBtn.textContent = "Change";
+        }
+
+        // -------------------------
+        // 3️⃣ Click outside → Close dropdown
+        // -------------------------
+        if (
+            !e.target.closest(".address-header") &&
+            !e.target.closest(".address-dropdown") &&
+            !e.target.closest(".address-display")
+        ) {
+            addressDropdown?.classList.remove("show");
+
+            if (getAddressOptions().length > 0) {
+                changeBtn.textContent = "Change";
+            }
+        }
+    });
+}
+
+// -------------------------
+// 4️⃣ Reinitialize after HTMX swaps phone address list
+// -------------------------
+document.addEventListener("htmx:afterSwap", function (e) {
+    if (e.target.id === "phone_address_list") {
+        initPhoneAddressSystem();
+    }
+});
+
+// -------------------------
+// 5️⃣ Initialize on first load
+// -------------------------
+document.addEventListener("DOMContentLoaded", function () {
+    initPhoneAddressSystem();
+});
+</script>
+<script>
+ function check_address_axist_before_payment(){
+    let selectedAddress = document.querySelector("#selectedAddress input[name='address_ids']");
+    let selectedId = selectedAddress ? selectedAddress.value : null;
+
+    if (!selectedId){
+        swal({
+            text: "Please select an address",
+            icon: "error",
+            buttons:{
+                addAddress:{
+                    text:"Add Address",
+                    value:"address_val",
+                },
+            }
+        })
+        .then((value)=>{
+            if(value === "address_val"){
+                var el = document.getElementById('offcanvasRightaddresphone');
+                let offcanvas = new bootstrap.Offcanvas(el); 
+                offcanvas.show();     // ✔ this works
+            }
+        })
+        return;
+    }
+
+    else{
+        var el = document.getElementById('offcanvasRightpaymet_method');
+        let offcanvas = new bootstrap.Offcanvas(el);
+        offcanvas.show();   // ✔ this works
+    }
+}
+</script>
+<script>
+function process_checkout_payment(view_type) {
+    let form = (view_type === 'desktop') ? document.getElementById("checkoutForm") : document.getElementById("checkoutForm_phone");
+    let is_upi = false;
+    let is_card = false;
+    let is_cod = false;
+
+    if (view_type === 'desktop') {
+        let selectedAddress = document.querySelector('input[name="address_id"]:checked');
+        if (!selectedAddress) {
+            swal({ text: "Please select an address", icon: "error" });
+            return;
+        }
+        let upiEl = document.getElementById("desktop_veno_upi_payment");
+        let cardEl = document.getElementById("desktop_cashfree_card_payment");
+        let codEl = document.getElementById("desktop_cod_payment");
+        is_upi = upiEl && upiEl.checked;
+        is_card = cardEl && cardEl.checked;
+        is_cod = codEl && codEl.checked;
+    } else {
+        let selectedAddress = document.querySelector("#selectedAddress input[name='address_ids']");
+        if (!selectedAddress || !selectedAddress.value) {
+            swal({ text: "Please select an address", icon: "error" });
+            return;
+        }
+        let upiEl = document.getElementById("veno_upi_payment_chek") || document.getElementById("mobile_veno_upi_payment");
+        let cardEl = document.getElementById("cashfree_payment_chek") || document.getElementById("mobile_cashfree_card_payment");
+        let codEl = document.getElementById("cod_payment_check") || document.getElementById("mobile_cod_payment_chek");
+        is_upi = upiEl && upiEl.checked;
+        is_card = cardEl && cardEl.checked;
+        is_cod = codEl && codEl.checked;
+    }
+
+    if (!is_upi && !is_card && !is_cod) {
+        // Fallback to UPI if somehow nothing is selected (though UI sets it by default)
+        is_upi = true;
+    }
+
+    if (form && !form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    if (is_upi) {
+        veno_upi_fm(form);
+    } else if (is_card) {
+        cashfree_fm(form);
+    } else if (is_cod) {
+        showLoader();
+        if (form) form.submit();
+    }
+}
+</script>
+<!-- removing footer  -->
+{% endblock mainbody %}

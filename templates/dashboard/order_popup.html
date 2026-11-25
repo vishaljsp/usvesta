@@ -1,0 +1,75 @@
+<!-- ✅ Order Details Modal -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content rounded-4 shadow-lg border-0">
+
+      <!-- Header -->
+      <div class="modal-header  any_background text-white rounded-top-4">
+        <h5 class="modal-title fw-bold" id="orderDetailsLabel">
+          <i class="bi bi-bag-check-fill me-2"></i> Order Details
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body p-4">
+        <div class="row g-4 align-items-center">
+          <!-- Product Image -->
+          <div class="col-md-4 text-center">
+            {% if a.custom_design %}
+                <div class="deal-btn default-btn btn-hover">
+                    <a class="btn-size-xs btn-bg-theme btn-color black-color"
+                        href="{{a.custom_design.url}}">
+                        <i class="fa-solid fa-file-pdf fa-xl"></i> Open PDF
+                    </a>
+                </div>
+            {% else %}
+                <img loading="lazy"
+                    src="{% if a.product.product_image.url %}{{ a.product.product_image.url }}{% else %}{{ a.inner_color_product.color_images.url }}{% endif %}"
+                    alt="{{ a.product.product_name }}"
+                    width="350">
+            {% endif %}
+          </div>
+
+          <!-- Product Details -->
+          <div class="col-md-8">
+            <h6 class="mb-1">{% if a.product.product_name %}{{ a.product.product_name }}{% else %}{{a.inner_color_product.product.product_name }}{% endif %}</h6>
+            <p class="text-muted mb-2">Product Tracking ID: <span class="fw-semibold text-dark">#{{a.awb_number}}</span></p>
+            <p class="mb-2"><span class="fw-semibold">Quantity :</span> {{ a.quantity }}</p>
+            <p class="mb-2"><span class="fw-semibold">Size :</span> {{ a.product_size }}</p>
+            <p class="mb-2"><span class="fw-semibold">Paid By :</span> {{ a.payment_method }}</p>
+       
+            <p class="text-success fw-bold fs-5 mb-3">Price: ₹ {{ a.total_price }}</p>
+
+            <hr>
+
+            <!-- Billing Info -->
+            <h6 class="fw-bold mt-3 mb-1">Billing Address</h6>
+            <p class="text-muted mb-0">
+             {{ a.address|linebreaksbr }}
+            </p>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Order Summary -->
+        <div class="row text-center">
+          <div class="col-md-4">
+            <h6 class="fw-semibold text-muted mb-1">Order Date</h6>
+            <p class="fw-bold">{{ a.created_at }}</p>
+          </div>
+          <div class="col-md-4">
+            <h6 class="fw-semibold text-muted mb-1">Payment Method</h6>
+            <p class="fw-bold">{{ a.payment_status }}</p>
+          </div>
+          <div class="col-md-4">
+            <h6 class="fw-semibold text-muted mb-1">Status</h6>
+            <span class="badge bg-success px-3 py-2">{{ a.status }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

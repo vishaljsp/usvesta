@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block header %}
+<title>2aa</title>
+<link rel="stylesheet" href="/static/css/b2b.css">
+{% endblock header %}
+
+{% block mainbody %}
+
+
+{% for banner in banners %}
+{% if 'for corporates' in banner.show_on_pages %}
+<br>
+<br>
+<div class="w-100 my-3">
+  {% if banner.video %}
+  <video autoplay muted playsinline loop style="width: 100%; height:auto; object-fit: cover;">
+    <source src="{{banner.video}}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  {% elif banner.image %}
+  <img loading="lazy" src="{{banner.image.url}}" style="width: 100%; height:auto; object-fit: cover;"
+    alt="{{banner.image_alt_name}}">
+  {% endif %}
+
+</div>
+{% else %}
+
+{% endif %}
+
+{% endfor %}
+
+<div class="card bg-dark text-white position-relative">
+  <img loading="lazy" src="/static/images/b2b.webp" class="card-img" alt="...">
+</div>
+
+<br>
+
+<div class="container mb-5">
+  <h2 class="text-center"><b>Custom Services for Corporates</b></h2>
+  <b>
+    <hr>
+  </b>
+
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+
+    {% for a in category %}
+    <div class="col">
+      <div class="card custom_imagehover_iffect text-center">
+        <a href="/category?categories={{a.uuid_product}}">
+          <img loading="lazy" class="img-fluid" src="{{a.category_image.url}}" alt="{{a.name}}">
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="/category?categories={{a.uuid_product}}">{{a.name}}</a>
+
+            <!-- <a onclick="alert_pop('Custom Services for Corporates','Comming Soon','success')" class="text-dark text-decoration-none">
+                                Tailored Shirts for Teams
+                            </a> -->
+          </h5>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+
+  </div>
+
+</div>
+
+
+
+{% endblock mainbody %}

@@ -1,0 +1,195 @@
+
+    <div>
+      
+        <div class="editor-wrapper">
+            <!-- Toolbar - Rebuilt to match the new image -->
+            <div class="toolbar">
+                <div class="dropdown">
+                    <!-- New '||' icon for format dropdown -->
+                    <button class="toolbar-btn" id="formatBtn" title="Formatting"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8.25 3.75a.75.75 0 01.75.75v15a.75.75 0 01-1.5 0V4.5a.75.75 0 01.75-.75zM15 3.75a.75.75 0 01.75.75v15a.75.75 0 01-1.5 0V4.5a.75.75 0 01.75-.75z" /></svg></button>
+                    <div class="dropdown-content" id="formatPalette">
+                        <button data-command="formatBlock" data-value="H1"><h1>Heading 1</h1></button>
+                        <button data-command="formatBlock" data-value="H2"><h2>Heading 2</h2></button>
+                        <button data-command="formatBlock" data-value="H3"><h3>Heading 3</h3></button>
+                        <button data-command="formatBlock" data-value="p">Paragraph</button>
+                    </div>
+                </div>
+                <!-- New Paintbrush icon for Clear Formatting -->
+                <button class="toolbar-btn" data-command="removeFormat" title="Clear Formatting"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.023 13.623l.235-.235.235.235a.375.375 0 00.53 0l3.888-3.888a.375.375 0 00-.53-.53L12.5 12.23l-2.888-2.888a.375.375 0 00-.53.53l3.888 3.888a.375.375 0 00.53 0z" /><path fill-rule="evenodd" d="M12.313 3.11a.375.375 0 01.428.143l3.375 4.125a.375.375 0 01-.32 0l-3.375-4.125a.375.375 0 01-.108-.143zM9.063 7.355a.375.375 0 01.428-.143l3.375 4.125a.375.375 0 01-.32.645l-3.375-4.125a.375.375 0 01-.108-.502z" clip-rule="evenodd" /></svg></button>
+                <button class="toolbar-btn" data-command="italic" title="Italic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10.125 5.25a.375.375 0 01.375-.375h9a.375.375 0 010 .75h-3.498l-4.012 12.034h2.99a.375.375 0 010 .75h-9a.375.375 0 010-.75h3.498l4.012-12.034h-2.99a.375.375 0 01-.375-.375z" /></svg></button>
+                <button class="toolbar-btn" data-command="underline" title="Underline"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5.625 3.75a.375.375 0 01.375.375v9a3.375 3.375 0 006.75 0V4.125a.375.375 0 01.75 0v9a4.875 4.875 0 01-9.75 0V4.125A.375.375 0 015.625 3.75zm12.75 12.75a.375.375 0 000 .75h-12a.375.375 0 000-.75h12z" /></svg></button>
+                <button class="toolbar-btn" data-command="strikeThrough" title="Strikethrough"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M4.125 12.375a.375.375 0 01.375-.375h15a.375.375 0 010 .75h-15a.375.375 0 01-.375-.375z" clip-rule="evenodd" /><path d="M6.337 5.11a.75.75 0 01.925.39l3 6.315 3.488-7.324a.75.75 0 011.398.664l-4 8.4a.75.75 0 01-1.398-.664L9.037 6.84a.75.75 0 01-.288-.396.75.75 0 01.588-.934z" /></svg></button>
+                <div class="separator"></div>
+                 <!-- Font Size Dropdown -->
+                <div class="dropdown">
+                    <button class="toolbar-btn" id="fontSizeBtn" title="Font Size"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.97 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 01-1.06 1.06L13 5.06V22.5a.75.75 0 01-1.5 0V5.06l-6.47 6.47a.75.75 0 01-1.06-1.06l7.5-7.5z" /></svg></button>
+                    <div class="dropdown-content" id="fontSizePalette">
+                        <button data-command="fontSize" data-value="1">Small</button>
+                        <button data-command="fontSize" data-value="3">Normal</button>
+                        <button data-command="fontSize" data-value="5">Large</button>
+                        <button data-command="fontSize" data-value="7">Huge</button>
+                    </div>
+                </div>
+                <!-- New Indent Icon -->
+                <button class="toolbar-btn" data-command="indent" title="Indent"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M3.375 5.625a.375.375 0 01.375-.375h16.5a.375.375 0 010 .75H3.75a.375.375 0 01-.375-.375zm0 4.5a.375.375 0 01.375-.375h16.5a.375.375 0 010 .75H3.75a.375.375 0 01-.375-.375zm8.25 4.125a.375.375 0 01.375-.375h8.25a.375.375 0 010 .75H12a.375.375 0 01-.375-.375zm0 4.5a.375.375 0 01.375-.375h8.25a.375.375 0 010 .75H12a.375.375 0 01-.375-.375z" clip-rule="evenodd" /><path d="M4.53 14.53a.375.375 0 000 .53l2.22 2.22a.375.375 0 10.53-.53L5.06 14.5l2.22-2.22a.375.375 0 00-.53-.53l-2.22 2.22z" /></svg></button>
+                <!-- New Outdent Icon -->
+                <button class="toolbar-btn" data-command="outdent" title="Outdent"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M3.375 5.625a.375.375 0 01.375-.375h16.5a.375.375 0 010 .75H3.75a.375.375 0 01-.375-.375zm0 4.5a.375.375 0 01.375-.375h16.5a.375.375 0 010 .75H3.75a.375.375 0 01-.375-.375zm0 4.5a.375.375 0 01.375-.375h16.5a.375.375 0 010 .75H3.75a.375.375 0 01-.375-.375zm0 4.5a.375.375 0 01.375-.375h16.5a.375.375 0 010 .75H3.75a.375.375 0 01-.375-.375z" clip-rule="evenodd" /><path d="M6.97 12.53a.375.375 0 000-.53L4.75 9.78a.375.375 0 00-.53.53l2.22 2.22-2.22 2.22a.375.375 0 10.53.53l2.22-2.22z" /></svg></button>
+                <div class="separator"></div>
+                <button class="toolbar-btn" data-command="justifyLeft" title="Align Left"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.125 5.25a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125zM4.125 9.75a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125zM4.125 14.25a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125zM4.125 18.75a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125z" /></svg></button>
+                <button class="toolbar-btn" data-command="justifyCenter" title="Align Center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.375 5.25a.375.375 0 000 .75h11.25a.375.375 0 000-.75H6.375zM4.125 9.75a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125zM6.375 14.25a.375.375 0 000 .75h11.25a.375.375 0 000-.75H6.375zM4.125 18.75a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125z" /></svg></button>
+                <button class="toolbar-btn" data-command="justifyRight" title="Align Right"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.125 5.25a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125zM4.125 9.75a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125zM4.125 14.25a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125zM4.125 18.75a.375.375 0 000 .75h15.75a.375.375 0 000-.75H4.125z" /></svg></button>
+                <div class="separator"></div>
+                <button class="toolbar-btn" data-command="insertOrderedList" title="Numbered List"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.125 5.625a.375.375 0 01.375-.375h15a.375.375 0 010 .75h-15a.375.375 0 01-.375-.375zM4.125 11.625a.375.375 0 01.375-.375h15a.375.375 0 010 .75h-15a.375.375 0 01-.375-.375zM4.125 17.625a.375.375 0 01.375-.375h15a.375.375 0 010 .75h-15a.375.375 0 01-.375-.375z" /><path fill-rule="evenodd" d="M2.25 5.25a.375.375 0 000 .75c.828 0 1.5.672 1.5 1.5S3.078 9 2.25 9a.375.375 0 000 .75c1.243 0 2.25.995 2.25 2.22v.03a.375.375 0 00.375.375h.375a.375.375 0 00.375-.375v-4.5a.375.375 0 00-.375-.375h-.375a.375.375 0 00-.375.375v.03c0 1.225-1.007 2.22-2.25 2.22a.75.75 0 01-.75-.75V6a.75.75 0 00-.75-.75A.375.375 0 002.25 5.25z" clip-rule="evenodd" /></svg></button>
+                <button class="toolbar-btn" data-command="insertUnorderedList" title="Bulleted List"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8.625 5.625a.375.375 0 01.375-.375h10.5a.375.375 0 010 .75H9a.375.375 0 01-.375-.375zM8.625 11.625a.375.375 0 01.375-.375h10.5a.375.375 0 010 .75H9a.375.375 0 01-.375-.375zM8.625 17.625a.375.375 0 01.375-.375h10.5a.375.375 0 010 .75H9a.375.375 0 01-.375-.375z" /><path fill-rule="evenodd" d="M4.5 6a.75.75 0 100-1.5.75.75 0 000 1.5zm0 6a.75.75 0 100-1.5.75.75 0 000 1.5zm.75 5.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" clip-rule="evenodd" /></svg></button>
+                <button class="toolbar-btn" data-command="formatBlock" data-value="blockquote" title="Blockquote"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5.625 3.375c0-.98 1.006-1.625 1.82-1.226l11.25 5.625a2.25 2.25 0 010 4.102l-11.25 5.625C6.63 18.875 5.625 18.23 5.625 17.25V3.375z" /></svg></button>
+                <div class="separator"></div>
+                <!-- START NEW FUNCTIONS -->
+                <div class="dropdown">
+                    <button class="toolbar-btn" id="colorBtn" title="Text/Highlight Color"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10.5 4.5a.75.75 0 00-1.5 0v.358a4.503 4.503 0 00-2.858 2.368 6.75 6.75 0 00-.455 2.624 2.25 2.25 0 002.25 2.25H9A.75.75 0 009 10.5h-.75a.75.75 0 01-.75-.75 5.25 5.25 0 01.353-2.043 3.003 3.003 0 011.947-1.585V6A.75.75 0 0010.5 6v-.358c.271-.03.538-.076.802-.136a4.48 4.48 0 012.352 1.255 5.25 5.25 0 011.606 3.658c0 .878-.22 1.706-.628 2.453a4.5 4.5 0 01-1.586 1.865v.001a.75.75 0 00.75.75H15a.75.75 0 000-1.5h-.75a2.25 2.25 0 00-2.25-2.25 6.75 6.75 0 00-.455-2.624 4.503 4.503 0 00-2.858-2.368V4.5z" /><path d="M3.375 19.5a.375.375 0 000 .75h17.25a.375.375 0 000-.75H3.375z" /></svg></button>
+                     <div class="dropdown-content" id="colorPalette">
+                        <div class="color-palette-section">
+                            <p>Text Color</p>
+                            <div class="color-palette" id="textColorPalette"></div>
+                        </div>
+                         <div class="color-palette-section">
+                            <p>Highlight Color</p>
+                            <div class="color-palette" id="highlightColorPalette"></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="toolbar-btn" data-command="insertImage" title="Insert Image"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06l4.47-4.47a.75.75 0 011.06 0l3.97 3.97L15.66 12a.75.75 0 011.06 0l3 3V6H3v10.06z" clip-rule="evenodd" /></svg></button>
+                <button class="toolbar-btn" data-command="insertTable" title="Insert Table"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 3.375c0-.98 1.006-1.625 1.82-1.226l11.25 5.625a2.25 2.25 0 010 4.102l-11.25 5.625A1.875 1.875 0 011.5 15.375V3.375z" /><path d="M15 4.125a1.875 1.875 0 011.875-1.875h3.75A1.875 1.875 0 0122.5 4.125v15.75A1.875 1.875 0 0120.625 21.75h-3.75A1.875 1.875 0 0115 19.875V4.125z" /></svg></button>
+                <button class="toolbar-btn" data-command="formatBlock" data-value="pre" title="Code Block"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10.5 4.125a.375.375 0 01.375.375v15a.375.375 0 01-.75 0v-15a.375.375 0 01.375-.375z" clip-rule="evenodd" /><path d="M6.28 6.22a.375.375 0 010 .53l-3.22 3.22a.375.375 0 000 .53l3.22 3.22a.375.375 0 01-.53.53l-3.485-3.485a.375.375 0 010-.53L5.75 6.22a.375.375 0 01.53 0zm11.44 0a.375.375 0 00-.53.53l3.22 3.22a.375.375 0 010 .53l-3.22 3.22a.375.375 0 00.53.53l3.485-3.485a.375.375 0 000-.53L17.72 6.22z" /></svg></button>
+                <!-- END NEW FUNCTIONS -->
+                <div class="separator"></div>
+                <button class="toolbar-btn" data-command="createLink" title="Insert Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.23 13.06a3.375 3.375 0 004.772 0l4.159-4.16a3.375 3.375 0 00-4.772-4.771l-1.516 1.517a.375.375 0 00.53.53l1.516-1.517a2.625 2.625 0 113.712 3.712l-4.16 4.16a2.625 2.625 0 01-3.712 0 .375.375 0 00-.53.53z" /><path d="M11.77 10.94a3.375 3.375 0 00-4.772 0L2.839 15.1a3.375 3.375 0 004.772 4.771l1.516-1.517a.375.375 0 00-.53-.53l-1.516 1.517a2.625 2.625 0 01-3.712-3.712l4.16-4.16a2.625 2.625 0 013.712 0 .375.375 0 00.53-.53z" /></svg></button>
+                <button class="toolbar-btn" data-command="unlink" title="Remove Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.048 8.44l.43-1.077a.375.375 0 11.714.285l-.43 1.077a4.875 4.875 0 014.238 6.096l-4.159 4.16a4.875 4.875 0 01-6.894-6.894l1.516-1.517a.375.375 0 01.53.53l-1.516 1.517a4.125 4.125 0 105.834 5.834l4.16-4.16a4.125 4.125 0 00-5.4-6.31z" /><path d="M8.952 15.56l-.43 1.077a.375.375 0 11-.714-.285l.43-1.077a4.875 4.875 0 01-4.238-6.096l4.159-4.16a4.875 4.875 0 016.894 6.894l-1.516 1.517a.375.375 0 01-.53-.53l1.516-1.517a4.125 4.125 0 10-5.834-5.834l-4.16 4.16a4.125 4.125 0 005.4 6.31z" /></svg></button>
+                <div class="separator"></div>
+                <button class="toolbar-btn" data-command="insertHorizontalRule" title="Insert Horizontal Line"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3.375 12.75a.375.375 0 000-.75h17.25a.375.375 0 000 .75H3.375z" /></svg></button>
+                <div class="separator"></div>
+                <button class="toolbar-btn" data-command="undo" title="Undo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.125 9.375a.375.375 0 00.375.375h14.25a3.375 3.375 0 010 6.75H13.875a.375.375 0 000 .75h4.875a4.125 4.125 0 000-8.25H4.5a.375.375 0 00-.375.375z" /><path d="M6.91 7.22a.375.375 0 00-.53 0L3.16 10.44a.375.375 0 000 .53l3.22 3.22a.375.375 0 10.53-.53L4.225 10.705l2.685-2.685a.375.375 0 000-.53z" /></svg></button>
+                <button class="toolbar-btn" data-command="redo" title="Redo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.875 9.375a.375.375 0 01-.375.375H5.25a3.375 3.375 0 000 6.75h4.875a.375.375 0 010 .75H5.25a4.125 4.125 0 010-8.25h14.25a.375.375 0 01.375.375z" /><path d="M17.09 7.22a.375.375 0 01.53 0l3.22 3.22a.375.375 0 010 .53l-3.22 3.22a.375.375 0 11-.53-.53l2.685-2.685-2.685-2.685a.375.375 0 010-.53z" /></svg></button>
+                 <div class="separator"></div>
+                <button class="toolbar-btn" id="fullscreenBtn" title="Toggle Fullscreen"><svg id="fullscreenIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3.375 3.375c0-1.036.84-1.875 1.875-1.875h13.5c1.035 0 1.875.84 1.875 1.875v1.5c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-1.5a.375.375 0 00-.375-.375H5.25a.375.375 0 00-.375.375v13.5c0 .207.168.375.375.375h1.5a.75.75 0 010 1.5h-1.5a1.875 1.875 0 01-1.875-1.875v-13.5z" /><path d="M20.625 18.375v-1.5a.75.75 0 011.5 0v1.5c0 .207-.168.375-.375.375h-1.5a.75.75 0 010-1.5h1.5a.375.375 0 00.375-.375z" /><path d="M18.375 3.375h1.5a.375.375 0 00.375-.375v-1.5a.75.75 0 011.5 0v1.5A1.875 1.875 0 0120.625 5.25h-1.5a.75.75 0 010-1.5h.75a.375.375 0 00.375-.375z" /><path d="M5.25 18.375h-1.5a.375.375 0 00-.375.375v1.5a.75.75 0 01-1.5 0v-1.5A1.875 1.875 0 013.75 17.25h1.5a.75.75 0 010 1.5h-.75a.375.375 0 00-.375.375z" /></svg><svg id="exitFullscreenIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.375 5.625a.75.75 0 00-1.5 0v1.5c0 .207.168.375.375.375h1.5a.75.75 0 000-1.5h-1.5a.375.375 0 01-.375-.375v-1.5z" /><path d="M5.625 5.625A1.875 1.875 0 003.75 7.5v1.5a.75.75 0 001.5 0v-1.5a.375.375 0 01.375-.375h1.5a.75.75 0 000-1.5h-1.5z" /><path d="M7.5 18.375a.75.75 0 000-1.5h-1.5a.375.375 0 00-.375.375v1.5a.75.75 0 001.5 0v-1.5a.375.375 0 01.375-.375h.75z" /><path d="M18.375 16.875a.75.75 0 000 1.5h.75a.375.375 0 01.375.375v1.5a.75.75 0 001.5 0v-1.5A1.875 1.875 0 0020.625 17.25h-1.5a.75.75 0 00-.75.75z" /></svg></button>
+            </div>
+
+            <!-- Editable Content Area -->
+            <div id="editor" contenteditable="true">
+                <h3>KEY HIGHLIGHTS</h3>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p>Gender</p>
+                                <p>Men</p>
+                            </td>
+                            <td>
+                                <p>Product Category</p>
+                                <p>Topwear</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Product Type</p>
+                                <p>Oversized Tshirt</p>
+                            </td>
+                            <td>
+                                <p>Fit</p>
+                                <p>Oversized Fit</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Closure</p>
+                                <p>No Closure</p>
+                            </td>
+                            <td>
+                                <p>Length</p>
+                                <p>Regular</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Editor Footer for Word Count -->
+             <div class="editor-footer">
+                <span id="wordCount">0 words</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Link Modal -->
+    <div id="linkModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Insert Link</h3>
+            <form id="linkForm">
+                <div class="form-group">
+                    <label for="linkUrl">URL</label>
+                    <input type="url" id="linkUrl" placeholder="https://example.com" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="cancelLinkBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Insert</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Insert Image</h3>
+            <form id="imageForm">
+                <div class="form-group">
+                    <label for="imageUrl">Image URL</label>
+                    <input type="url" id="imageUrl" placeholder="https://source.unsplash.com/random">
+                </div>
+                <div class="image-dimensions">
+                    <div class="form-group">
+                        <label for="imageWidth">Width (px)</label>
+                        <input type="number" id="imageWidth" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label for="imageHeight">Height (px)</label>
+                        <input type="number" id="imageHeight" placeholder="Optional">
+                    </div>
+                </div>
+                <div class="divider-text">OR</div>
+                <div class="form-group">
+                    <label for="imageUpload">Upload from computer</label>
+                    <input type="file" id="imageUpload" accept="image/*">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="cancelImageBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Insert Image</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Table Modal -->
+    <div id="tableModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Create Table</h3>
+            <form id="tableForm">
+                <div class="form-group">
+                    <label for="tableRows">Rows</label>
+                    <input type="number" id="tableRows" value="3" min="1" required>
+                </div>
+                 <div class="form-group">
+                    <label for="tableCols">Columns</label>
+                    <input type="number" id="tableCols" value="2" min="1" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="cancelTableBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+</html>
+

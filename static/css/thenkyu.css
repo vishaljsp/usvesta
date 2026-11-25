@@ -1,0 +1,58 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.thank-you-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.thank-you-icon {
+    color: #03224a;
+    font-size: 72px;
+    margin-bottom: 20px;
+}
+
+.thank-you-title {
+    color: #03224a;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.thank-you-message {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.order-details {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 30px 0;
+    text-align: left;
+}
+
+.btn-primary {
+    background-color: #03224a;
+    border-color: #03224a;
+    padding: 10px 25px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: #03224a;
+    border-color: #03224a;
+}
+
+.contact-info {
+    margin-top: 30px;
+    font-size: 16px;
+    color: #666;
+}

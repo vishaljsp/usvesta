@@ -1,0 +1,804 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}US VESTA — Luxury Streetwear, Heavyweight Cotton Oversized Tees &amp; Collective Drops{% endblock title %}
+
+{% block header %}
+<meta name="description" content="Shop US VESTA. Heavyweight organic cotton oversized streetwear, collective drops, and multi-dimensional fit apparel. Engineered for modern luxury.">
+<link rel="canonical" href="https://www.usvesta.com/">
+<meta property="og:title" content="US VESTA — Luxury Streetwear, Heavyweight Cotton Oversized Tees">
+<meta property="og:description" content="Shop US VESTA. Heavyweight organic cotton oversized streetwear, collective drops, and multi-dimensional fit apparel.">
+<meta property="og:url" content="https://www.usvesta.com/">
+<meta property="og:image" content="https://www.usvesta.com{% if cms.hero_bg_image %}{{ cms.hero_bg_image.url }}{% else %}/static/images/hero_street_banner.jpg{% endif %}">
+<meta name="twitter:title" content="US VESTA — Luxury Streetwear, Heavyweight Cotton Oversized Tees">
+<meta name="twitter:description" content="Shop US VESTA. Heavyweight organic cotton oversized streetwear, collective drops, and multi-dimensional fit apparel.">
+<meta name="twitter:image" content="https://www.usvesta.com{% if cms.hero_bg_image %}{{ cms.hero_bg_image.url }}{% else %}/static/images/hero_street_banner.jpg{% endif %}">
+
+<!-- Preload LCP Hero Banner for fastest mobile & desktop render -->
+{% if cms.hero_bg_mobile_image %}
+<link rel="preload" as="image" href="{{ cms.hero_bg_mobile_image.url }}" media="(max-width: 991.98px)" fetchpriority="high">
+{% elif cms.hero_bg_image %}
+<link rel="preload" as="image" href="{{ cms.hero_bg_image.url }}" media="(max-width: 991.98px)" fetchpriority="high">
+{% endif %}
+{% if cms.hero_bg_image %}
+<link rel="preload" as="image" href="{{ cms.hero_bg_image.url }}" media="(min-width: 992px)" fetchpriority="high">
+{% endif %}
+{% endblock header %}
+
+{% block mainbody %}
+
+<!-- ==================== 1. DITTO HERO BANNER ("THE STREET IS OUR STAGE — COLLECTIVE DROP") ==================== -->
+<style>
+.ditto-hero-section {
+    background-image: url('{% if cms.hero_bg_image %}{{ cms.hero_bg_image.url }}{% else %}/static/images/hero_street_banner.jpg{% endif %}') !important;
+    background-position: center top !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+@media (max-width: 991.98px) {
+    .ditto-hero-section {
+        background-image: url('{% if cms.hero_bg_mobile_image %}{{ cms.hero_bg_mobile_image.url }}{% elif cms.hero_bg_image %}{{ cms.hero_bg_image.url }}{% else %}/static/images/hero_street_banner.jpg{% endif %}') !important;
+        background-position: center top !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+    }
+}
+</style>
+<section class="ditto-hero-section position-relative" aria-label="Collective Drop Hero">
+    <div class="container py-lg-4 position-relative z-2">
+        <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-xl-5">
+                <div class="hero-ditto-text-wrap" data-reveal>
+                    <div class="fw-semibold text-uppercase tracking-wider mb-1" style="letter-spacing: 0.12em; font-size: {{ cms.hero_subtitle_font_size|default:'clamp(0.85rem, 1.4vw, 1.1rem)' }}; color: {{ cms.hero_subtitle_color|default:'#ffffff' }} !important; text-shadow: 0 2px 8px rgba(0,0,0,0.85);">
+                        {{ cms.hero_subtitle|default:"THE STREET IS OUR STAGE" }}
+                    </div>
+                    <h1 class="my-1" style="font-family: {{ cms.hero_title_font_family|default:'var(--font-serif)' }}; font-size: {{ cms.hero_title_font_size|default:'clamp(2rem, 4.2vw, 3.6rem)' }}; color: {{ cms.hero_title_color|default:'#ffffff' }} !important; font-weight: 500; line-height: 1.1; letter-spacing: 0.04em; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
+                        {{ cms.hero_title|default:"COLLECTIVE DROP" }}
+                    </h1>
+                    <div class="fw-semibold text-uppercase tracking-wider text-white mb-4" style="letter-spacing: 0.15em; font-size: clamp(0.8rem, 1.3vw, 1.05rem); text-shadow: 0 2px 8px rgba(0,0,0,0.85);">
+                        {{ cms.hero_description|default:"EXPLORE THE UNTAMED." }}
+                    </div>
+                    
+                    <div class="mt-4 pt-1">
+                        <a href="{{ cms.hero_button_link|default:'/shop' }}" class="btn-bronze-pill text-decoration-none" style="padding: 10px 32px; font-size: 0.8rem;">
+                            {{ cms.hero_button_text|default:"COLLECTION" }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 2. FEATURE TICKER STRIP ==================== -->
+{% if cms.section2_enabled %}
+<div class="vesta-feature-strip" aria-label="Product Features">
+    <div class="vesta-marquee-track">
+        <div class="vesta-marquee-item">
+            <span>Elevated Favors</span><span class="plus-star">✦</span>
+            <span>In the-Wide AACad 2</span><span class="plus-star">✦</span>
+            <span>Essential COTTON</span><span class="plus-star">✦</span>
+            <span>Heavyweight Craft</span><span class="plus-star">✦</span>
+            <span>Limited Studio Drops</span><span class="plus-star">✦</span>
+        </div>
+        <div class="vesta-marquee-item">
+            <span>Elevated Favors</span><span class="plus-star">✦</span>
+            <span>In the-Wide AACad 2</span><span class="plus-star">✦</span>
+            <span>Essential COTTON</span><span class="plus-star">✦</span>
+            <span>Heavyweight Craft</span><span class="plus-star">✦</span>
+            <span>Limited Studio Drops</span><span class="plus-star">✦</span>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- ==================== 3. 3D PRODUCT CAROUSEL SHOWCASE SECTION ==================== -->
+{% if cms.section3_enabled %}
+<section class="ditto-carousel-section text-center position-relative overflow-hidden {% if cms.section3_mobile_enabled %}d-block{% else %}d-none{% endif %} {% if cms.section3_desktop_enabled|default:True %}d-lg-block{% else %}d-lg-none{% endif %}" aria-label="Featured Carousel Showcase" id="dittoCarouselSection">
+    <!-- Carousel Nav Arrows -->
+    <button class="btn ditto-carousel-nav-btn position-absolute top-50 start-0 translate-middle-y ms-2 ms-lg-4" id="prev3DCardBtn" aria-label="Previous Slide">
+        <i class="fa-solid fa-chevron-left fs-5"></i>
+    </button>
+    <button class="btn ditto-carousel-nav-btn position-absolute top-50 end-0 translate-middle-y me-2 me-lg-4" id="next3DCardBtn" aria-label="Next Slide">
+        <i class="fa-solid fa-chevron-right fs-5"></i>
+    </button>
+
+    <div class="container-fluid px-lg-5 position-relative">
+        <div class="ditto-carousel-track-container">
+            <div class="ditto-carousel-track" id="dittoCarouselTrack">
+                <!-- Slide Item 1 -->
+                <div class="carousel-3d-card" data-index="0">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-lg">
+                        <a href="{{ cms.section3_card1_link|default:'/shop' }}">
+                            <img loading="lazy" decoding="async" width="400" height="480" src="{% if cms.section3_card1_image %}{{ cms.section3_card1_image.url }}{% else %}{% static 'web_images/Whisk_78905a24721785ba3c444b0ee6258709dr.webp' %}{% endif %}" alt="{{ cms.section3_card1_title|default:'Fears Heavyweight' }}" class="img-fluid w-100" style="height: 480px; object-fit: cover;" onerror="this.src='/static/images/ttt.webp'">
+                        </a>
+                        
+                        <div class="ditto-floating-product-card shadow-lg">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <img loading="lazy" decoding="async" width="55" height="55" src="{% if cms.section3_card1_image %}{{ cms.section3_card1_image.url }}{% else %}{% static 'web_images/Whisk_78905a24721785ba3c444b0ee6258709dr.webp' %}{% endif %}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" onerror="this.src='/static/images/ttt.webp'">
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">
+                                        <a href="{{ cms.section3_card1_link|default:'/shop' }}" class="text-dark text-decoration-none">{{ cms.section3_card1_title|default:'Fears Heavyweight' }}</a>
+                                    </h6>
+                                    <span class="fw-bold text-dark currency-price" data-inr-price="{{ cms.section3_card1_price|default:'₹ 1199' }}" style="font-size: 0.85rem;">{{ cms.section3_card1_price|default:'₹ 1199' }}</span>
+                                </div>
+                            </div>
+                            <p class="small text-muted mb-2" style="font-size: 0.72rem; line-height: 1.3;">{{ cms.section3_card1_desc|default:'300 GSM cotton | Limited run' }}</p>
+                            <div class="text-dark small" style="font-size: 0.7rem;">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide Item 2 -->
+                <div class="carousel-3d-card" data-index="1">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-lg">
+                        <a href="{{ cms.section3_card2_link|default:'/shop' }}">
+                            <img loading="lazy" decoding="async" width="400" height="500" src="{% if cms.section3_card2_image %}{{ cms.section3_card2_image.url }}{% else %}{% static 'web_images/Whisk_9709a154caeac4ab90545a5c952dfe2fdr.webp' %}{% endif %}" alt="{{ cms.section3_card2_title|default:'Print Gprint' }}" class="img-fluid w-100" style="height: 500px; object-fit: cover;" onerror="this.src='/static/images/ttt.webp'">
+                        </a>
+                        
+                        <div class="ditto-floating-product-card shadow-lg">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <img loading="lazy" decoding="async" width="55" height="55" src="{% if cms.section3_card2_image %}{{ cms.section3_card2_image.url }}{% else %}{% static 'web_images/Whisk_9709a154caeac4ab90545a5c952dfe2fdr.webp' %}{% endif %}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" onerror="this.src='/static/images/ttt.webp'">
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">
+                                        <a href="{{ cms.section3_card2_link|default:'/shop' }}" class="text-dark text-decoration-none">{{ cms.section3_card2_title|default:'Print Gprint' }}</a>
+                                    </h6>
+                                    <span class="fw-bold text-dark currency-price" data-inr-price="{{ cms.section3_card2_price|default:'₹ 1199' }}" style="font-size: 0.85rem;">{{ cms.section3_card2_price|default:'₹ 1199' }}</span>
+                                </div>
+                            </div>
+                            <p class="small text-muted mb-2" style="font-size: 0.72rem; line-height: 1.3;">{{ cms.section3_card2_desc|default:'300 GSM cotton | Limited run' }}</p>
+                            <div class="text-dark small" style="font-size: 0.7rem;">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide Item 3 (Active Center initially) -->
+                <div class="carousel-3d-card active-center" data-index="2">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-lg">
+                        <a href="{{ cms.section3_card3_link|default:'/shop' }}">
+                            <img loading="lazy" decoding="async" width="400" height="480" src="{% if cms.section3_card3_image %}{{ cms.section3_card3_image.url }}{% else %}{% static 'web_images/Whisk_023cdd4c364d7ba8ee54e503f83419b1dr.webp' %}{% endif %}" alt="{{ cms.section3_card3_title|default:'Maroon Oversized' }}" class="img-fluid w-100" style="height: 480px; object-fit: cover;" onerror="this.src='/static/images/ttt.webp'">
+                        </a>
+                        
+                        <div class="ditto-floating-product-card shadow-lg">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <img loading="lazy" decoding="async" width="55" height="55" src="{% if cms.section3_card3_image %}{{ cms.section3_card3_image.url }}{% else %}{% static 'web_images/Whisk_023cdd4c364d7ba8ee54e503f83419b1dr.webp' %}{% endif %}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" onerror="this.src='/static/images/ttt.webp'">
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">
+                                        <a href="{{ cms.section3_card3_link|default:'/shop' }}" class="text-dark text-decoration-none">{{ cms.section3_card3_title|default:'Maroon Oversized' }}</a>
+                                    </h6>
+                                    <span class="fw-bold text-dark currency-price" data-inr-price="{{ cms.section3_card3_price|default:'₹ 1199' }}" style="font-size: 0.85rem;">{{ cms.section3_card3_price|default:'₹ 1199' }}</span>
+                                </div>
+                            </div>
+                            <p class="small text-muted mb-2" style="font-size: 0.72rem; line-height: 1.3;">{{ cms.section3_card3_desc|default:'300 GSM cotton | Limited run' }}</p>
+                            <div class="text-dark small" style="font-size: 0.7rem;">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide Item 4 -->
+                <div class="carousel-3d-card" data-index="3">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-lg">
+                        <a href="{{ cms.section3_card4_link|default:'/shop' }}">
+                            <img loading="lazy" decoding="async" width="400" height="480" src="{% if cms.section3_card4_image %}{{ cms.section3_card4_image.url }}{% else %}{% static 'web_images/Whisk_b62cac3c42d71e989da4dc9ba916baf3dr.webp' %}{% endif %}" alt="{{ cms.section3_card4_title|default:'Rhythmic Resonance' }}" class="img-fluid w-100" style="height: 480px; object-fit: cover;" onerror="this.src='/static/images/ttt.webp'">
+                        </a>
+                        
+                        <div class="ditto-floating-product-card shadow-lg">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <img loading="lazy" decoding="async" width="55" height="55" src="{% if cms.section3_card4_image %}{{ cms.section3_card4_image.url }}{% else %}{% static 'web_images/Whisk_b62cac3c42d71e989da4dc9ba916baf3dr.webp' %}{% endif %}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" onerror="this.src='/static/images/ttt.webp'">
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">
+                                        <a href="{{ cms.section3_card4_link|default:'/shop' }}" class="text-dark text-decoration-none">{{ cms.section3_card4_title|default:'Rhythmic Resonance' }}</a>
+                                    </h6>
+                                    <span class="fw-bold text-dark currency-price" data-inr-price="{{ cms.section3_card4_price|default:'₹ 1199' }}" style="font-size: 0.85rem;">{{ cms.section3_card4_price|default:'₹ 1199' }}</span>
+                                </div>
+                            </div>
+                            <p class="small text-muted mb-2" style="font-size: 0.72rem; line-height: 1.3;">{{ cms.section3_card4_desc|default:'300 GSM cotton | Limited run' }}</p>
+                            <div class="text-dark small" style="font-size: 0.7rem;">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide Item 5 -->
+                <div class="carousel-3d-card" data-index="4">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-lg">
+                        <a href="{{ cms.section3_card5_link|default:'/shop' }}">
+                            <img loading="lazy" decoding="async" width="400" height="480" src="{% if cms.section3_card5_image %}{{ cms.section3_card5_image.url }}{% else %}/static/images/ttt.webp{% endif %}" alt="{{ cms.section3_card5_title|default:'US VESTA Essential' }}" class="img-fluid w-100" style="height: 480px; object-fit: cover;" onerror="this.src='/static/images/ttt.webp'">
+                        </a>
+                        
+                        <div class="ditto-floating-product-card shadow-lg">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <img loading="lazy" decoding="async" width="55" height="55" src="{% if cms.section3_card5_image %}{{ cms.section3_card5_image.url }}{% else %}/static/images/ttt.webp{% endif %}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" onerror="this.src='/static/images/ttt.webp'">
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">
+                                        <a href="{{ cms.section3_card5_link|default:'/shop' }}" class="text-dark text-decoration-none">{{ cms.section3_card5_title|default:'US VESTA Essential' }}</a>
+                                    </h6>
+                                    <span class="fw-bold text-dark currency-price" data-inr-price="{{ cms.section3_card5_price|default:'₹ 1199' }}" style="font-size: 0.85rem;">{{ cms.section3_card5_price|default:'₹ 1199' }}</span>
+                                </div>
+                            </div>
+                            <p class="small text-muted mb-2" style="font-size: 0.72rem; line-height: 1.3;">{{ cms.section3_card5_desc|default:'300 GSM cotton | Limited run' }}</p>
+                            <div class="text-dark small" style="font-size: 0.7rem;">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==================== 4. FIT & CRAFT SECTION ("MULTI-DIMENSIONAL FIT — ENGINEERED COMFORT") ==================== -->
+{% if cms.section4_enabled %}
+<section class="ditto-concrete-section py-4 py-lg-5" aria-label="Fit & Craft Showcase" {% if cms.fit_section_bg_image %}style="background-image: url('{{ cms.fit_section_bg_image.url }}') !important; background-size: cover !important; background-position: center !important;"{% elif cms.fit_section_bg_color and cms.fit_section_bg_color != '#0d0d0d' %}style="background-color: {{ cms.fit_section_bg_color }} !important; background-image: none !important;"{% endif %}>
+    <div class="container-fluid px-lg-4 px-xl-5 py-lg-2">
+        
+        <!-- Top Left Brand Badge (Matching Screenshot media_1787687053569.png) -->
+        <div class="d-none d-lg-flex align-items-center gap-3 mb-4 ps-2" data-reveal>
+            <h3 class="fw-bold text-white tracking-widest mb-0" style="font-size: 1.5rem; letter-spacing: 0.12em;">US VESTA</h3>
+            <div style="width: 1.5px; height: 26px; background: rgba(255, 255, 255, 0.4);"></div>
+            <div class="rounded-circle border border-white-50 text-white d-flex align-items-center justify-content-center fw-bold" style="width: 36px; height: 36px; font-size: 0.55rem; letter-spacing: 0.05em; line-height: 1;">
+                NEW
+            </div>
+        </div>
+
+        <!-- DESKTOP 5-COLUMN LAYOUT (d-none d-lg-flex) -->
+        {% if cms.section4_desktop_enabled|default:True %}
+        <div class="row g-3 align-items-center d-none d-lg-flex">
+            
+            <!-- Column 1: Far Left (2 Tiles) -->
+            <div class="col-lg-2.4 col-xl-2.4" style="width: 20%;">
+                <div class="d-flex flex-column gap-3">
+                    <div class="fit-look2-card" data-reveal>
+                        <img loading="lazy" decoding="async" width="220" height="220" src="{% if cms.fit_img1 %}{{ cms.fit_img1.url }}{% else %}/static/images/fit_detail_tattoo.webp{% endif %}" alt="Tattoo Detail" class="img-fluid fit-look2-side-img" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                    <div class="fit-look2-card" data-reveal>
+                        <img loading="lazy" decoding="async" width="220" height="220" src="{% if cms.fit_img2 %}{{ cms.fit_img2.url }}{% else %}/static/images/fit_fears_graphic.webp{% endif %}" alt="Fears Graphic" class="img-fluid fit-look2-side-img" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2: Left-Center (Top Text Box + Standing Mauve Model) -->
+            <div class="col-lg-2.4 col-xl-2.4" style="width: 20%;">
+                <div class="d-flex flex-column gap-3">
+                    <!-- MULTI-DIMENSIONAL FIT Text Box -->
+                    <div class="fit-look2-text-card" data-reveal>
+                        <h6 class="fw-bold text-white mb-1 tracking-wider text-uppercase" style="font-size: 0.88rem; letter-spacing: 0.08em;">{{ cms.fit_card1_title|default:'MULTI-DIMENSIONAL FIT' }}</h6>
+                        <p class="mb-0 text-white-50 small" style="font-size: 0.72rem; line-height: 1.35;">
+                            {{ cms.fit_card1_desc|default:'Designed to move with you. Oversized fit for everyday comfort and style.' }}
+                        </p>
+                    </div>
+                    <!-- Standing Mauve Model Card -->
+                    <div class="fit-look2-card" data-reveal>
+                        <img loading="lazy" decoding="async" width="220" height="320" src="{% if cms.fit_img3 %}{{ cms.fit_img3.url }}{% else %}/static/images/fit_model_mauve.webp{% endif %}" alt="Mauve Model" class="img-fluid fit-look2-subcard-img" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3: Central Hero Full-Body Model in Vest -->
+            <div class="col-lg-2.8 col-xl-2.8 text-center" style="width: 20%;">
+                <div class="position-relative d-flex justify-content-center align-items-end" style="min-height: 560px;" data-reveal>
+                    <img loading="lazy" decoding="async" width="260" height="560" src="{% if cms.fit_hero_image %}{{ cms.fit_hero_image.url }}{% else %}/static/images/fit_hero_vest.webp{% endif %}" alt="Full Body Hero Model" class="img-fluid fit-look2-hero-img" onerror="this.src='/static/images/ttt.webp'">
+                </div>
+            </div>
+
+            <!-- Column 4: Right-Center (Standing Back-View Model + Bottom Text Box) -->
+            <div class="col-lg-2.4 col-xl-2.4" style="width: 20%;">
+                <div class="d-flex flex-column gap-3">
+                    <!-- Standing Back-View Model Card -->
+                    <div class="fit-look2-card" data-reveal>
+                        <img loading="lazy" decoding="async" width="220" height="320" src="{% if cms.fit_img5 %}{{ cms.fit_img5.url }}{% else %}/static/images/fit_model_back.webp{% endif %}" alt="Back View Model" class="img-fluid fit-look2-subcard-img" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                    <!-- ENGINEERED COMFORT Text Box -->
+                    <div class="fit-look2-text-card" data-reveal>
+                        <h6 class="fw-bold text-white mb-1 tracking-wider text-uppercase" style="font-size: 0.88rem; letter-spacing: 0.08em;">{{ cms.fit_card2_title|default:'ENGINEERED COMFORT' }}</h6>
+                        <p class="mb-0 text-white-50 small" style="font-size: 0.72rem; line-height: 1.35;">
+                            {{ cms.fit_card2_desc|default:'Made with high quality fabric for lasting comfort, durability and a premium feel.' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 5: Far Right (2 Tiles) -->
+            <div class="col-lg-2.4 col-xl-2.4" style="width: 20%;">
+                <div class="d-flex flex-column gap-3">
+                    <div class="fit-look2-card" data-reveal>
+                        <img loading="lazy" decoding="async" width="220" height="220" src="{% if cms.fit_img6 %}{{ cms.fit_img6.url }}{% else %}/static/images/fit_dope_stuff_tee.webp{% endif %}" alt="Make Dope Stuff Tee" class="img-fluid fit-look2-side-img" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                    <div class="fit-look2-card" data-reveal>
+                        <img loading="lazy" decoding="async" width="220" height="220" src="/static/images/fit_stacked_tees.webp" alt="Stacked Tees" class="img-fluid fit-look2-side-img" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ORIGINAL SECTION 4 MOBILE LAYOUT (d-lg-none) -->
+        <div class="d-lg-none">
+            <!-- Mobile Brand Badge -->
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <h5 class="fw-bold text-white tracking-wider mb-0" style="font-size: 1.1rem;">US VESTA</h5>
+                <div style="width: 1px; height: 20px; background: rgba(255, 255, 255, 0.4);"></div>
+                <span class="badge rounded-circle border border-white-50 text-white" style="font-size: 0.5rem; padding: 4px 6px;">NEW</span>
+            </div>
+
+            <!-- Hero Center Model Feature -->
+            <div class="row g-2 mb-3">
+                <div class="col-12 text-center">
+                    <div class="position-relative d-flex justify-content-center">
+                        <img loading="lazy" decoding="async" width="260" height="380" src="{% if cms.fit_hero_image %}{{ cms.fit_hero_image.url }}{% else %}/static/images/fit_hero_vest.webp{% endif %}" alt="Hero Model Mobile" class="img-fluid" style="height: 380px; object-fit: contain; filter: drop-shadow(0 10px 25px rgba(0,0,0,0.7));" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 Standing Sub-card Models -->
+            <div class="row g-2 mb-3">
+                <div class="col-6">
+                    <div class="fit-look2-text-card mb-2">
+                        <h6 class="fw-bold text-white mb-1" style="font-size: 0.72rem;">{{ cms.fit_card1_title|default:'MULTI-DIMENSIONAL FIT' }}</h6>
+                        <p class="mb-0 text-white-50" style="font-size: 0.62rem;">{{ cms.fit_card1_desc|default:'Designed to move with you.' }}</p>
+                    </div>
+                    <div class="fit-look2-card">
+                        <img loading="lazy" decoding="async" width="160" height="280" src="{% if cms.fit_img3 %}{{ cms.fit_img3.url }}{% else %}/static/images/fit_model_mauve.webp{% endif %}" alt="Mauve Model Mobile" class="img-fluid w-100" style="height: 280px; object-fit: cover; object-position: center top !important;" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="fit-look2-card mb-2">
+                        <img loading="lazy" decoding="async" width="160" height="280" src="{% if cms.fit_img5 %}{{ cms.fit_img5.url }}{% else %}/static/images/fit_model_back.webp{% endif %}" alt="Back Model Mobile" class="img-fluid w-100" style="height: 280px; object-fit: cover; object-position: center top !important;" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                    <div class="fit-look2-text-card">
+                        <h6 class="fw-bold text-white mb-1" style="font-size: 0.72rem;">{{ cms.fit_card2_title|default:'ENGINEERED COMFORT' }}</h6>
+                        <p class="mb-0 text-white-50" style="font-size: 0.62rem;">{{ cms.fit_card2_desc|default:'Made with high quality fabric.' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Detail Side Tiles -->
+            <div class="row g-2">
+                <div class="col-6">
+                    <div class="fit-look2-card">
+                        <img loading="lazy" decoding="async" width="160" height="180" src="{% if cms.fit_img1 %}{{ cms.fit_img1.url }}{% else %}/static/images/fit_detail_tattoo.webp{% endif %}" alt="Detail 1" class="img-fluid w-100" style="height: 180px; object-fit: cover;" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="fit-look2-card">
+                        <img loading="lazy" decoding="async" width="160" height="180" src="{% if cms.fit_img2 %}{{ cms.fit_img2.url }}{% else %}/static/images/fit_fears_graphic.webp{% endif %}" alt="Detail 2" class="img-fluid w-100" style="height: 180px; object-fit: cover;" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="fit-look2-card">
+                        <img loading="lazy" decoding="async" width="160" height="180" src="{% if cms.fit_img6 %}{{ cms.fit_img6.url }}{% else %}/static/images/fit_dope_stuff_tee.webp{% endif %}" alt="Detail 3" class="img-fluid w-100" style="height: 180px; object-fit: cover;" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="fit-look2-card">
+                        <img loading="lazy" decoding="async" width="160" height="180" src="/static/images/fit_stacked_tees.webp" alt="Detail 4" class="img-fluid w-100" style="height: 180px; object-fit: cover;" onerror="this.src='/static/images/ttt.webp'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==================== 4.5 DEDICATED FEATURED PRODUCT SLIDER SECTION (BELOW SECTION 4) ==================== -->
+{% if cms.section4_slider_enabled|default:True %}
+<section class="py-4 py-lg-5 bg-black text-white border-top border-bottom border-secondary" aria-label="Featured Product Slider Section">
+    <div class="container-fluid px-lg-4 px-xl-5">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+                <h3 class="fw-bold text-white tracking-widest text-uppercase mb-0" style="font-size: clamp(1.1rem, 2.5vw, 1.6rem); letter-spacing: 0.12em;">
+                    <i class="fas fa-fire me-2 text-warning"></i>{{ cms.section4_slider_title|default:'FEATURED PRODUCTS' }}
+                </h3>
+            </div>
+            <a href="/shop" class="btn btn-outline-light btn-sm rounded-pill px-3 fw-bold">View All Shop <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+
+        <!-- Slider Wrapper (Desktop & Mobile Responsive Controls) -->
+        <div class="{% if not cms.section4_slider_desktop_enabled %}d-lg-none{% endif %} {% if not cms.section4_slider_mobile_enabled %}d-none d-lg-block{% endif %}">
+            
+            <!-- DESKTOP SLIDER VIEW (d-none d-lg-block) - Full Model Images & Full Details + Add to Cart -->
+            <div class="d-none d-lg-block">
+                <div id="section4DesktopCarousel" class="carousel slide position-relative px-4" data-bs-ride="carousel" data-bs-interval="6000">
+                    <div class="carousel-inner">
+                        {% for chunk in featured_products_chunks %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="row g-0 justify-content-center">
+                                {% for p in chunk %}
+                                <div class="{% if cms.section4_slider_mobile_item_count == 1 %}col-lg-6 col-xl-5{% elif cms.section4_slider_mobile_item_count == 2 %}col-md-6 col-lg-5{% elif cms.section4_slider_mobile_item_count == 3 %}col-md-4 col-lg-4{% else %}col-lg-3{% endif %}">
+                                    <div class="product-card0 transition-all h-100 border-end border-bottom" style="border-color: #eee !important;">
+                                        <div class="product-img overflow-hidden position-relative bg-light">
+                                            <a href="/products/{{ p.uuid_product }}" class="d-block w-100 h-100">
+                                                {% if p.product_quantity_offer %}
+                                                <span class="badge-offer">BUY {{ p.product_quantity_offer }} @ {{ p.product_amount_offer|floatformat:0 }}</span>
+                                                {% endif %}
+                                                {% if p.product_image %}
+                                                <img width="400" height="500" loading="lazy" decoding="async" class="img-fluid w-100 product-main-img" src="{{ p.product_image.url }}" alt="{{ p.product_name }}" onerror="this.src='/static/images/ttt.webp'">
+                                                {% else %}
+                                                <img width="400" height="500" loading="lazy" decoding="async" class="img-fluid w-100 product-main-img" src="/static/images/ttt.webp" alt="{{ p.product_name }}">
+                                                {% endif %}
+                                                <div class="rating">⭐ {{ p.average_rating|default:0.0|floatformat:1 }}</div>
+                                            </a>
+                                            <button type="button" class="btn-quick-add-plus" title="Add to Cart" onclick="Add_to_cart({{p.id}},this)" data-product="{{p.id}}">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="pt-2.5 pb-3 px-2 bg-white text-start">
+                                            <a class="d-block text-dark text-uppercase text-decoration-none text-truncate mb-1" style="font-size: 0.88rem; font-weight: 500 !important; letter-spacing: 0.2px;" href="/products/{{p.uuid_product}}" title="{{ p.product_name }}">{{ p.product_name|truncatechars:28 }}</a>
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-1 mt-1">
+                                                <div class="d-flex align-items-center gap-1.5">
+                                                    <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ p.b2c_price }}</span>
+                                                    {% if p.discount_price %}<del class="text-muted small" style="font-size: 0.76rem;">₹{{ p.discount_price }}</del>{% endif %}
+                                                    {% widthratio p.b2c_price p.discount_price 100 as sale_percent %}
+                                                    {% with percent=100|add:'-'|add:sale_percent %}
+                                                    {% if percent > 0 %}<span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{ percent|floatformat:0 }}% OFF</span>{% endif %}
+                                                    {% endwith %}
+                                                </div>
+                                                {% if p.product_quantity_offer %}
+                                                <span class="text-success fw-semibold small" style="font-size: 0.74rem;"><i class="fas fa-tag me-0.5"></i>Best ₹{% widthratio p.product_amount_offer p.product_quantity_offer 1 %}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="carousel-item active">
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-lg-3">
+                                    <div class="card border-0 rounded-4 overflow-hidden bg-white">
+                                        <img width="260" height="340" loading="lazy" decoding="async" src="/static/images/fit_hero_vest.webp" alt="US VESTA Outfit" style="height: 340px; width: 100%; object-fit: cover;">
+                                        <div class="p-3">
+                                            <span class="fw-bold fs-5">₹ 1199</span>
+                                            <h6>US VESTA Tee</h6>
+                                            <button class="btn addcartbtn w-100">ADD TO CART</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" aria-label="Previous Slide" data-bs-target="#section4DesktopCarousel" data-bs-slide="prev" style="width: 44px; height: 44px; background: #000000; border-radius: 50%; top: 50%; transform: translateY(-50%); left: -15px; opacity: 0.95; box-shadow: 0 4px 12px rgba(0,0,0,0.6); border: 1.5px solid #ffffff;">
+                        <span class="carousel-control-prev-icon" style="width: 16px; height: 16px;" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" aria-label="Next Slide" data-bs-target="#section4DesktopCarousel" data-bs-slide="next" style="width: 44px; height: 44px; background: #000000; border-radius: 50%; top: 50%; transform: translateY(-50%); right: -15px; opacity: 0.95; box-shadow: 0 4px 12px rgba(0,0,0,0.6); border: 1.5px solid #ffffff;">
+                        <span class="carousel-control-next-icon" style="width: 16px; height: 16px;" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MOBILE SLIDER VIEW (d-block d-lg-none) - Compact 2x2 Grid Layout -->
+            <div class="d-block d-lg-none">
+                <div id="section4MobileCarousel" class="carousel slide position-relative px-1" data-bs-ride="carousel" data-bs-interval="5000">
+                    <div class="carousel-inner">
+                        {% for chunk in featured_products_chunks %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="row g-0 justify-content-center">
+                                {% for p in chunk %}
+                                <div class="{% if cms.section4_slider_mobile_item_count == 1 %}col-11 col-sm-9{% elif cms.section4_slider_mobile_item_count == 3 %}col-4{% else %}col-6{% endif %}">
+                                    <div class="product-card0 transition-all h-100 border-end border-bottom" style="border-color: #eee !important;">
+                                        <div class="product-img overflow-hidden position-relative bg-light">
+                                            <a href="/products/{{ p.uuid_product }}" class="d-block w-100 h-100">
+                                                {% if p.product_quantity_offer %}
+                                                <span class="badge-offer">BUY {{ p.product_quantity_offer }} @ {{ p.product_amount_offer|floatformat:0 }}</span>
+                                                {% endif %}
+                                                {% if p.product_image %}
+                                                <img width="400" height="500" loading="lazy" decoding="async" class="img-fluid w-100 product-main-img" src="{{ p.product_image.url }}" alt="{{ p.product_name }}" onerror="this.src='/static/images/ttt.webp'">
+                                                {% else %}
+                                                <img width="400" height="500" loading="lazy" decoding="async" class="img-fluid w-100 product-main-img" src="/static/images/ttt.webp" alt="{{ p.product_name }}">
+                                                {% endif %}
+                                                <div class="rating">⭐ {{ p.average_rating|default:0.0|floatformat:1 }}</div>
+                                            </a>
+                                            <button type="button" class="btn-quick-add-plus" title="Add to Cart" onclick="Add_to_cart({{p.id}},this)" data-product="{{p.id}}">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="pt-2.5 pb-3 px-2 bg-white text-start">
+                                            <a class="d-block text-dark text-uppercase text-decoration-none text-truncate mb-1" style="font-size: 0.78rem; font-weight: 500 !important; letter-spacing: 0.2px;" href="/products/{{p.uuid_product}}" title="{{ p.product_name }}">{{ p.product_name|truncatechars:20 }}</a>
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-1 mt-1">
+                                                <div class="d-flex align-items-center gap-1.5">
+                                                    <span class="fw-bold text-dark" style="font-size: 0.8rem; font-weight: 700 !important;">₹ {{ p.b2c_price }}</span>
+                                                    {% if p.discount_price %}<del class="text-muted small" style="font-size: 0.65rem;">₹{{ p.discount_price }}</del>{% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="carousel-item active">
+                            <div class="row g-2 justify-content-center">
+                                <div class="col-6">
+                                    <div class="card border-0 rounded-3 overflow-hidden shadow-sm bg-white p-2 text-dark">
+                                        <img width="160" height="170" loading="lazy" decoding="async" src="/static/images/fit_hero_vest.webp" alt="US VESTA Outfit" class="w-100 rounded-2" style="height: 170px; object-fit: cover;">
+                                        <div class="pt-2">
+                                            <span class="fw-bold fs-6 text-dark">₹ 1199</span>
+                                            <h6 class="fw-bold text-truncate small mb-0">US VESTA Tee</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Carousel Left & Right Controls -->
+                    <button class="carousel-control-prev" type="button" aria-label="Previous Slide" data-bs-target="#section4MobileCarousel" data-bs-slide="prev" style="width: 38px; height: 38px; background: #000000; border-radius: 50%; top: 50%; transform: translateY(-50%); left: -10px; opacity: 0.95; box-shadow: 0 4px 12px rgba(0,0,0,0.6); border: 1.5px solid #ffffff;">
+                        <span class="carousel-control-prev-icon" style="width: 14px; height: 14px;" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" aria-label="Next Slide" data-bs-target="#section4MobileCarousel" data-bs-slide="next" style="width: 38px; height: 38px; background: #000000; border-radius: 50%; top: 50%; transform: translateY(-50%); right: -10px; opacity: 0.95; box-shadow: 0 4px 12px rgba(0,0,0,0.6); border: 1.5px solid #ffffff;">
+                        <span class="carousel-control-next-icon" style="width: 14px; height: 14px;" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==================== 5. FULL-BLEED ZERO-GAP 2x2 FEATURED GRID ("SHOP NOW") ==================== -->
+{% if cms.section5_enabled %}
+<section class="ditto-grid-section-zero py-0" aria-label="Featured Quad Grid Showcase">
+    <div class="container-fluid p-0 m-0">
+        <div class="row g-0 p-0 m-0 position-relative" data-reveal>
+            
+            <!-- Quadrant 1 (Top Left): Cream Dope Tee -->
+            <div class="col-6 p-0 m-0 ditto-quadrant-tile">
+                <a href="{{ cms.grid_tile1_link|default:'/shop' }}">
+                    <img loading="lazy" decoding="async" width="500" height="500" src="{% if cms.grid_tile1_image %}{{ cms.grid_tile1_image.url }}{% else %}/static/images/grid_tile1_dope.png{% endif %}" alt="Make Dope Stuff Tee" class="img-fluid ditto-quadrant-img" onerror="this.src='/static/images/ttt.webp'">
+                </a>
+            </div>
+
+            <!-- Quadrant 2 (Top Right): Black Joker Neon Tee -->
+            <div class="col-6 p-0 m-0 ditto-quadrant-tile">
+                <a href="{{ cms.grid_tile2_link|default:'/shop' }}">
+                    <img loading="lazy" decoding="async" width="500" height="500" src="{% if cms.grid_tile2_image %}{{ cms.grid_tile2_image.url }}{% else %}/static/images/grid_tile2_joker.png{% endif %}" alt="Black Joker Graphic Tee" class="img-fluid ditto-quadrant-img" onerror="this.src='/static/images/ttt.webp'">
+                </a>
+            </div>
+
+            <!-- Quadrant 3 (Bottom Left): Black Panda Polo Shirt -->
+            <div class="col-6 p-0 m-0 ditto-quadrant-tile">
+                <a href="{{ cms.grid_tile3_link|default:'/shop' }}">
+                    <img loading="lazy" decoding="async" width="500" height="500" src="{% if cms.grid_tile3_image %}{{ cms.grid_tile3_image.url }}{% else %}/static/images/grid_tile3_panda.png{% endif %}" alt="Black Panda Polo Shirt" class="img-fluid ditto-quadrant-img" onerror="this.src='/static/images/ttt.webp'">
+                </a>
+            </div>
+
+            <!-- Quadrant 4 (Bottom Right): Black FEARS Biker Tee -->
+            <div class="col-6 p-0 m-0 ditto-quadrant-tile">
+                <a href="{{ cms.grid_tile4_link|default:'/shop' }}">
+                    <img loading="lazy" decoding="async" width="500" height="500" src="{% if cms.grid_tile4_image %}{{ cms.grid_tile4_image.url }}{% else %}/static/images/grid_tile4_fears.png{% endif %}" alt="Black Fears Biker Graphic Tee" class="img-fluid ditto-quadrant-img" onerror="this.src='/static/images/ttt.webp'">
+                </a>
+            </div>
+
+            <!-- Center Intersection Translucent COLLECTIONS Button -->
+            <div class="position-absolute top-50 start-50 translate-middle text-center" style="z-index: 25; pointer-events: auto;">
+                <a href="{{ cms.grid_center_button_link|default:'/shop' }}" class="btn-quadrant-center shadow-lg text-decoration-none">
+                    {{ cms.grid_center_button_text|default:"COLLECTIONS →" }}
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==================== 6. TESTIMONIALS / REVIEWS ("WORN & REVIEWED") ==================== -->
+{% if cms.section6_enabled %}
+<section class="world-reviews-section py-4 py-md-5" aria-label="Customer Reviews">
+    <div class="container px-3">
+        <div class="text-center mb-4 mb-md-5" data-reveal>
+            <span class="small fw-bold tracking-widest text-uppercase text-dark" style="letter-spacing: 0.15em;">______ &nbsp; WORN &amp; REVIEWED</span>
+        </div>
+
+        <div class="world-reviews-card shadow-sm" id="testimonialCard" data-reveal style="transition: all 0.3s ease;">
+            <div class="row align-items-center g-3 g-md-4">
+                <!-- Left Avatar -->
+                <div class="col-12 col-md-auto text-center text-md-start">
+                    <img loading="lazy" decoding="async" width="80" height="80" src="{% if testimonials.0.image %}/{{ testimonials.0.image }}{% else %}/static/images/user_profile.webp{% endif %}" alt="{{ testimonials.0.name }}" id="reviewAvatar" class="world-reviews-avatar mx-auto" onerror="this.src='/static/images/user_profile.webp'">
+                </div>
+
+                <!-- Right Content -->
+                <div class="col-12 col-md text-center text-md-start ps-md-3">
+                    <div class="fw-bold text-dark mb-1" id="reviewName" style="font-size: 1.05rem; letter-spacing: 0.05em;">
+                        ______ {{ testimonials.0.name|default:"Aksh" }}
+                    </div>
+                    <div class="text-muted small mb-2" id="reviewCompany" style="font-size: 0.8rem;">
+                        {{ testimonials.0.company_name|default:"Verified Client" }}
+                    </div>
+
+                    <p class="text-dark fw-bold mb-3 px-1 px-md-0" id="reviewQuote" style="font-size: 0.95rem; line-height: 1.55;">
+                        &ldquo;{{ testimonials.0.content|default:"Love the vibrant design! US Vesta products feel stylish, comfortable, and perfect for everyday wear." }}&rdquo;
+                    </p>
+
+                    <div class="text-center text-md-start mt-3 mb-4">
+                        <div class="text-dark fs-5">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teal Navigation Buttons (Centered on mobile, Bottom-Right on desktop) -->
+            <div class="testimonial-nav-arrows d-flex gap-2" style="z-index: 10;">
+                <button class="btn-teal-arrow" id="prevTestimonialBtn" aria-label="Previous Review" type="button"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="btn-teal-arrow" id="nextTestimonialBtn" aria-label="Next Review" type="button"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.getElementById('dittoCarouselTrack');
+    const prevBtn = document.getElementById('prev3DCardBtn');
+    const nextBtn = document.getElementById('next3DCardBtn');
+    const carouselSection = document.getElementById('dittoCarouselSection');
+
+    if (!track || !prevBtn || !nextBtn) return;
+
+    let items = Array.from(track.getElementsByClassName('carousel-3d-card'));
+    let currentIndex = 2;
+    let autoPlayTimer = null;
+
+    function updateCarousel() {
+        items.forEach((item, idx) => {
+            item.classList.remove('active-center');
+            if (idx === currentIndex) {
+                item.classList.add('active-center');
+            }
+        });
+    }
+
+    function rotateNext() {
+        const first = items.shift();
+        items.push(first);
+        track.appendChild(first);
+        updateCarousel();
+    }
+
+    function rotatePrev() {
+        const last = items.pop();
+        items.unshift(last);
+        track.insertBefore(last, track.firstChild);
+        updateCarousel();
+    }
+
+    nextBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        rotateNext();
+        resetAutoplay();
+    });
+
+    prevBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        rotatePrev();
+        resetAutoplay();
+    });
+
+    items.forEach(item => {
+        item.addEventListener('click', function() {
+            const itemIdx = items.indexOf(this);
+            if (itemIdx < currentIndex) {
+                rotatePrev();
+            } else if (itemIdx > currentIndex) {
+                rotateNext();
+            }
+            resetAutoplay();
+        });
+    });
+
+    function startAutoplay() {
+        if (!autoPlayTimer) {
+            autoPlayTimer = setInterval(rotateNext, 3500);
+        }
+    }
+
+    function stopAutoplay() {
+        if (autoPlayTimer) {
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+    }
+
+    function resetAutoplay() {
+        stopAutoplay();
+        startAutoplay();
+    }
+
+    if (carouselSection) {
+        carouselSection.addEventListener('mouseenter', stopAutoplay);
+        carouselSection.addEventListener('mouseleave', startAutoplay);
+        carouselSection.addEventListener('touchstart', stopAutoplay, { passive: true });
+        carouselSection.addEventListener('touchend', startAutoplay, { passive: true });
+    }
+
+    updateCarousel();
+    startAutoplay();
+
+    // ===== DYNAMIC DATABASE TESTIMONIAL SLIDER ENGINE =====
+    const dbReviews = [
+        {% for t in testimonials %}
+        {
+            name: "______ {{ t.name|escapejs }}",
+            company: "{{ t.company_name|default:''|escapejs }}",
+            quote: "“{{ t.content|escapejs }}”",
+            avatar: "{% if t.image %}/{{ t.image }}{% else %}/static/images/user_profile.webp{% endif %}"
+        }{% if not forloop.last %},{% endif %}
+        {% empty %}
+        {
+            name: "______ Aksh",
+            company: "Verified Buyer",
+            quote: "“Love the vibrant orange color and unique design! The Rhythmic Resonance T-shirt feels stylish, comfortable, and perfect for everyday wear.”",
+            avatar: "/static/images/user_profile.webp"
+        }
+        {% endfor %}
+    ];
+
+    let reviewIndex = 0;
+    function updateReview(index) {
+        const card = document.getElementById('testimonialCard');
+        const nameEl = document.getElementById('reviewName');
+        const companyEl = document.getElementById('reviewCompany');
+        const quoteEl = document.getElementById('reviewQuote');
+        const avatarEl = document.getElementById('reviewAvatar');
+
+        if (!card || !nameEl || !quoteEl || !avatarEl || !dbReviews.length) return;
+
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+
+        setTimeout(function() {
+            nameEl.innerText = dbReviews[index].name;
+            if (companyEl) companyEl.innerText = dbReviews[index].company;
+            quoteEl.innerText = dbReviews[index].quote;
+            avatarEl.src = dbReviews[index].avatar;
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 200);
+    }
+
+    const prevTestBtn = document.getElementById('prevTestimonialBtn');
+    const nextTestBtn = document.getElementById('nextTestimonialBtn');
+
+    if (nextTestBtn) {
+        nextTestBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (!dbReviews.length) return;
+            reviewIndex = (reviewIndex + 1) % dbReviews.length;
+            updateReview(reviewIndex);
+        });
+    }
+
+    if (prevTestBtn) {
+        prevTestBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (!dbReviews.length) return;
+            reviewIndex = (reviewIndex - 1 + dbReviews.length) % dbReviews.length;
+            updateReview(reviewIndex);
+        });
+    }
+});
+</script>
+
+{% endblock mainbody %}

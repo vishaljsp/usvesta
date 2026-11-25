@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block header %}
+<title>US Vesta Blog - Streetwear & Fashion Trends</title>
+<style>
+    .blog-search-input:focus {
+        border-color: #052043 !important;
+        box-shadow: 0 0 0 3px rgba(5, 32, 67, 0.1) !important;
+    }
+    .hover-accent:hover .fw-semibold {
+        color: #fac13c !important;
+    }
+    .category-link {
+        transition: all 0.2s ease;
+        border-radius: 8px;
+        font-weight: 500;
+        color: #52525b !important;
+    }
+    .category-link:hover {
+        background-color: rgba(5, 32, 67, 0.05);
+        color: #052043 !important;
+        padding-left: 10px;
+    }
+    .category-link.active {
+        background-color: #052043 !important;
+        color: #ffffff !important;
+    }
+    .btn-blog-read {
+        background-color: #052043 !important;
+        color: #ffffff !important;
+        border: none !important;
+        transition: all 0.2s ease;
+    }
+    .btn-blog-read:hover {
+        background-color: #fac13c !important;
+        color: #0c0c0c !important;
+    }
+</style>
+{% endblock header %}
+
+{% block mainbody %}
+<div class="container my-5" style="min-height: 70vh;">
+    <!-- Page Header -->
+    <div class="text-center mb-5 p-4 rounded-4" style="background-color: rgba(5, 32, 67, 0.03); border: 1px solid rgba(5, 32, 67, 0.05);">
+        <h1 class="fw-bold tracking-tight" style="font-size: 2.8rem; letter-spacing: -1px; color: #052043;">US Vesta Editorial</h1>
+        <p class="text-secondary fs-5 mb-0">Discover style secrets, oversized fit guidelines, and global streetwear news.</p>
+    </div>
+    
+    <div class="row">
+        <!-- Blog Posts List -->
+        <div class="col-lg-9 col-md-8">
+            {% if all_blog %}
+            <div class="row g-4">
+                {% for post in all_blog %}
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white" style="border: 1px solid rgba(5, 32, 67, 0.05) !important;">
+                        <div class="position-relative">
+                            {% if post.blog_image %}
+                            <img src="{{ post.blog_image.url }}" class="w-100" style="height: 240px; object-fit: cover;" alt="{{ post.image_alt_name }}">
+                            {% endif %}
+                            <span class="badge position-absolute top-0 start-0 m-3 fw-bold text-white" style="font-size: 0.75rem; background-color: #052043;">{{ post.category.category }}</span>
+                        </div>
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="text-muted small mb-2"><i class="far fa-calendar-alt me-1"></i> {{ post.date|date:"d M Y" }} | By {{ post.author }}</div>
+                                <h4 class="fw-bold text-dark mb-3" style="line-height: 1.3; font-size: 1.25rem;">{{ post.meta_title }}</h4>
+                                <p class="text-secondary small line-clamp-3 mb-4">{{ post.meta_description }}</p>
+                            </div>
+                            <a href="/blogs/{{ post.slug }}" class="btn btn-blog-read w-100 py-2 fw-bold rounded-3">Read Full Article</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if all_blog.has_other_pages %}
+            <nav class="d-flex justify-content-center mt-5">
+                <ul class="pagination">
+                    {% if all_blog.has_previous %}
+                    <li class="page-item"><a class="page-link border-0 text-dark rounded-3 px-3 py-2 me-2" style="background-color: rgba(5, 32, 67, 0.05);" href="?page={{ all_blog.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}">Previous</a></li>
+                    {% endif %}
+                    
+                    {% for num in all_blog.paginator.page_range %}
+                    <li class="page-item">
+                        <a class="page-link border-0 rounded-3 px-3 py-2 me-2 {% if all_blog.number == num %}active text-white{% else %}text-dark{% endif %}" 
+                           style="{% if all_blog.number == num %}background-color: #052043 !important;{% else %}background-color: rgba(5, 32, 67, 0.05);{% endif %}" 
+                           href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+                    
+                    {% if all_blog.has_next %}
+                    <li class="page-item"><a class="page-link border-0 text-dark rounded-3 px-3 py-2" style="background-color: rgba(5, 32, 67, 0.05);" href="?page={{ all_blog.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+            
+            {% else %}
+            <div class="text-center py-5 rounded-4" style="background-color: rgba(5, 32, 67, 0.02); border: 1px dashed rgba(5, 32, 67, 0.1);">
+                <i class="fas fa-book-open text-muted mb-3" style="font-size: 3rem; color: #052043 !important;"></i>
+                <h4 class="fw-bold">No Blog Posts Found</h4>
+                <p class="text-muted">We couldn't find any articles matching your search criteria.</p>
+                <a href="/blog" class="btn btn-blog-read px-4 py-2 rounded-3 mt-2">Clear All Filters</a>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
+            <!-- Search Widget -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid rgba(5, 32, 67, 0.05) !important;">
+                <h5 class="fw-bold text-dark mb-3" style="font-size: 1.1rem; color: #052043 !important;">Search Article</h5>
+                <form action="/blog" method="GET">
+                    <div class="input-group">
+                        <input type="text" name="q" value="{{ search_query }}" placeholder="Type keywords..." class="form-control blog-search-input" style="border-radius: 8px 0 0 8px; border: 1px solid #e4e6eb;">
+                        <button class="btn text-white px-3" type="submit" style="background-color: #052043; border-radius: 0 8px 8px 0; border: none;"><i class="fas fa-search"></i></button>
+                    </div>
+                    {% if selected_category %}
+                    <input type="hidden" name="category" value="{{ selected_category }}">
+                    {% endif %}
+                </form>
+            </div>
+
+            <!-- Categories Widget -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid rgba(5, 32, 67, 0.05) !important;">
+                <h5 class="fw-bold text-dark mb-3" style="font-size: 1.1rem; color: #052043 !important;">Categories</h5>
+                <div class="d-flex flex-column gap-1">
+                    <a href="/blog{% if search_query %}?q={{ search_query }}{% endif %}" class="category-link px-3 py-2 text-decoration-none {% if not selected_category %}active{% endif %}">All Categories</a>
+                    {% for cat in b_cat %}
+                    <a href="/blog?category={{ cat.ct_slug }}{% if search_query %}&q={{ search_query }}{% endif %}" class="category-link px-3 py-2 text-decoration-none {% if selected_category == cat.ct_slug %}active{% endif %}">
+                        {{ cat.category }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Recent Posts Widget -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" style="border: 1px solid rgba(5, 32, 67, 0.05) !important;">
+                <h5 class="fw-bold text-dark mb-3" style="font-size: 1.1rem; color: #052043 !important;">Recent Posts</h5>
+                <div class="d-flex flex-column gap-3">
+                    {% for post in recent_blogs %}
+                    <a href="/blogs/{{ post.slug }}" class="d-flex align-items-center gap-3 text-decoration-none hover-accent text-dark">
+                        {% if post.blog_image %}
+                        <img src="{{ post.blog_image.url }}" class="rounded-3 border" style="width: 55px; height: 55px; object-fit: cover;">
+                        {% endif %}
+                        <div class="overflow-hidden">
+                            <div class="fw-semibold text-dark text-truncate" style="font-size: 0.85rem;" title="{{ post.meta_title }}">{{ post.meta_title }}</div>
+                            <small class="text-muted" style="font-size: 10px;"><i class="far fa-calendar-alt me-1"></i> {{ post.date|date:"d M Y" }}</small>
+                        </div>
+                    </a>
+                    {% empty %}
+                    <div class="text-muted small">No recent posts.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock mainbody %}

@@ -1,0 +1,135 @@
+.filter-sidebar {
+    position: sticky;
+    top: 98px !important;
+    max-height: calc(100vh - 108px);
+    overflow-y: auto;
+    padding-right: 12px;
+}
+
+/* Premium Custom Scrollbar for Filter Sidebar */
+.filter-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+.filter-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.filter-sidebar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+.filter-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.mobile-filter-bar {
+    z-index: 999;
+}
+
+/* Premium Filter Sidebar Card Styles */
+.filter-sidebar .card {
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.filter-sidebar .card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05) !important;
+}
+
+.filter-sidebar h6 {
+    font-size: 0.95rem;
+    font-weight: 700 !important;
+    color: #052043;
+    letter-spacing: -0.2px;
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f1f3f5;
+}
+
+.filter-sidebar .form-control {
+    border: 1px solid #e4e6eb !important;
+    border-radius: 10px !important;
+    padding: 10px 14px !important;
+    font-size: 0.88rem;
+    transition: all 0.2s ease;
+}
+
+.filter-sidebar .form-control:focus {
+    border-color: #052043 !important;
+    box-shadow: 0 0 0 3px rgba(5, 32, 67, 0.1) !important;
+}
+
+/* Custom Price Slider Range */
+.filter-sidebar .form-range::-webkit-slider-thumb {
+    background: #fac13c !important;
+    border: 2px solid #052043 !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.filter-sidebar .form-range::-moz-range-thumb {
+    background: #fac13c !important;
+    border: 2px solid #052043 !important;
+}
+
+/* Accordion Custom Styling */
+.filter-sidebar .accordion-item {
+    border: none !important;
+    background: transparent !important;
+    margin-bottom: 8px;
+}
+
+.filter-sidebar .accordion-button {
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: #27272a !important;
+    padding: 12px 16px !important;
+    border-radius: 10px !important;
+    background: #f8fafc !important;
+    border: 1px solid #f1f3f5 !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+}
+
+.filter-sidebar .accordion-button:not(.collapsed) {
+    color: #052043 !important;
+    background: #eef2f6 !important;
+    border-color: rgba(5, 32, 67, 0.15) !important;
+}
+
+.filter-sidebar .accordion-body {
+    padding: 12px 8px !important;
+}
+
+.filter-sidebar .accordion-body a {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #71717a !important;
+    text-decoration: none !important;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.filter-sidebar .accordion-body a:hover {
+    background: #f1f5f9;
+    color: #052043 !important;
+    padding-left: 16px;
+}
+
+/* Desktop spacing */
+.shop-page-padding {
+    margin: 0 !important;
+    padding-top: 0 !important;
+}
+@media (min-width: 992px) {
+    .shop-page-padding {
+        margin: 0 10px !important;
+        padding-top: 0 !important;
+    }
+}

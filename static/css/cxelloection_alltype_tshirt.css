@@ -1,0 +1,235 @@
+/* Ultra-Premium Fashion Product Card Styles */
+.section-title {
+    position: relative;
+}
+
+.section-title::after {
+    content: "";
+    width: 60px;
+    height: 3px;
+    background: #000000;
+    display: block;
+    margin: 10px auto;
+}
+
+.product-card0 {
+    border-radius: 0px;
+    overflow: hidden;
+    background: #ffffff;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.product-card0:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.product-img {
+    position: relative;
+    width: 100%;
+    background: #f7f7f7;
+    overflow: hidden;
+}
+
+.product-img img, .product-img img.product-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top !important;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card0:hover .product-img img, .product-card0:hover .product-img img.product-main-img {
+    transform: scale(1.04);
+}
+
+.badge-offer {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #000000 !important;
+    color: #ffffff !important;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+}
+
+.rating {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.75) !important;
+    color: #ffffff !important;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+}
+
+/* Floating Action Hover Icons */
+.product-hover-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.btn-action-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(4px);
+    border: none !important;
+    color: #000000 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.product-card0:hover .btn-action-icon {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.btn-action-icon:hover {
+    background: #000000 !important;
+    color: #ffffff !important;
+    transform: scale(1.1) !important;
+}
+
+.btn-action-icon:hover i {
+    color: #ffffff !important;
+}
+
+/* 🌟 Plus Icon at Bottom Right: Background turns Black & Plus turns White on Hover */
+.btn-quick-add-plus {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 4;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(4px);
+    color: #000000 !important;
+    border-radius: 50% !important;
+    border: none !important;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-quick-add-plus:hover {
+    background: #000000 !important;
+    color: #ffffff !important;
+    transform: rotate(90deg) scale(1.18) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.btn-quick-add-plus:hover i {
+    color: #ffffff !important;
+}
+
+.price {
+    font-weight: 700;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 13px;
+    margin-left: 5px;
+}
+
+.discount {
+    color: #16a34a;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.best-price {
+    color: #16a34a;
+    font-size: 12px;
+}
+
+.title {
+    font-size: 14px;
+    color: #111;
+}
+
+/* 📱 Mobile Grid: Zero Gap between products with clean thin divider border line */
+@media (max-width: 768px) {
+    #productContainer, .productGrid {
+        --bs-gutter-x: 0px !important;
+        --bs-gutter-y: 0px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-top: 1px solid #e2e8f0;
+        border-left: 1px solid #e2e8f0;
+    }
+    .product-item {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        border-right: 1px solid #e2e8f0 !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+    }
+    .product-card0 {
+        border: none !important;
+    }
+    .badge-offer {
+        top: 6px;
+        left: 6px;
+        padding: 3px 7px;
+        font-size: 8px;
+        border-radius: 4px;
+    }
+    .btn-quick-add-plus {
+        opacity: 1 !important;
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+        bottom: 8px;
+        right: 8px;
+        background: #ffffff !important;
+    }
+    .btn-action-icon {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+        top: 8px;
+        right: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-img {
+        aspect-ratio: 2/3;
+    }
+}

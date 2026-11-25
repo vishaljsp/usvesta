@@ -1,0 +1,286 @@
+
+{% extends 'base.html' %}
+
+{% block mainbody %}
+
+<style>
+    :root {
+        --primary: #062242;
+    }
+
+    body {
+        background: #f1f3f6;
+    }
+
+    /* dashboard */
+    .dashboard-card {
+        max-width: 550px;
+        margin: 80px auto;
+        padding: 50px 30px;
+        text-align: center;
+        border-radius: 16px;
+    }
+
+    .profile-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--primary);
+        display: block;
+        margin: 0 auto 15px auto;
+    }
+
+    /* sidebar */
+    .sidebar .nav-link.active {
+        background: var(--primary);
+        color: #fff !important;
+    }
+
+    /* mobile bottom nav */
+    @media(max-width:768px) {
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #062242;
+            display: flex;
+            justify-content: space-around;
+            z-index: 9999;
+            padding: 8px 0;
+        }
+
+        .bottom-nav .nav-link {
+            color: white;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .bottom-nav .nav-link.active {
+            color: #ffc107;
+        }
+
+        .bottom-nav i {
+            display: block;
+            font-size: 18px;
+        }
+
+        .content-space {
+            padding-bottom: 70px;
+        }
+
+        .sidebar {
+            display: none;
+        }
+    }
+
+    /* FORCE OVERRIDE BOOTSTRAP ACTIVE TAB */
+    @media (max-width:768px) {
+
+        .bottom-nav.nav-pills .nav-link.active,
+        .bottom-nav .nav-link.active {
+
+            background-color: transparent !important;
+            /* remove blue bg */
+            color: #f9c13b !important;
+            /* yellow text */
+            border: none !important;
+        }
+
+        .bottom-nav.nav-pills .nav-link.active i,
+        .bottom-nav .nav-link.active i {
+            color: #f9c13b !important;
+            /* icon yellow */
+        }
+
+        /* remove bootstrap focus/active shadow */
+        .bottom-nav .nav-link:focus,
+        .bottom-nav .nav-link:active {
+            box-shadow: none !important;
+        }
+
+    }
+</style>
+
+<div class="container-fluid mt-3 content-space">
+
+    <div class="row">
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-3 sidebar">
+
+            <div class="card shadow-sm">
+                <div class="nav flex-column nav-pills">
+
+                    <a class="nav-link active" data-bs-toggle="pill" href="#dashboad">Dashboard</a>
+                    <a class="nav-link" data-bs-toggle="pill" href="#orders">Orders</a>
+                    <a class="nav-link" data-bs-toggle="pill" href="#account-info">Account Details</a>
+                    <a class="nav-link" href="/logout">Logout</a>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CONTENT -->
+        <div class="col-lg-9 col-12">
+
+            <div class="tab-content">
+
+                <!-- DASHBOARD -->
+                <div class="tab-pane fade show active" id="dashboad">
+
+                    <div class="card shadow-sm dashboard-card">
+
+                        {% if request.user.profile_image %}
+                        <img src="{{request.user.profile_image.url}}" class="profile-img">
+                        {% else %}
+                        <img src="/static/user_profile.png" class="profile-img">
+                        {% endif %}
+
+                        <h4>{{request.user.first_name}}</h4>
+
+                        <p class="text-muted mb-1">
+                            <i class="fa fa-envelope me-2"></i>{{request.user.email}}
+                        </p>
+
+                        <p class="text-muted mb-1">
+                            <i class="fa fa-phone me-2"></i>{{request.user.phone}}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- ORDERS -->
+                <div class="tab-pane fade" id="orders">
+
+                    <div class="card shadow-sm border-0">
+
+                        <!-- SEARCH -->
+                        <div class="p-3 border-bottom sticky-top bg-white">
+                            <input type="text" class="form-control" placeholder="Search your orders here">
+                        </div>
+
+                        <div class="p-2">
+
+                            {% for a in orders_of_user %}
+
+                            <a href="/order-details/{{a.product_slug}}" class="text-decoration-none text-dark">
+
+                                <div class="card mb-2 border-0 shadow-sm">
+
+                                    <div class="card-body">
+
+                                        <div class="row align-items-center">
+
+                                            <div class="col-3 col-md-2">
+                                                <img src="{% if a.product %}{{a.product.product_image.url}}{% else %}{{a.inner_color_product.color_images.url}}{% endif %}"
+                                                    class="img-fluid rounded" style="height:70px;object-fit:contain;">
+                                            </div>
+
+                                            <div class="col-6 col-md-6">
+
+                                                <h6 class="mb-1 text-truncate fw-semibold">
+                                                    {% if a.product %}
+                                                    {{a.product.product_name}}
+                                                    {% else %}
+                                                    {{a.inner_color_product.product.product_name}}
+                                                    {% endif %}
+                                                </h6>
+
+                                                <small class="text-muted">{{a.status}}</small>
+
+                                            </div>
+
+                                            <div class="col-md-2 d-none d-md-block">
+                                                <strong>₹ {{a.total_price}}</strong>
+                                            </div>
+
+                                            <div class="col-3 col-md-2 text-end">
+
+                                                <span style="color:#062242;"><i class="fa fa-chevron-right text-muted"></i></span>
+                                                <small>{{a.status}}</small>
+
+                                                <div class="d-md-none">
+                                                    <small class="fw-bold">₹ {{a.total_price}} </small>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ACCOUNT -->
+                <div class="tab-pane fade" id="account-info">
+
+                    <div class="card shadow-sm p-4">
+
+                        <h5>Account Details</h5>
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <input type="text" class="form-control mb-3" value="{{request.user.first_name}}">
+                            <input type="email" class="form-control mb-3" value="{{request.user.email}}">
+                            <input type="text" class="form-control mb-3" value="{{request.user.phone}}">
+
+                            <button class="btn w-100 text-white" style="background:#062242;">
+                                Save Changes
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MOBILE NAV -->
+<div class="bottom-nav nav nav-pills d-lg-none">
+
+    <a class="nav-link active" data-bs-toggle="pill" href="#dashboad">
+        <i class="fa fa-home"></i>
+        Dashboard
+    </a>
+
+    <a class="nav-link" data-bs-toggle="pill" href="#orders">
+        <i class="fa fa-box"></i>
+        Orders
+    </a>
+
+    <a class="nav-link" data-bs-toggle="pill" href="#account-info">
+        <i class="fa fa-user"></i>
+        Account
+    </a>
+
+    <a class="nav-link" href="/logout">
+        <i class="fa fa-sign-out"></i>
+        Logout
+    </a>
+
+</div>
+
+{% endblock %}

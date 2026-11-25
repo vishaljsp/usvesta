@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US Vesta - Collective Drop</title>
+    <style>
+        /* CSS Reset & Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #111;
+            --text-light: #fff;
+            --text-dark: #000;
+            --gold-btn: linear-gradient(135deg, #d4af37, #aa7c11);
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-light);
+        }
+
+        /* 1. Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            color: var(--text-dark);
+            padding: 15px 5%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .logo-container span {
+            background: #ccc;
+            padding: 2px 5px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* 2. Hero Section */
+        .hero {
+            position: relative;
+            height: 70vh;
+            background: url('https://via.placeholder.com/1200x800/222/fff?text=Hero+Background+Image') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            font-family: serif; /* Matching the elegant font */
+        }
+
+        .hero-content h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .btn-gold {
+            background: var(--gold-btn);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 3. Ticker Bar */
+        .ticker {
+            background: #888;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #222;
+            font-weight: bold;
+        }
+
+        /* 4. Product Showcase (Slider Area) */
+        .showcase {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 5%;
+            background: #1c1c1c;
+            position: relative;
+        }
+
+        .showcase img {
+            height: 400px;
+            object-fit: contain;
+        }
+
+        .product-card {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -20%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .product-card-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .slider-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* 5. Details Grid (Multi-dimensional fit) */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 20px;
+            padding: 40px 5%;
+            background: #2a2a2a;
+        }
+
+        .side-images {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .side-images img, .center-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .center-image {
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border: 1px solid #555;
+        }
+
+        /* 6. Footer Grid (Shop Now) */
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 20px 5%;
+        }
+
+        .footer-item {
+            position: relative;
+            height: 300px;
+        }
+
+        .footer-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .shop-now-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .details-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .showcase { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo-container">
+            <span>V</span> US VESTA
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">Collection</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+        <div class="nav-icons">
+            🔍 🛒 👤
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <p>The Street Is Our Stage</p>
+            <h1>COLLECTIVE DROP</h1>
+            <h3>Explore The Untamed.</h3>
+            <button class="btn-gold" onclick="alert('Redirecting to Collection...')">Collection</button>
+        </div>
+    </section>
+
+    <!-- Ticker -->
+    <div class="ticker">
+        <span>✦ Elevate Your Style</span>
+        <span>✦ In the-stride ANACad 2</span>
+        <span>✦ eCannedodel COFTIA ✦</span>
+    </div>
+
+    <!-- Product Showcase -->
+    <section class="showcase">
+        <button class="slider-btn" onclick="prevSlide()">&#10094;</button>
+        
+        <img src="https://via.placeholder.com/300x400/111/fff?text=Model+Left" alt="Model Left">
+        <img src="https://via.placeholder.com/400x500/111/fff?text=Model+Center" alt="Model Center" style="z-index: 1;">
+        <img src="https://via.placeholder.com/300x400/111/fff?text=Model+Right" alt="Model Right">
+
+        <!-- Floating Glassmorphism Card -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/150x100/333/fff?text=T-shirt+Graphic" alt="Graphic" style="height: 100px; width: 100%;">
+            <div class="product-card-details">
+                <div>
+                    <strong>Print G-print</strong><br>
+                    <small>300 GSM cotton</small>
+                </div>
+                <div><strong>₹ 1199</strong></div>
+            </div>
+            <div style="color: gold;">★★★★★</div>
+        </div>
+
+        <button class="slider-btn" onclick="nextSlide()">&#10095;</button>
+    </section>
+
+    <!-- Details Grid -->
+    <section class="details-grid">
+        <div class="side-images">
+            <img src="https://via.placeholder.com/300x200/222/fff?text=T-Shirt+Detail+1" alt="Detail 1">
+            <img src="https://via.placeholder.com/300x200/222/fff?text=Fears+Graphic" alt="Fears Graphic">
+        </div>
+        <div class="center-image">
+            <div class="badge" style="top: 10px; left: 10px;">Multi-Dimensional Fit</div>
+            <img src="https://via.placeholder.com/500x420/222/fff?text=Model+Multiple+Angles" alt="Model Angles">
+            <div class="badge" style="bottom: 20px; right: 10px;">Engineered Comfort</div>
+        </div>
+        <div class="side-images">
+            <img src="https://via.placeholder.com/300x200/222/fff?text=Folded+T-Shirt+1" alt="Folded 1">
+            <img src="https://via.placeholder.com/300x200/222/fff?text=Folded+T-Shirt+Stack" alt="Folded Stack">
+        </div>
+    </section>
+
+    <!-- Footer Shop Grid -->
+    <section class="footer-grid">
+        <div class="footer-item">
+            <img src="https://via.placeholder.com/600x300/111/fff?text=Neon+T-Shirt+Display" alt="Shop Neon">
+            <div class="shop-now-text">Shop Now</div>
+        </div>
+        <div class="footer-item">
+            <img src="https://via.placeholder.com/600x300/111/fff?text=Dark+T-Shirt+Display" alt="Shop Dark">
+            <div class="shop-now-text">Shop Now</div>
+        </div>
+        <div class="footer-item">
+            <img src="https://via.placeholder.com/600x300/eee/000?text=White+T-Shirt+Display" alt="Shop White">
+            <div class="shop-now-text" style="color: #000;">Shop Now</div>
+        </div>
+        <div class="footer-item">
+            <img src="https://via.placeholder.com/600x300/eee/000?text=Off-White+T-Shirt+Display" alt="Shop Off White">
+            <div class="shop-now-text" style="color: #000;">Shop Now</div>
+        </div>
+    </section>
+
+    <!-- JavaScript for basic functionality -->
+    <script>
+        // Simple slider logic skeleton
+        function nextSlide() {
+            console.log("Move to next product/model");
+            // Add DOM manipulation logic here to slide images
+        }
+        function prevSlide() {
+            console.log("Move to previous product/model");
+            // Add DOM manipulation logic here to slide images
+        }
+    </script>
+</body>
+</html>

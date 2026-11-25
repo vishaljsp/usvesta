@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+<title>{{ sub_cat_.name }} – Shop Premium Men's T-Shirts | US Vesta</title>
+<meta name="description" content="Shop {{ sub_cat_.name }} for men at US Vesta. Explore premium quality fabrics, stylish prints, and comfortable fits. Best prices on oversized, custom, and gym tees.">
+<link rel="canonical" href="{{ current_url }}" />
+{% endblock header %}
+
+{% block mainbody %}
+
+
+
+
+<!-- ==================== 1. DITTO HERO BANNER ("THE STREET IS OUR STAGE — COLLECTIVE DROP") ==================== -->
+<style>
+.ditto-hero-section {
+    background-image: url('{% if cms.hero_bg_image %}{{ cms.hero_bg_image.url }}{% else %}/static/images/hero_street_banner.jpg{% endif %}') !important;
+    background-position: center top !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+@media (max-width: 991.98px) {
+    .ditto-hero-section {
+        background-image: url('{% if cms.hero_bg_mobile_image %}{{ cms.hero_bg_mobile_image.url }}{% elif cms.hero_bg_image %}{{ cms.hero_bg_image.url }}{% else %}/static/images/hero_street_banner.jpg{% endif %}') !important;
+        background-position: center top !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+    }
+}
+</style>
+<section class="ditto-hero-section position-relative" aria-label="Collective Drop Hero">
+    <div class="container py-lg-4 position-relative z-2">
+        <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-xl-5">
+                <div class="hero-ditto-text-wrap" data-reveal>
+                    <div class="fw-semibold text-uppercase tracking-wider mb-1" style="letter-spacing: 0.12em; font-size: {{ cms.hero_subtitle_font_size|default:'clamp(0.85rem, 1.4vw, 1.1rem)' }}; color: {{ cms.hero_subtitle_color|default:'#ffffff' }} !important; text-shadow: 0 2px 8px rgba(0,0,0,0.85);">
+                        {{ cms.hero_subtitle|default:"THE STREET IS OUR STAGE" }}
+                    </div>
+                    <h1 class="my-1" style="font-family: {{ cms.hero_title_font_family|default:'var(--font-serif)' }}; font-size: {{ cms.hero_title_font_size|default:'clamp(2rem, 4.2vw, 3.6rem)' }}; color: {{ cms.hero_title_color|default:'#ffffff' }} !important; font-weight: 500; line-height: 1.1; letter-spacing: 0.04em; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
+                        {{ cms.hero_title|default:"COLLECTIVE DROP" }}
+                    </h1>
+                    <div class="fw-semibold text-uppercase tracking-wider text-white mb-4" style="letter-spacing: 0.15em; font-size: clamp(0.8rem, 1.3vw, 1.05rem); text-shadow: 0 2px 8px rgba(0,0,0,0.85);">
+                        {{ cms.hero_description|default:"EXPLORE THE UNTAMED." }}
+                    </div>
+                    
+                    <div class="mt-4 pt-1">
+                        <a href="{{ cms.hero_button_link|default:'/shop' }}" class="btn-bronze-pill text-decoration-none" style="padding: 10px 32px; font-size: 0.8rem;">
+                            {{ cms.hero_button_text|default:"COLLECTION" }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 2. FEATURE TICKER STRIP ==================== -->
+{% if cms.section2_enabled %}
+<div class="vesta-feature-strip" aria-label="Product Features">
+    <div class="vesta-marquee-track">
+        <div class="vesta-marquee-item">
+            <span>Elevated Favors</span><span class="plus-star">✦</span>
+            <span>In the-Wide AACad 2</span><span class="plus-star">✦</span>
+            <span>Essential COTTON</span><span class="plus-star">✦</span>
+            <span>Heavyweight Craft</span><span class="plus-star">✦</span>
+            <span>Limited Studio Drops</span><span class="plus-star">✦</span>
+        </div>
+        <div class="vesta-marquee-item">
+            <span>Elevated Favors</span><span class="plus-star">✦</span>
+            <span>In the-Wide AACad 2</span><span class="plus-star">✦</span>
+            <span>Essential COTTON</span><span class="plus-star">✦</span>
+            <span>Heavyweight Craft</span><span class="plus-star">✦</span>
+            <span>Limited Studio Drops</span><span class="plus-star">✦</span>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="container my-5 scroll-load">
+    <div class="row">
+        <!-- Products Grid -->
+        <div class="col-lg-12">
+            <h2 class="text-center fw-bold mb-4 section-title">
+               {{sub_cat_.name}}
+            </h2>
+            <div class="row g-0" id="productContainer">
+                {% for a in products_all %}
+                {% for c in a.color_product_set.all %}
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-6 product-item show"
+                        data-price="{% if request.user.user_type == 'B2B' %}{{ a.b2b_price }}{% else %}{{ a.b2c_price }}{% endif %}" data-date="{{ c.id }}"  data-fullname="{{ a.product_name|lower }}"> 
+                        <div class="product-card0 transition-all h-100 border-end border-bottom" style="border-color: #eee !important;">
+                            <div class="product-img overflow-hidden position-relative bg-light">
+                                <a href="/products/{{ c.uuid_product|default:a.uuid_product|default:a.product_slug }}">
+                                    {% if a.product_quantity_offer %}
+                                    <span class="badge-offer">BUY {{a.product_quantity_offer}} @ {{a.product_amount_offer|floatformat:0}}</span>
+                                    {% endif %}
+
+                                    <img loading="lazy" class="img-fluid w-100 product-main-img" src="{{ c.color_images.url }}" alt="{{ a.product_name }}">
+
+                                    <div class="rating">
+                                        ⭐ {{ a.average_rating|default:0|floatformat:1 }}
+                                    </div>
+                                </a>
+
+                                <!-- 🌟 Floating Share Icon (Top Right) -->
+                                <div class="product-hover-actions">
+                                    <button type="button" class="btn-action-icon" title="Share Product" onclick="shareProduct('{{ a.product_name|escapejs }}', '{{ c.uuid_product }}')">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+
+                                <!-- 🌟 Sleek Plus Icon (Bottom Right Quick Add) -->
+                                <button type="button" class="btn-quick-add-plus" title="Add to Cart" onclick="Add_to_cart({{c.id}},this)" data-product="{{c.id}}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <div class="pt-2.5 pb-3 px-2 bg-white">
+                                <!-- 1. Unbold Title (Full Width Line 1) -->
+                                <a class="d-block text-dark text-uppercase text-decoration-none text-truncate mb-1" style="font-size: 0.88rem; font-weight: 500 !important; letter-spacing: 0.2px;" href="/products/{{ c.uuid_product|default:a.uuid_product|default:a.product_slug }}" title="{{ a.product_name }}">
+                                    {{ a.product_name|truncatechars:28 }}
+                                </a>
+
+                                <!-- 2. Subtext Row: Price + MRP + Discount Badge + Best Price (Line 2) -->
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-1 mt-1">
+                                    <div class="d-flex align-items-center gap-1.5">
+                                        {% if request.user.user_type == "B2B" %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2b_price }}</span>
+                                        {% else %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2c_price }}</span>
+                                        {% endif %}
+
+                                        {% if a.discount_price %}
+                                        <del class="text-muted small" style="font-size: 0.76rem;">₹{{a.discount_price}}</del>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "B2B" %}
+                                            {% widthratio a.b2b_price a.discount_price 100 as sale_percent %}
+                                        {% else %}
+                                            {% widthratio a.b2c_price a.discount_price 100 as sale_percent %}
+                                        {% endif %}
+
+                                        {% with percent=100|add:"-"|add:sale_percent %}
+                                        {% if percent > 0 %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{ percent|floatformat:0 }}% OFF</span>
+                                        {% endif %}
+                                        {% endwith %}
+                                    </div>
+
+                                    {% if a.product_quantity_offer %}
+                                    <span class="text-success fw-semibold small" style="font-size: 0.74rem;">
+                                        <i class="fas fa-tag me-0.5"></i>Best ₹{% widthratio a.product_amount_offer a.product_quantity_offer 1 %}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="col-xl-3 col-lg-4 col-md-6 col-6 product-item show"
+                  data-price="{{ a.b2c_price }}" data-date="{{ a.id }}"  data-fullname="{{ a.product_name|lower }}"> 
+                        <div class="product-card0 transition-all h-100 border-end border-bottom" style="border-color: #eee !important;">
+                            <div class="product-img overflow-hidden position-relative bg-light">
+                                <a href="/products/{{ a.uuid_product|default:a.product_slug }}">
+                                    {% if a.product_quantity_offer %}
+                                    <span class="badge-offer">BUY {{a.product_quantity_offer}} @ {{a.product_amount_offer|floatformat:0}}</span>
+                                    {% endif %}
+
+                                    <img loading="lazy" class="img-fluid w-100 product-main-img" src="{{ a.product_image.url }}" alt="{{ a.product_name }}">
+
+                                    <div class="rating">
+                                        ⭐ {{ a.average_rating|default:0|floatformat:1 }}
+                                    </div>
+                                </a>
+
+                                <!-- 🌟 Floating Share Icon (Top Right) -->
+                                <div class="product-hover-actions">
+                                    <button type="button" class="btn-action-icon" title="Share Product" onclick="shareProduct('{{ a.product_name|escapejs }}', '{{ a.uuid_product }}')">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+
+                                <!-- 🌟 Sleek Plus Icon (Bottom Right Quick Add) -->
+                                <button type="button" class="btn-quick-add-plus" title="Add to Cart" onclick="Add_to_cart({{a.id}},this)" data-product="{{a.id}}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <div class="pt-2.5 pb-3 px-2 bg-white">
+                                <!-- 1. Unbold Title (Full Width Line 1) -->
+                                <a class="d-block text-dark text-uppercase text-decoration-none text-truncate mb-1" style="font-size: 0.88rem; font-weight: 500 !important; letter-spacing: 0.2px;" href="/products/{{ a.uuid_product|default:a.product_slug }}" title="{{ a.product_name }}">
+                                    {{ a.product_name|truncatechars:28 }}
+                                </a>
+
+                                <!-- 2. Subtext Row: Price + MRP + Discount Badge + Best Price (Line 2) -->
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-1 mt-1">
+                                    <div class="d-flex align-items-center gap-1.5">
+                                        {% if request.user.user_type == "B2B" %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2b_price }}</span>
+                                        {% else %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2c_price }}</span>
+                                        {% endif %}
+
+                                        {% if a.discount_price %}
+                                        <del class="text-muted small" style="font-size: 0.76rem;">₹{{a.discount_price}}</del>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "B2B" %}
+                                            {% widthratio a.b2b_price a.discount_price 100 as sale_percent %}
+                                        {% else %}
+                                            {% widthratio a.b2c_price a.discount_price 100 as sale_percent %}
+                                        {% endif %}
+
+                                        {% with percent=100|add:"-"|add:sale_percent %}
+                                        {% if percent > 0 %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{ percent|floatformat:0 }}% OFF</span>
+                                        {% endif %}
+                                        {% endwith %}
+                                    </div>
+
+                                    {% if a.product_quantity_offer %}
+                                    <span class="text-success fw-semibold small" style="font-size: 0.74rem;">
+                                        <i class="fas fa-tag me-0.5"></i>Best ₹{% widthratio a.product_amount_offer a.product_quantity_offer 1 %}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                {% endfor %}
+
+        <!-- CARD END -->
+
+
+
+        <!-- Repeat above col for more products -->
+        <div id="loadIndicator" class="load-indicator d-none">
+            <div class="loader-line"></div>
+            <p>Loading more products...</p>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+
+<div class="container mb-5">
+<div class="accordion" id="accordionExample">
+    {% for a in courdinators %}
+        {% if a.sub_category.name == sub_cat_.name %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{a.id}}" aria-expanded="true" aria-controls="collapseOne{{a.id}}">
+                    {{a.name}}
+                </button>
+                </h2>
+                <div id="collapseOne{{a.id}}" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                     <div class="description-wrapper">
+                                <div class="description-content" id="descBox">
+                    {{a.containt|safe}}
+
+                                </div>
+
+                            </div>
+                </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+  
+</div>
+</div>
+
+
+{% endblock mainbody %}

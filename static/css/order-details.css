@@ -1,0 +1,185 @@
+/* CARD */
+.card-box {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 1px solid #eee;
+}
+
+/* PRODUCT SECTION */
+.product-img {
+    width: 90px;
+    height: 90px;
+    object-fit: fill;
+    border-radius: 8px;
+    background: #f8f8f8;
+    padding: 5px;
+}
+
+h6 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* PRICE */
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #212121;
+}
+
+/* INFO BOX */
+.info-box {
+    background: #fafafa;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* ================= TRACKING (DESKTOP) ================= */
+
+.tracking-container {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin: 30px 0;
+}
+
+.tracking-line {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #e0e0e0;
+}
+
+.tracking-progress {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    height: 4px;
+    background: #f9c13b;
+    width: 50%;
+}
+
+.tracking-step {
+    text-align: center;
+    flex: 1;
+    z-index: 2;
+}
+
+/* CIRCLE */
+.tracking-step .circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    margin: 0 auto 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+/* COMPLETED */
+.tracking-step.completed .circle {
+    background: #28a745;
+    color: #fff;
+}
+
+/* ACTIVE */
+.tracking-step.active .circle {
+    background: #062242;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* TEXT */
+.tracking-step .text {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ================= MOBILE UI (🔥 MAIN IMPROVEMENT) ================= */
+
+@media(max-width:768px) {
+
+    .card-box {
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    /* PRODUCT */
+    .product-img {
+        width: 250px;
+        height: 100px;
+    }
+
+    h6 {
+        font-size: 14px;
+    }
+
+    /* TRACKING MOBILE = TIMELINE STYLE */
+    .tracking-container {
+        flex-direction: column;
+        position: relative;
+        padding-left: 25px;
+        gap: 18px;
+    }
+
+    /* LEFT VERTICAL LINE */
+    .tracking-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 12px;
+        width: 3px;
+        height: 100%;
+        background: #e0e0e0;
+    }
+
+    /* PROGRESS LINE */
+    .tracking-progress {
+        position: absolute;
+        top: 0;
+        left: 12px;
+        width: 3px;
+        height: 60%;
+        background: #28a745;
+    }
+
+    .tracking-line {
+        display: none;
+    }
+
+    /* STEP */
+    .tracking-step {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+    }
+
+    /* CIRCLE */
+    .tracking-step .circle {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+        margin: 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    .tracking-step .text {
+        font-size: 13px;
+    }
+
+    /* ALERT MOBILE FIX */
+    .alert {
+        font-size: 13px;
+        padding: 8px 10px;
+        border-radius: 8px;
+    }
+}

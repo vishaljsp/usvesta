@@ -1,0 +1,69 @@
+/* CARD BASE */
+.d3dcard {
+  position: relative;
+  overflow: hidden;
+  transition: 0.4s ease;
+}
+
+/* IMAGE FIX */
+.d3dcard .card-img-top {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  transition: 0.6s ease;
+}
+
+/* OVERLAY FULL */
+.d3dcard .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(57, 62, 93, 0.7);
+  opacity: 1;
+  transition: 0.4s ease;
+}
+
+/* TEXT SLIDE EFFECT (card body) */
+.d3dcard .card-body {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: transparent;
+  color: white;
+  z-index: 2;
+  transition: 0.4s ease;
+}
+
+/* BUTTON HIDDEN INIT */
+.d3dcard .add-to-cart,
+.d3dcard .btn {
+  position: absolute;
+  bottom: -70px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #FEB66C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white !important;
+  text-decoration: none;
+  border-radius: 0;
+  transition: 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.d3dcard:hover img {
+  opacity: 0.15;
+  transform: scale(1.4);
+}
+
+/* CARD TEXT SLIDE UP */
+.d3dcard:hover .card-body {
+  transform: translateY(-70px);
+}
+
+/* BUTTON SLIDE UP */
+.d3dcard:hover .add-to-cart,
+.d3dcard:hover .btn {
+  bottom: 0;
+}

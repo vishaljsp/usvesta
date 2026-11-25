@@ -1,0 +1,71 @@
+{% for a in cart_products %}
+{% if a.product %}
+
+<div class="order-summary-item">
+    <div class="d-flex">
+        <img src="{{a.product.product_image.url}}" loading="lazy"  alt="{{a.product.product_name}}" class="product-image me-3">
+        <div>
+            <h6 class="mb-1">{{a.product.product_name|truncatechars:20}}</h6>
+            <p class="text-muted mb-0">Color: {{a.product.color}} Size: {{a.size}}</p>
+            <div class="d-flex">
+                <p class="text-muted mb-0 fw-bold" dir="per_product_price" id="card_total_amount{{a.id}}"> ₹ {{a.total_price}} </p>
+                <del class="text-muted mx-1">₹ {{a.product.discount_price}} </del>
+                <span class="fw-bold text-success">{{a.product.get_discount_percentage}} % OFF</span> 
+            </div>
+            
+                <div class="offer-box mt-2">
+                    <div id="offer_Session{{a.id}}">
+                        <span class="fw-semibold text-dark">🎉 Special Offer!</span>
+                        <span class="text-muted">Add More <b>{{a.product.product_quantity_offer}} </b> & Pay Only </span>
+                        <span class="text-success fw-bold">₹{{a.product.product_amount_offer}}</span>
+                    </div>
+                </div>  
+        </div>
+    </div>
+    <div class="quantity-control">
+        <div class="quantity-btn" onclick="decrease_quantity_for_card({{a.id}},{{a.total_price}},{{a.product.product_quantity_offer}},{{a.product.product_amount_offer}})">-
+        </div>
+        <input type="text" name="totalquantity" class="quantity-input" id="card_quantity_inputval{{a.id}}"
+            value="{{a.quantity}}" readonly>
+        <div class="quantity-btn" onclick="increase_quantity_for_cart({{a.id}},{{a.total_price}},{{a.product.product_quantity_offer}},{{a.product.product_amount_offer}})">+
+        </div>
+    </div>
+</div>
+{% elif a.inner_products_card %}    
+<div class="order-summary-item">
+    <div class="d-flex">
+        <img loading="lazy"  src="{{a.inner_products_card.color_images.url}}" alt="{{a.inner_products_card.product_name}}"
+            class="product-image me-3">
+        <div>
+            <h6 class="mb-1">{{a.inner_products_card.product_name|truncatechars:20}}</h6>
+            <p class="text-muted mb-0">Color: {{a.inner_products_card.color}} Size: {{a.size}}</p>
+            <div class="d-flex">
+                <p class="text-muted mb-0 fw-bold" dir="per_product_price" id="card_total_amount{{a.id}}"> ₹
+                    {{a.total_inner_product_price}} </p>
+                <del class="text-muted mx-1">₹ {{a.inner_products_card.product.discount_price}}</del>
+                <span class="fw-bold text-success">{{a.inner_products_card.product.get_discount_percentage}} % OFF</span> 
+
+            </div>
+            <div class="offer-box mt-2">
+                    <div id="offer_Session{{a.id}}">
+                        <span class="fw-semibold text-dark">🎉 Special Offer!</span>
+                        <span class="text-muted">Add More <b>{{a.inner_products_card.product.product_quantity_offer}} </b> & Pay Only </span>
+                        <span class="text-success fw-bold">₹{{a.inner_products_card.product.product_amount_offer}}</span>
+                    </div>
+            </div>  
+        </div>
+    </div>
+    <div class="quantity-control">
+        <div class="quantity-btn"
+            onclick="decrease_quantity_for_card({{a.id}},{{a.total_inner_product_price}},{{a.inner_products_card.product.product_quantity_offer}},{{a.inner_products_card.product.product_amount_offer}})">-
+        </div>
+        <input type="text" name="totalquantity" class="quantity-input" id="card_quantity_inputval{{a.id}}"
+            value="{{a.quantity}}" readonly>
+        <div class="quantity-btn"
+            onclick="increase_quantity_for_cart({{a.id}},{{a.total_inner_product_price}},{{a.inner_products_card.product.product_quantity_offer}},{{a.inner_products_card.product.product_amount_offer}})">+
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+

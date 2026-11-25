@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+<title>{{ sub_cat_.name }} – Shop Premium Men's T-Shirts | US Vesta</title>
+<meta name="description" content="Shop {{ sub_cat_.name }} for men at US Vesta. Explore premium quality fabrics, stylish prints, and comfortable fits. Best prices on oversized, custom, and gym tees.">
+<link rel="canonical" href="{{ current_url }}" />
+{% endblock header %}
+
+{% block mainbody %}
+
+
+
+
+<div class="container-fluid p-0">
+    <div class="owl-carousel owl-theme d-none d-md-block" id="bannerSlider">
+        {% for a in banners %}
+            {% if a.category_images_slider.name == sub_cat_.name  and a.image %}
+                <div class="item">
+
+                        <!-- Desktop -->
+                    {% if a.image %}
+
+                        <img src="{{ a.image.url }}" loading="lazy" class="img-fluid w-100">
+                    {% endif %}
+
+                  
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        
+
+    </div>
+     <div class="owl-carousel owl-theme d-block d-md-none" id="bannerSliderp" >
+        {% for a in banners %}
+            {% if a.category_images_slider.name == sub_cat_.name  and a.image_phone %}
+
+            
+                <div class="item">
+                <div class="item">
+                       
+                        <!-- Desktop -->
+                    {% if a.image_phone %}
+
+                        <img src="{{ a.image_phone.url }}" loading="lazy" class="img-fluid w-100">
+                    {% endif %}
+
+                </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        
+
+    </div>
+    
+</div>
+
+
+
+<div class="container my-5 scroll-load">
+
+    <h2 class="text-center fw-bold mb-4 section-title">
+       {{sub_cat_.name}}
+    </h2>
+
+    <div class="row g-3" id="productContainer">
+
+        <!-- CARD START -->
+        {% for a in products_all %}
+            {% for c in a.color_product_set.all %}
+                <div class="col-lg-3 col-md-4 col-6  product-item {% if forloop.parentloop.counter > 8 %}d-none{% else %}show{% endif %}" data-price="{{ c.b2c_price }}"
+                    data-date="{{ c.id }}"> 
+                    <div class="product-card0">
+
+                        <div class="product-img">
+                            <a href="/products/{{ c.uuid_product|default:a.uuid_product|default:a.product_slug }}">
+                            {% if a.product_quantity_offer %}
+
+                            <span class="badge-offer">BUY {{a.product_quantity_offer}} @
+                                    {{a.product_amount_offer|floatformat:0}}</span>
+                                {% endif %}
+
+                            <img loading="lazy"  class="img-fluid" src="{{ c.color_images.url }}" alt="{{ a.product_name }}">
+
+
+                            <div class="rating">
+                                ⭐  {{ a.avg_rating|default:0|floatformat:1 }}
+                            </div>
+                            </a>
+
+                        </div>
+
+                        <div class="p-2">
+
+                            <div class="price">
+
+                                 {% if request.user.user_type == "B2B" %}
+                                <span class="price fw-bold ">₹ {{ a.b2b_price }} <span class="old-price">₹ {{a.discount_price }}</span></span>
+                                {% widthratio a.b2b_price a.discount_price 100 as sale_percent %}
+                                {% with percent=100|add:"-"|add:sale_percent %}
+                                <span class="discount fw-bold ">{{ percent|floatformat:0 }}% OFF</span>
+                                {% endwith %}
+                                {% else %}
+                                <span class="price fw-bold "> ₹ {{ a.b2c_price }} <span class="old-price">₹ {{a.discount_price}}</span></span>
+                                {% widthratio a.b2c_price a.discount_price 100 as sale_percent %}
+                                {% with percent=100|add:"-"|add:sale_percent %}
+                                <span class="discount fw-bold ">{{ percent|floatformat:0 }}% OFF</span>
+                                {% endwith %}
+                                {% endif %}
+
+
+
+                            </div>
+
+                            <div class="best-price fw-bold ">
+                                Best price  ₹{% widthratio a.product_amount_offer a.product_quantity_offer 1 %}
+                            </div>
+
+                            <div class="title">
+                               <a class="fw-bold pointer text-dark  link-offset-2 link-underline link-underline-opacity-0"  href="/products/{{ c.uuid_product|default:a.uuid_product|default:a.product_slug }}">
+                                {{ a.product_name|truncatechars:20 }}
+                               </a>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer bg-white border-top border-1 d-flex justify-content-between align-items-center">
+                            <button type="button" class="btn fw-semibold w-100 btn-warning addcartbtn"  data-product="{{c.id}}" onclick="inner_p_Add_to_cart({{ c.id }},this)">ADD TO CART</button>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="col-lg-3 col-md-4 col-6  product-item {% if forloop.counter > 8 %}d-none{% else %}show{% endif %}" data-price="{{ a.b2c_price }}"
+                    data-date="{{ a.id }}"> 
+                    <div class="product-card0">
+
+                        <div class="product-img">
+                            <a  href="/products/{{ a.uuid_product|default:a.product_slug }}">
+                            {% if a.product_quantity_offer %}
+
+                            <span class="badge-offer">BUY {{a.product_quantity_offer}} @
+                                    {{a.product_amount_offer|floatformat:0}}</span>
+                                {% endif %}
+
+                            <img loading="lazy"  class="img-fluid" src="{{ a.product_image.url }}" alt="{{ a.product_name }}">
+
+
+                            <div class="rating">
+                                ⭐  {{ a.avg_rating|default:0|floatformat:1 }}
+                            </div>
+                            </a>
+
+                        </div>
+
+                        <div class="p-2">
+
+                            <div class="price">
+
+                                 {% if request.user.user_type == "B2B" %}
+                                <span class="price fw-bold">₹ {{ a.b2b_price }} <span class="old-price">₹ {{a.discount_price }}</span></span>
+                                {% widthratio a.b2b_price a.discount_price 100 as sale_percent %}
+                                {% with percent=100|add:"-"|add:sale_percent %}
+                                <span class="discount fw-bold">{{ percent|floatformat:0 }}% OFF</span>
+                                {% endwith %}
+                                {% else %}
+                                <span class="price fw-bold"> ₹ {{ a.b2c_price }} <span class="old-price">₹ {{a.discount_price}}</span></span>
+                                {% widthratio a.b2c_price a.discount_price 100 as sale_percent %}
+                                {% with percent=100|add:"-"|add:sale_percent %}
+                                <span class="discount fw-bold">{{ percent|floatformat:0 }}% OFF</span>
+                                {% endwith %}
+                                {% endif %}
+                         
+                            </div>
+
+                            <div class="best-price fw-bold">
+                                Best price  ₹{% widthratio a.product_amount_offer a.product_quantity_offer 1 %}
+                            </div>
+
+                            <div class="title">
+                               <a class="fw-bold pointer text-dark  link-offset-2 link-underline link-underline-opacity-0"  href="/products/{{ a.uuid_product|default:a.product_slug }}" >
+                                {{ a.product_name|truncatechars:20 }}
+                               </a>
+                            </div>
+
+                        </div>
+
+                         <div class="card-footer bg-white border-top border-1 d-flex justify-content-between align-items-center">
+                            <button type="button" class="btn fw-semibold w-100 btn-warning addcartbtn"  data-product="{{a.id}}" onclick="Add_to_cart({{ a.id }},this)">ADD TO CARTl</button>
+                            
+                        </div>
+
+                    </div>    
+                    
+                </div>
+            {% endfor %}
+        <!-- CARD END -->
+
+
+
+        <!-- Repeat above col for more products -->
+        <div id="loadIndicator" class="load-indicator d-none">
+            <div class="loader-line"></div>
+            <p>Loading more products...</p>
+        </div>
+
+    </div>
+</div>
+
+<div class="container mb-5">
+<div class="accordion" id="accordionExample">
+    {% for a in courdinators %}
+        {% if a.sub_category.name == sub_cat_.name %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{a.id}}" aria-expanded="true" aria-controls="collapseOne{{a.id}}">
+                    {{a.name}}
+                </button>
+                </h2>
+                <div id="collapseOne{{a.id}}" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                     <div class="description-wrapper">
+                                <div class="description-content" id="descBox">
+                    {{a.containt|safe}}
+
+                                </div>
+
+                            </div>
+                </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+  
+</div>
+</div>
+
+
+{% endblock mainbody %}

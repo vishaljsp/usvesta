@@ -1,0 +1,800 @@
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head hx-head="true">
+    <link rel="icon" type="image/png" href="/static/images/logo2.png">
+    <!-- Premium Typography — Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover US Vesta. Premium apparel and lifestyle essentials designed for modern living. Thoughtful design, enduring quality.">
+    <meta name="keywords" content="US Vesta, premium clothing, luxury fashion, modern wardrobe, corporate gifting, sustainable tees">
+    <meta name="robots" content="index, follow">
+
+    <!-- ✅ HTMX (defer) -->
+    <script src="https://unpkg.com/htmx.org@1.9.10" defer></script>
+
+    <!-- DNS Preconnect for CDNs -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+    <!-- ✅ Bootstrap CSS (blocking load to prevent FOUC/CLS) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <!-- ✅ Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- ✅ Owl CSS (lazy load) -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+        media="print" onload="this.media='all'">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+        media="print" onload="this.media='all'">
+
+    <!-- ✅ FontAwesome (Direct load for reliability) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <!-- ✅ Custom CSS -->
+    {% comment %} <link rel="preload" href="/static/css/home_page.css" as="style" onload="this.rel='stylesheet'"> {% endcomment %}
+    <link rel="preload" href="/static/css/cxelloection_alltype_tshirt.css?v=1.3" as="style" onload="this.rel='stylesheet'">
+    <link rel="stylesheet" href="/static/css/home_page.css?v=3.0">
+
+    <noscript>
+        <link rel="stylesheet" href="/static/css/cxelloection_alltype_tshirt.css?v=1.3">
+    </noscript>
+
+    {% block header %}{% endblock header %}
+    <meta name="htmx-config" content='{"allowEval":true}'>
+
+    <!-- ✅ Facebook Domain Verification -->
+    <meta name="facebook-domain-verification" content="2uj19vcbtphn4stmfeoce2v9oevyks" />
+
+    <!-- ✅ Performance Speed Optimization: Lazy load analytics scripts on interaction or load delay -->
+    <script>
+        function loadAnalytics() {
+            if (window.analyticsLoaded) return;
+            window.analyticsLoaded = true;
+
+            // 1. Google Analytics (gtag.js)
+            var gtagScript = document.createElement('script');
+            gtagScript.async = true;
+            gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-DXX2M4Z8Z8";
+            document.head.appendChild(gtagScript);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DXX2M4Z8Z8');
+
+            // 2. Facebook Pixel
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '815089294723118');
+            fbq('track', 'PageView');
+
+            // 3. Google Tag Manager (GTM)
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-5ZD24TBC');
+        }
+
+        // Trigger after 2.5s window load or on first physical user interaction
+        window.addEventListener('load', function() {
+            setTimeout(loadAnalytics, 2500);
+        });
+        window.addEventListener('scroll', loadAnalytics, { passive: true });
+        window.addEventListener('mousemove', loadAnalytics, { passive: true });
+        window.addEventListener('touchstart', loadAnalytics, { passive: true });
+    </script>
+</head>
+<body class="bg-white">
+
+    <div id="paymentLoader" style="
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:20px;
+">
+    ⏳ Processing Payment...
+</div>
+    <div>
+        <div id="page-loader" class="htmx-indicator">
+            <div class="loader-bar">
+            </div>
+        </div>
+
+        <!-- ✅ LUXURY DESKTOP HEADER (Transparent on Hero, centered logo, left menu, right icons) -->
+        <nav class="navbar navbar-expand-lg fixed-top py-3 d-none d-lg-block transition-all luxury-navbar">
+            <div class="container-fluid px-lg-5">
+                <div class="row w-100 align-items-center g-0">
+                    
+                    <!-- Left: Navigation Links -->
+                    <div class="col-5">
+                        <ul class="navbar-nav gap-4 align-items-center">
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-luxury" href="/shop">Shop</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-luxury" href="/for-corporates">B2B</a>
+                            </li>
+                            <li class="nav-item position-static nav-item-has-mega" id="collectionsNavItem">
+                                <a class="nav-link nav-link-luxury" href="/t-shirts-for-men">Collections <i class="fa-solid fa-chevron-down" style="font-size:0.65rem; margin-left:3px; vertical-align:middle;"></i></a>
+                                <!-- Mega Menu Overlay -->
+                                <div class="mega-menu-luxury" id="collectionsMegaMenu">
+                                    <div class="container py-5">
+                                        <div class="row g-4">
+                                            <div class="col-lg-3">
+                                                <h6 class="mega-title">Shop by Category</h6>
+                                                <ul class="mega-list">
+                                                    {% for sub in sub_category %}
+                                                    <li>
+                                                        <a href="/collections/{{ sub.category_slug }}/">{{ sub.name }}</a>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-9">
+                                                <div class="row g-3">
+                                                    <div class="col-lg-4">
+                                                        <div class="mega-promo-card mega-promo-card--large">
+                                                            <img src="/static/images/ttt.webp" alt="Premium Tees" class="img-fluid" loading="lazy">
+                                                            <div class="promo-overlay"><span>New Tees</span></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mega-promo-card mega-promo-card--large">
+                                                            <img src="/static/images/mug.webp" alt="Essentials" class="img-fluid" loading="lazy">
+                                                            <div class="promo-overlay"><span>Essentials</span></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mega-promo-card mega-promo-card--large">
+                                                            <img src="/static/images/case.webp" alt="Modern Fits" class="img-fluid" loading="lazy">
+                                                            <div class="promo-overlay"><span>Modern Fits</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-luxury" href="/our-story">Our Story</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Center: Brand Logo -->
+                    <div class="col-2 text-center">
+                        <a class="navbar-brand m-0" href="/">
+                            <img src="/static/images/logo2.png" alt="US Vesta Logo" class="logo-img" style="height: 36px; width: auto; transition: filter 0.4s;">
+                        </a>
+                    </div>
+
+                    <!-- Right: Menu Icons -->
+                    <div class="col-5 d-flex justify-content-end align-items-center gap-4">
+                        <div class="search-trigger cursor-pointer" type="button" data-bs-toggle="collapse" data-bs-target="#desktopSearchCollapse">
+                            <i class="fa-solid fa-magnifying-glass fs-5 icon-luxury"></i>
+                        </div>
+                        
+                        <a href="/profile" class="text-decoration-none text-dark position-relative">
+                            <i class="fa-regular fa-heart fs-5 icon-luxury" title="Wishlist"></i>
+                            <span class="wishlist-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" style="font-size: 0.55rem; padding: 3px 6px; transform: translate(-30%, -30%) !important; display: none;">0</span>
+                        </a>
+
+                        <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart" class="text-decoration-none text-dark cursor-pointer position-relative">
+                            <i class="fa-solid fa-bag-shopping fs-5 icon-luxury" title="Cart"></i>
+                            <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" style="font-size: 0.55rem; padding: 3px 6px; transform: translate(-30%, -30%) !important;">0</span>
+                        </a>
+
+                        {% if request.user.is_authenticated %}
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-decoration-none text-dark d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                                    {% if request.user.profile_image %}
+                                        <img src="{{ request.user.profile_image.url }}" alt="profile" width="28" height="28" class="rounded-circle border">
+                                    {% else %}
+                                        <img src="/static/images/user_profile.webp" alt="profile" width="28" height="28" class="rounded-circle border">
+                                    {% endif %}
+                                    <span class="fs-6 fw-light text-dark logo-text-nav">{{ request.user.first_name }}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-4 p-3 mt-2">
+                                    <li><a class="dropdown-item py-2 px-3 rounded-3" href="/profile">Profile Info</a></li>
+                                    <li><a class="dropdown-item py-2 px-3 rounded-3" href="/profile">My Orders</a></li>
+                                    {% if request.user.user_type == "Website_own" %}
+                                    <li><a class="dropdown-item py-2 px-3 rounded-3" href="/customer-orders">Dashboard</a></li>
+                                    {% endif %}
+                                    <li><hr class="dropdown-divider my-2"></li>
+                                    <li><a class="dropdown-item py-2 px-3 rounded-3 text-danger" href="/logout">Sign Out</a></li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-decoration-none text-dark">
+                                <i class="fa-regular fa-user fs-5 icon-luxury" title="Account"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Slide-down Desktop Search -->
+        <div class="collapse search-collapse-luxury" id="desktopSearchCollapse">
+            <div class="container py-4">
+                <form action="/shop?" class="position-relative">
+                    <input type="text" class="search-input-luxury" id="searchbar_fullwebsite" name="searchbar" oninput="mainsearch_fut()" placeholder="Search our catalog..." autocomplete="off">
+                    <button class="search-submit-luxury" type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                    <ul id="big_searvhbar_fullwebsite" class="list-group list-group-flush search-results-luxury mt-3"></ul>
+                </form>
+            </div>
+        </div>
+
+        <!-- ✅ LUXURY MOBILE HEADER -->
+        <div class="d-lg-none fixed-top w-100 luxury-mobile-header" style="z-index: 1000; transition: all 0.4s ease;">
+            <nav class="navbar px-3 py-2" style="background: transparent;">
+                <div class="container-fluid d-flex align-items-center justify-content-between">
+                    <!-- Menu Button -->
+                    <button class="btn p-0 border-0" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+                        <i class="fa-solid fa-bars-staggered fs-3 text-dark"></i>
+                    </button>
+
+                    <!-- Center Brand Logo -->
+                    <a href="/" class="navbar-brand m-0">
+                        <img src="/static/images/logo2.png" alt="US Vesta Logo" class="logo-img-mobile" style="height: 28px; width: auto;">
+                    </a>
+
+                    <!-- Cart Icon (Quick Access) -->
+                    <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" class="text-dark cursor-pointer position-relative">
+                        <i class="fa-solid fa-bag-shopping fs-3"></i>
+                        <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" style="font-size: 0.55rem; padding: 3px 6px; transform: translate(-30%, -30%) !important;">0</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- ✅ Mobile Search Offcanvas -->
+        <div class="offcanvas offcanvas-top border-0 search-canvas-mobile" tabindex="-1" id="mobileSearchCanvas" style="height: 120px; background-color: var(--color-warm-beige);">
+            <div class="offcanvas-header py-3 px-4 d-flex align-items-center">
+                <button class="btn p-0 border-0 me-3" data-bs-dismiss="offcanvas">
+                    <i class="fa-solid fa-arrow-left fs-4 text-dark"></i>
+                </button>
+                <form class="flex-grow-1" action="/shop?">
+                    <div class="position-relative">
+                        <input class="form-control border-0 bg-white rounded-pill px-4 py-2 text-dark" type="search" id="searchbar_fullwebsite_phone" name="searchbar"
+                            oninput="mainsearch_fut_phone()" placeholder="Search catalog..." aria-label="Search" style="box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                        <button type="submit" class="position-absolute end-0 top-50 translate-middle-y border-0 bg-transparent pe-3 text-muted">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                    <ul id="big_searvhbar_fullwebsite_phone" class="list-group my-3 search-results-phone shadow rounded-4"></ul>
+                </form>
+            </div>
+        </div>
+
+        <!-- ✅ Mobile Side Navigation Offcanvas -->
+        <div class="offcanvas offcanvas-start border-0" id="mobileMenu" style="width: 320px; background-color: #ffffff;">
+            <div class="offcanvas-header border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                <img src="/static/images/logo2.png" alt="US Vesta" style="height: 28px; width: auto;">
+                <button class="btn-close shadow-none" data-bs-dismiss="offcanvas"></button>
+            </div>
+
+            <div class="offcanvas-body py-4 px-4 d-flex flex-column justify-content-between">
+                <div>
+                    <ul class="list-unstyled d-flex flex-column gap-3 mb-4">
+                        <li><a class="fs-4 fw-light text-dark text-decoration-none" href="/shop">Shop Collection</a></li>
+                        <li><a class="fs-4 fw-light text-dark text-decoration-none" href="/for-corporates">B2B Portal</a></li>
+                        <li><a class="fs-4 fw-light text-dark text-decoration-none" href="/our-story">Our Philosophy</a></li>
+                    </ul>
+                    
+                    <hr class="my-4" style="border-color: rgba(0,0,0,0.05);">
+                    
+                    <h6 class="text-uppercase tracking-wider small text-muted mb-3" style="letter-spacing: 0.1em;">Categories</h6>
+                    <div class="d-flex flex-column gap-2">
+                        {% for sub in sub_category %}
+                        <a href="/collections/{{ sub.category_slug }}/" class="text-secondary text-decoration-none py-1 fs-6 fw-light">{{ sub.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="mt-auto">
+                    {% if request.user.is_authenticated %}
+                    <a href="/profile" class="btn btn-dark w-100 py-3 rounded-pill mb-2" style="background-color: var(--color-soft-black); border: none; font-size: 0.9rem;">My Account</a>
+                    <a href="/logout" class="btn btn-outline-dark w-100 py-3 rounded-pill" style="font-size: 0.9rem;">Sign Out</a>
+                    {% else %}
+                    <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-dark w-100 py-3 rounded-pill" style="background-color: var(--color-soft-black); border: none; font-size: 0.9rem;">Sign In</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticky Bottom Navigation for Mobile -->
+        <div class="mobile-bottom-nav d-lg-none fixed-bottom bg-white border-top py-2 px-4 shadow-lg" style="z-index: 999;">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="/" class="mobile-tab-item active">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="/shop" class="mobile-tab-item">
+                    <i class="fa-solid fa-store"></i>
+                    <span>Shop</span>
+                </a>
+                <a href="#" data-bs-toggle="offcanvas" data-bs-target="#mobileSearchCanvas" class="mobile-tab-item">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Search</span>
+                </a>
+                <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" class="mobile-tab-item position-relative">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" style="font-size: 0.55rem; padding: 2px 5px; transform: translate(-30%, 10%) !important;">0</span>
+                    <span>Cart</span>
+                </a>
+                {% if request.user.is_authenticated %}
+                <a href="/profile" class="mobile-tab-item">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Account</span>
+                </a>
+                {% else %}
+                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" class="mobile-tab-item">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Login</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% csrf_token %}
+          
+
+
+        <div id="main-content">
+            {% block mainbody %}
+
+            {% endblock mainbody %}
+        </div>
+
+    </div>
+
+ <!-- 🛒 OFFCANVAS CART -->
+    <div id="shoping_card_dynemic00">
+        {% include "partials/cart_items.html" %}
+    </div>
+
+
+
+     <!-- ######### Edn cart modal  -->
+   
+     <div class="container mb-5 d-none" id="seo-accordion-wrapper">
+<div class="accordion" id="accordionExample">
+    {% for a in courdinators_pages %}
+
+        {% if request.path  in a.show_on_pages %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{a.id}}" aria-expanded="true" aria-controls="collapseOne{{a.id}}">
+                    {{a.name}}
+                </button>
+                </h2>
+                <div id="collapseOne{{a.id}}" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                     <div class="description-wrapper">
+                                <div class="description-content" id="descBox">
+                    {{a.containt|safe}}
+
+                                </div>
+
+                            </div>
+                </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+  
+</div>
+</div>
+        <!-- ✅ LUXURY EDITORIAL FOOTER -->
+        <footer class="site-footer bg-black py-5 mt-5">
+            <div class="container py-4">
+                <div class="row gy-5">
+                    <!-- Column 1: Brand -->
+                    <div class="col-lg-4 text-center text-lg-start">
+                        <a href="/" class="text-decoration-none">
+                            <h2 class="footer-brand-name">US VESTA</h2>
+                        </a>
+                        <p class="footer-tagline">
+                            Thoughtfully designed and built to endure. US Vesta merges modern luxury with functional simplicity.
+                        </p>
+                        <div class="d-flex justify-content-center justify-content-lg-start gap-4 mt-4">
+                            <a href="https://www.facebook.com/profile.php?id=61581390461341" class="footer-social-icon" target="_blank" rel="noopener" aria-label="Facebook">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                            <a href="https://www.instagram.com/usvesta25/" class="footer-social-icon" target="_blank" rel="noopener" aria-label="Instagram">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/company/us-vesta/about/?viewAsMember=true" class="footer-social-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Navigation Links -->
+                    <div class="col-lg-3 col-6 text-start offset-lg-1">
+                        <h6 class="footer-col-heading">Navigation</h6>
+                        <ul class="list-unstyled d-flex flex-column gap-2">
+                            <li><a href="/shop" class="footer-link">Shop Catalog</a></li>
+                            <li><a href="/for-corporates" class="footer-link">B2B Portal</a></li>
+                            <li><a href="/our-story" class="footer-link">Our Philosophy</a></li>
+                            <li><a href="/blog" class="footer-link">Editorial Blog</a></li>
+                            <li><a href="/contact-us" class="footer-link">Contact Support</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 3: Legal Policy Links -->
+                    <div class="col-lg-3 col-6 text-start">
+                        <h6 class="footer-col-heading">Policies</h6>
+                        <ul class="list-unstyled d-flex flex-column gap-2">
+                            <li><a href="/terms-&-conditionst" class="footer-link">Terms of Service</a></li>
+                            <li><a href="/privacy-policy" class="footer-link">Privacy Policy</a></li>
+                            <li><a href="/shipping-&-delivery-policy" class="footer-link">Shipping & Delivery</a></li>
+                            <li><a href="/return-&-refund-policy" class="footer-link">Returns & Exchanges</a></li>
+                            <li><a href="/sitemap.xml" class="footer-link">Sitemap</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Footer Copyright Bottom -->
+                <div class="footer-bottom mt-5 pt-4 text-center">
+                    <p class="footer-copyright">© 2013 — 2026 US Vesta. Designed for modern living. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+        
+
+
+    <!-- ######### Login Modal ######### -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content shadow-lg border-0 rounded-4">
+
+      <!-- Header -->
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold">Welcome Back 👋</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body px-4 pb-4">
+
+        <div class="text-center mb-4">
+          <h4 class="fw-bold">Login to Your Account</h4>
+          <p class="text-muted small">Access your orders and cart</p>
+        </div>
+
+        <!-- Google Login -->
+        <div class="d-grid mb-3">
+          <a href="{% provider_login_url 'google' process='login' %}" 
+             class="btn btn-light border d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm">
+
+            <img loading="lazy" src="https://developers.google.com/identity/images/g-logo.png" width="20">
+            <span class="fw-semibold">Continue with Google</span>
+
+          </a>
+        </div>
+
+        <!-- Divider -->
+        <div class="text-center my-3 position-relative">
+          <hr>
+          <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 small text-muted">
+            OR
+          </span>
+        </div>
+
+        <!-- OTP Form -->
+        <!-- <form method="post" id="otp_form">
+          {% csrf_token %}
+
+          <p id="alert_mesej" class="text-danger small text-center"></p>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Enter OTP</label>
+            <input type="text" 
+                   id="loginotp" 
+                   name="otp"
+                   class="form-control form-control-lg"
+                   placeholder="Enter OTP"
+                   required>
+          </div>
+
+          <input type="text" hidden readonly id="rendring_next_url" value="{{ request.GET.next }}">
+
+          <div class="d-grid">
+            <button type="button" onclick="verifyOTP()" class="btn btn-dark btn-lg">
+              Verify & Login
+            </button>
+          </div>
+
+        </form> -->
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ######### End Login Modal ######### -->
+
+
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const currentPath = window.location.pathname;
+
+    // Hide SEO accordion on homepage — breaks luxury aesthetic
+    const seoAccordion = document.getElementById("seo-accordion-wrapper");
+    if (seoAccordion && (currentPath === "/" || currentPath === "/index.html" || currentPath === "")) {
+        seoAccordion.remove();
+    } else if (seoAccordion) {
+        seoAccordion.classList.remove("d-none");
+    }
+
+    // jaha footer remove karna hai
+    const removeFooterPages = [
+        "/profile",
+        "/checkout",
+    ];
+    const path = window.location.pathname;
+
+    if (path.includes("/products/")) {
+        document.querySelector("footer")?.remove();
+    }
+
+    if (removeFooterPages.includes(currentPath)) {
+        document.querySelector("footer")?.remove();
+    }
+});
+</script>  
+    <!-- jQuery (as is, but defer added) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+
+<!-- Owl -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" defer></script>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+<!-- Custom -->
+<script src="/static/js/home_page.js?v=5.0" defer></script>
+<script src="/static/js/cart.js" defer></script>
+
+<!-- Extra -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+<script>
+window.addEventListener("load", function () {
+    let loader = document.getElementById("pageLoader");
+    if(loader){
+        // smooth fade out
+        loader.style.opacity = "0";
+        loader.style.transition = "0.4s";
+
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 400);
+    }
+});
+
+// Luxury Navbar Scroll Effect
+document.addEventListener("DOMContentLoaded", () => {
+    const navbar = document.querySelector(".luxury-navbar");
+    const mobileHeader = document.querySelector(".luxury-mobile-header");
+    const path = window.location.pathname;
+
+    if (path === "/" || path === "/index.html" || path === "") {
+        document.body.classList.add("home-page");
+        
+        const handleScroll = () => {
+            if (window.scrollY > 30) {
+                navbar?.classList.add("scrolled");
+                mobileHeader?.classList.add("scrolled");
+            } else {
+                navbar?.classList.remove("scrolled");
+                mobileHeader?.classList.remove("scrolled");
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
+    } else {
+        navbar?.classList.add("scrolled");
+        mobileHeader?.classList.add("scrolled");
+    }
+});
+
+// =========== GLOBAL TOAST NOTIFICATION ===========
+(function() {
+    var toastContainer = document.createElement('div');
+    toastContainer.id = 'usvesta-toast-container';
+    toastContainer.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;';
+    document.body.appendChild(toastContainer);
+
+    window.showToast = function(msg, type) {
+        var toast = document.createElement('div');
+        var bg = (type === 'error') ? '#e24444' : (type === 'warning') ? '#C9A96E' : '#111111';
+        toast.style.cssText = 'background:' + bg + ';color:#fff;padding:14px 28px;border-radius:100px;font-size:0.85rem;font-weight:400;letter-spacing:0.04em;opacity:0;transform:translateY(12px);transition:all 0.35s cubic-bezier(0.16,1,0.3,1);white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,0.15);pointer-events:none;max-width:90vw;text-align:center;';
+        toast.textContent = msg || 'Done!';
+        toastContainer.appendChild(toast);
+        requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            });
+        });
+        setTimeout(function() {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(12px)';
+            setTimeout(function() { if(toast.parentNode) toast.remove(); }, 400);
+        }, 2800);
+    };
+})();
+
+// =========== CART COUNT GLOBAL UPDATER ===========
+window.updateCartCount = function(count) {
+    document.querySelectorAll('.cart-count-badge').forEach(function(el) {
+        el.textContent = count;
+        el.style.display = count > 0 ? 'inline-block' : 'none';
+    });
+};
+
+// =========== CSRF TOKEN: COOKIE FALLBACK ===========
+window.getCsrfToken = function() {
+    var input = document.querySelector("[name='csrfmiddlewaretoken']");
+    if (input) return input.value;
+    var m = document.cookie.match(/csrftoken=([^;]+)/);
+    return m ? m[1] : '';
+};
+</script>
+<script defer>
+    
+  var availableTags = [
+    {% for a in search_data %}
+      "{{ a.product_name|truncatechars:55 }}",
+    {% endfor %}
+  ];
+
+  function mainsearch_fut() {
+    let sear_vl = document.getElementById("searchbar_fullwebsite").value.toLowerCase()
+    let tag_text = availableTags.filter(item => item.toLowerCase().includes(sear_vl))
+    let ul = document.getElementById("big_searvhbar_fullwebsite")
+    ul.innerHTML = ""
+
+    if (sear_vl.length <= 0) {
+      ul.style.display = "none"
+    } else {
+      ul.style.display = "block"
+    }
+
+    tag_text.forEach((elm) => {
+      let new_li = document.createElement("li");
+      new_li.className = "list-group-item d-flex align-items-center";
+
+      let icon = document.createElement("i");
+      icon.className = "fa fa-search me-2";
+      new_li.appendChild(icon);
+
+      new_li.appendChild(document.createTextNode(elm));
+      ul.appendChild(new_li);
+
+      new_li.addEventListener("click", () => {
+        const searchTerm = elm.replace(/["]+/g, '');
+        window.location.href = "/shop?searchbar=" + searchTerm
+      });
+    })
+  }
+  
+  
+  
+  
+  function mainsearch_fut_phone() {
+    let sear_vl = document.getElementById("searchbar_fullwebsite_phone").value.toLowerCase()
+    let tag_text = availableTags.filter(item => item.toLowerCase().includes(sear_vl))
+    let ul = document.getElementById("big_searvhbar_fullwebsite_phone")
+    ul.innerHTML = ""
+
+    if (sear_vl.length <= 0) {
+      ul.style.display = "none"
+    } else {
+      ul.style.display = "block"
+    }
+
+    tag_text.forEach((elm) => {
+      let new_li = document.createElement("li");
+      new_li.className = "list-group-item d-flex align-items-center";
+
+      let icon = document.createElement("i");
+      icon.className = "fa fa-search me-2";
+      new_li.appendChild(icon);
+
+      new_li.appendChild(document.createTextNode(elm));
+      ul.appendChild(new_li);
+
+      new_li.addEventListener("click", () => {
+        const searchTerm = elm.replace(/["]+/g, '');
+        window.location.href = "/shop?searchbar=" + searchTerm
+      });
+    })
+  }
+</script>
+
+
+    {% block footer %}{% endblock footer %}
+
+<script>
+// ===== MEGA MENU: Delay-based hover to prevent gap flicker =====
+(function() {
+    var navItem = document.getElementById('collectionsNavItem');
+    var megaMenu = document.getElementById('collectionsMegaMenu');
+    if (!navItem || !megaMenu) return;
+
+    var hideTimeout;
+    var HIDE_DELAY = 120; // ms — enough time to move mouse into the menu
+
+    function showMenu() {
+        clearTimeout(hideTimeout);
+        megaMenu.style.opacity = '1';
+        megaMenu.style.visibility = 'visible';
+        megaMenu.style.transform = 'translateY(0)';
+        megaMenu.style.pointerEvents = 'auto';
+    }
+
+    function hideMenu() {
+        hideTimeout = setTimeout(function() {
+            megaMenu.style.opacity = '0';
+            megaMenu.style.visibility = 'hidden';
+            megaMenu.style.transform = 'translateY(10px)';
+            megaMenu.style.pointerEvents = 'none';
+        }, HIDE_DELAY);
+    }
+
+    // Nav item (trigger link)
+    navItem.addEventListener('mouseenter', showMenu);
+    navItem.addEventListener('mouseleave', hideMenu);
+
+    // Mega menu panel itself — cancel hide when entering the panel
+    megaMenu.addEventListener('mouseenter', function() {
+        clearTimeout(hideTimeout);
+    });
+    megaMenu.addEventListener('mouseleave', hideMenu);
+})();
+</script>
+
+</body>
+
+</html>

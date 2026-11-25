@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+{% block header %}
+
+
+<title>T Shirts for Men – Printed, Oversized, Gym & Casual | US Vesta</title>
+<meta name="description" content="Explore trendy t shirts for men including printed, oversized, gym, casual & summer tees at US Vesta. Premium fabrics, stylish designs & affordable prices.">
+<link rel="canonical" href="{{current_url}}" />
+<meta property="og:title" content="T Shirts for Men – Printed, Oversized, Gym & Casual | US Vesta" />
+<meta property="og:description" content="Explore trendy t shirts for men including printed, oversized, gym & casual tees." />
+<meta property="og:url" content="{{current_url}}" />
+
+<meta name="twitter:title" content="T Shirts for Men – Printed, Oversized, Gym & Casual | US Vesta" />
+<meta name="twitter:description" content="Explore trendy t shirts for men including printed, oversized, gym & casual tees." />
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Shop – T Shirts for Men",
+ "url": "{{ current_url }}"
+}
+</script>
+
+<link rel="stylesheet" href="/static/css/shop.css">
+{% endblock header %}
+
+{% block mainbody %}
+<div class="shop-page-padding">
+    <div class="container-fluid py-3">
+
+        <!-- MOBILE FILTER BAR -->
+       <div class="mobile-filter-bar d-lg-none bg-white py-2 px-2 shadow-sm">
+
+    <div class="input-group mb-2">
+
+        <span class="input-group-text bg-white border-end-0">
+            <i class="fa fa-search text-muted"></i>
+        </span>
+
+        <input 
+            type="search"
+            name="search-result"
+            id="shop_search"
+            oninput="Search_filter()"
+            placeholder="Search products..."
+            class="form-control border-start-0"
+        >
+
+    </div>
+
+</div>
+
+        <div class="row">
+
+            <!-- DESKTOP FILTER SIDEBAR -->
+            <div class="col-lg-3 d-none d-lg-block">
+
+                <div class="filter-sidebar sticky-top">
+
+                    <!-- Search -->
+                    <div class="card p-3 mb-3">
+                        <h6 class="fw-bold">Search</h6>
+                        <input type="search" name="search-result" id="shop_search" oninput="Search_filter()" placeholder="Search here..." class="form-control" placeholder="Search here...">
+                    </div>
+
+                    <!-- Price -->
+                    <div class="card p-3 mb-3">
+                           <img loading="lazy" src="/static/web_images/Gemini_Generated_Image_dc9tsidc9tsidc9t.webp" width="100%" alt="t-shirts">
+                        
+                    </div>
+
+                 
+
+                </div>
+
+            </div>
+
+            <!-- PRODUCTS -->
+            <div class="col-lg-9 col-12">
+
+                <div class="row g-3 productGrid">
+
+                {% for a in products_all %}
+                {% for c in a.color_product_set.all %}
+                    <div class="col-lg-3 col-md-4 col-6 product-item show"
+                        data-price="{% if request.user.user_type == 'B2B' %}{{ a.b2b_price }}{% else %}{{ a.b2c_price }}{% endif %}" data-date="{{ c.id }}"  data-fullname="{{ c.product_name|lower }}"> 
+                        <div class="product-card0 transition-all h-100">
+                            <div class="product-img overflow-hidden position-relative bg-light">
+                                <a href="/products/{{ c.uuid_product|default:a.uuid_product|default:a.product_slug }}">
+                                    {% if a.product_quantity_offer %}
+                                    <span class="badge-offer">BUY {{a.product_quantity_offer}} @ {{a.product_amount_offer|floatformat:0}}</span>
+                                    {% endif %}
+
+                                    <img loading="lazy" class="img-fluid w-100 product-main-img" src="{{ c.color_images.url }}" alt="{{ a.product_name }}">
+
+                                    <div class="rating">
+                                        ⭐ {{ a.average_rating|default:0|floatformat:1 }}
+                                    </div>
+                                </a>
+
+                                <!-- 🌟 Floating Share Icon (Top Right) -->
+                                <div class="product-hover-actions">
+                                    <button type="button" class="btn-action-icon" title="Share Product" onclick="shareProduct('{{ a.product_name|escapejs }}', '{{ c.uuid_product }}')">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+
+                                <!-- 🌟 Sleek Plus Icon (Bottom Right Quick Add) -->
+                                <button type="button" class="btn-quick-add-plus" title="Add to Cart" onclick="Add_to_cart({{c.id}},this)" data-product="{{c.id}}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <div class="pt-2.5 pb-3 px-2 bg-white">
+                                <!-- 1. Unbold Title (Full Width Line 1) -->
+                                <a class="d-block text-dark text-uppercase text-decoration-none text-truncate mb-1" style="font-size: 0.88rem; font-weight: 500 !important; letter-spacing: 0.2px;" href="/products/{{ c.uuid_product|default:a.uuid_product|default:a.product_slug }}" title="{{ a.product_name }}">
+                                    {{ a.product_name|truncatechars:28 }}
+                                </a>
+
+                                <!-- 2. Subtext Row: Price + MRP + Discount Badge + Best Price (Line 2) -->
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-1 mt-1">
+                                    <div class="d-flex align-items-center gap-1.5">
+                                        {% if request.user.user_type == "B2B" %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2b_price }}</span>
+                                        {% else %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2c_price }}</span>
+                                        {% endif %}
+
+                                        {% if a.discount_price %}
+                                        <del class="text-muted small" style="font-size: 0.76rem;">₹{{a.discount_price}}</del>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "B2B" %}
+                                            {% widthratio a.b2b_price a.discount_price 100 as sale_percent %}
+                                        {% else %}
+                                            {% widthratio a.b2c_price a.discount_price 100 as sale_percent %}
+                                        {% endif %}
+
+                                        {% with percent=100|add:"-"|add:sale_percent %}
+                                        {% if percent > 0 %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{ percent|floatformat:0 }}% OFF</span>
+                                        {% endif %}
+                                        {% endwith %}
+                                    </div>
+
+                                    {% if a.product_quantity_offer %}
+                                    <span class="text-success fw-semibold small" style="font-size: 0.74rem;">
+                                        <i class="fas fa-tag me-0.5"></i>Best ₹{% widthratio a.product_amount_offer a.product_quantity_offer 1 %}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="col-lg-3 col-md-4 col-6 product-item show"
+                  data-price="{{ a.b2c_price }}" data-date="{{ a.id }}"  data-fullname="{{ a.product_name|lower }}"> 
+                        <div class="product-card0 transition-all h-100">
+                            <div class="product-img overflow-hidden position-relative bg-light">
+                                <a href="/products/{{ a.uuid_product|default:a.product_slug }}">
+                                    {% if a.product_quantity_offer %}
+                                    <span class="badge-offer">BUY {{a.product_quantity_offer}} @ {{a.product_amount_offer|floatformat:0}}</span>
+                                    {% endif %}
+
+                                    <img loading="lazy" class="img-fluid w-100 product-main-img" src="{{ a.product_image.url }}" alt="{{ a.product_name }}">
+
+                                    <div class="rating">
+                                        ⭐ {{ a.average_rating|default:0|floatformat:1 }}
+                                    </div>
+                                </a>
+
+                                <!-- 🌟 Floating Share Icon (Top Right) -->
+                                <div class="product-hover-actions">
+                                    <button type="button" class="btn-action-icon" title="Share Product" onclick="shareProduct('{{ a.product_name|escapejs }}', '{{ a.uuid_product }}')">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+
+                                <!-- 🌟 Sleek Plus Icon (Bottom Right Quick Add) -->
+                                <button type="button" class="btn-quick-add-plus" title="Add to Cart" onclick="Add_to_cart({{a.id}},this)" data-product="{{a.id}}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <div class="pt-2.5 pb-3 px-2 bg-white">
+                                <!-- 1. Unbold Title (Full Width Line 1) -->
+                                <a class="d-block text-dark text-uppercase text-decoration-none text-truncate mb-1" style="font-size: 0.88rem; font-weight: 500 !important; letter-spacing: 0.2px;" href="/products/{{ a.uuid_product|default:a.product_slug }}" title="{{ a.product_name }}">
+                                    {{ a.product_name|truncatechars:28 }}
+                                </a>
+
+                                <!-- 2. Subtext Row: Price + MRP + Discount Badge + Best Price (Line 2) -->
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-1 mt-1">
+                                    <div class="d-flex align-items-center gap-1.5">
+                                        {% if request.user.user_type == "B2B" %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2b_price }}</span>
+                                        {% else %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2c_price }}</span>
+                                        {% endif %}
+
+                                        {% if a.discount_price %}
+                                        <del class="text-muted small" style="font-size: 0.76rem;">₹{{a.discount_price}}</del>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "B2B" %}
+                                            {% widthratio a.b2b_price a.discount_price 100 as sale_percent %}
+                                        {% else %}
+                                            {% widthratio a.b2c_price a.discount_price 100 as sale_percent %}
+                                        {% endif %}
+
+                                        {% with percent=100|add:"-"|add:sale_percent %}
+                                        {% if percent > 0 %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{ percent|floatformat:0 }}% OFF</span>
+                                        {% endif %}
+                                        {% endwith %}
+                                    </div>
+
+                                    {% if a.product_quantity_offer %}
+                                    <span class="text-success fw-semibold small" style="font-size: 0.74rem;">
+                                        <i class="fas fa-tag me-0.5"></i>Best ₹{% widthratio a.product_amount_offer a.product_quantity_offer 1 %}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                {% endfor %}
+                <!-- Repeat above col for more products -->
+                </div>
+                {% if page_obj.has_next %}
+                    <div 
+                        href="?page={{ page_obj.next_page_number }}{% if request.GET.categories %}&categories={{ request.GET.categories }}{% endif %}{% if request.GET.searchbar %}&searchbar={{ request.GET.searchbar }}{% endif %}"
+                        hx-trigger="revealed"
+                        hx-swap="afterend"
+                        hx-target="#productGrid"
+                        class="infinite-scroll-trigger"
+                    >
+                    </div>
+                    {% endif %} 
+            </div>
+
+        </div>
+    </div>
+
+
+    
+<!-- Mobile Filter Offcanvas -->
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="mobileFilterOffcanvas"
+     aria-labelledby="mobileFilterOffcanvasLabel" style="height: 50vh;">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold" id="mobileFilterOffcanvasLabel">Filters</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0" style="overflow-y: auto;">
+        <div class="sidebar-widget p-3 border-bottom">
+            <h4 class="pro-sidebar-title">Search</h4>
+            <div class="pro-sidebar-search mt-3">
+                <div class="input-group">
+                    <input type="text" id="shop_search_mobile" class="form-control" placeholder="Search products...">
+                    <button type="button" class="btn btn-outline-secondary" onclick="handleMobileSearch()">
+                        <i class="la la-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-widget p-3 border-bottom">
+            <h4 class="pro-sidebar-title">Categories</h4>
+            <div class="sidebar-widget-list mt-3">
+                <div class="list-group list-group-flush said_bar_cat_shop">
+                   <div class="accordion" id="mainCatAccordion">
+                        {% for cat in categories_main %}
+                            <div class="accordion-item shadow-sm">
+                                <h2 class="accordion-header" id="headingCat{{ cat.id }}">
+                                    <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapseCat{{ cat.id }}"
+                                            aria-expanded="false"
+                                            aria-controls="collapseCat{{ cat.id }}">
+                                        {{ cat.name }} ({{cat.sub_count}})
+                                    </button>
+                                </h2>
+
+                                <div id="collapseCat{{ cat.id }}" class="accordion-collapse collapse"
+                                    aria-labelledby="headingCat{{ cat.id }}"
+                                    data-bs-parent="#mainCatAccordion">
+
+                                    <div class="accordion-body">
+                                        {% for sub in sub_ct %}
+                                            {% if sub.category.id == cat.id %}
+                                                <a class="d-block mb-1" href="/shop?categories={{ sub.category_slug }}">
+                                                    {{ sub.name }} ({{sub.product_count }})
+                                                </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 bg-light position-sticky bottom-0">
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-outline-danger py-2" onclick="resetAllFilters()">Reset All Filters</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock mainbody %}

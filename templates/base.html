@@ -1,0 +1,1514 @@
+{% load socialaccount %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+ <head hx-head="true">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>{% block title %}US VESTA — Luxury Streetwear, Heavyweight Cotton Oversized Tees{% endblock title %}</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta content="Discover US VESTA. Heavyweight organic cotton oversized streetwear, collective drops, and multi-dimensional luxury fit apparel." name="description"/>
+  <meta content="US Vesta, premium clothing, luxury fashion, modern wardrobe, oversized streetwear, heavyweight cotton tees" name="keywords"/>
+  <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/>
+  <meta name="theme-color" content="#0d0d0d"/>
+
+  <!-- Canonical and OpenGraph Defaults -->
+  <meta property="og:site_name" content="US VESTA"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  
+  <link href="/static/images/favicon.png?v=2" rel="icon" type="image/png"/>
+
+  <!-- DNS Preconnect for Google Fonts & CDNs -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://cdnjs.cloudflare.com" rel="preconnect"/>
+  <link href="https://cdn.jsdelivr.net" rel="preconnect"/>
+
+  <!-- Premium Typography with font-display: swap -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- ✅ HTMX (defer) -->
+  <script defer="" src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+  <!-- Preload Critical Stylesheets -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" as="style"/>
+  <link rel="preload" href="/static/css/home_page.css?v=6.8" as="style"/>
+
+  <!-- Non-blocking Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" media="print" onload="this.media='all'"/>
+  <noscript><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/></noscript>
+
+  <!-- Non-blocking Icon & Animation Stylesheets -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'"/>
+  <noscript><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/></noscript>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" media="print" onload="this.media='all'" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" media="print" onload="this.media='all'" rel="stylesheet"/>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'"/>
+  <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/></noscript>
+
+  <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet" media="print" onload="this.media='all'"/>
+  <noscript><link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet"/></noscript>
+
+  <!-- ✅ Custom Stylesheets -->
+  <link as="style" href="/static/css/cxelloection_alltype_tshirt.css?v=1.3" onload="this.rel='stylesheet'" rel="preload"/>
+  <link href="/static/css/home_page.css?v=6.8" rel="stylesheet" media="print" onload="this.media='all'"/>
+  <noscript><link href="/static/css/home_page.css?v=6.8" rel="stylesheet"/></noscript>
+  <noscript>
+   <link href="/static/css/cxelloection_alltype_tshirt.css?v=1.3" rel="stylesheet"/>
+  </noscript>
+
+  <!-- Font Display Swap overrides for FontAwesome & Web Fonts -->
+  <style>
+    @font-face {
+      font-family: 'Font Awesome 6 Free';
+      font-style: normal;
+      font-weight: 900;
+      font-display: swap;
+      src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: 'Font Awesome 6 Brands';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: 'Font Awesome 6 Free';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-regular-400.woff2") format("woff2");
+    }
+  </style>
+
+  <!-- JSON-LD Structured Data for Google Rich Results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.usvesta.com/#organization",
+        "name": "US VESTA",
+        "url": "https://www.usvesta.com/",
+        "logo": "https://www.usvesta.com/static/images/favicon.png",
+        "description": "Luxury heavyweight streetwear and oversized apparel.",
+        "sameAs": [
+          "https://www.instagram.com/usvesta"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.usvesta.com/#website",
+        "url": "https://www.usvesta.com/",
+        "name": "US VESTA",
+        "publisher": { "@id": "https://www.usvesta.com/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.usvesta.com/shop?searchbar={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+
+  {% block header %}{% endblock header %}
+  <meta content='{"allowEval":true}' name="htmx-config"/>
+  <!-- ✅ Facebook Domain Verification -->
+  <meta content="2uj19vcbtphn4stmfeoce2v9oevyks" name="facebook-domain-verification"/>
+
+  <!-- ✅ High Performance: Zero-blocking analytics loaded strictly on user engagement -->
+  <script>
+   function loadAnalytics() {
+        if (window.analyticsLoaded) return;
+        window.analyticsLoaded = true;
+
+        // 1. Google Analytics (gtag.js)
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-DXX2M4Z8Z8";
+        document.head.appendChild(gtagScript);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DXX2M4Z8Z8');
+
+        // 2. Facebook Pixel
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '815089294723118');
+        fbq('track', 'PageView');
+
+        // 3. Google Tag Manager (GTM)
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-5ZD24TBC');
+    }
+
+    // Trigger on physical user interaction only
+    ['touchstart', 'pointerdown', 'scroll', 'keydown', 'click'].forEach(function(evt) {
+        window.addEventListener(evt, loadAnalytics, { once: true, passive: true });
+    });
+  </script>
+  <style>
+    /* Suppress Froala Editor attribution / watermark */
+    [data-f-id="pbf"], a[href*="froala.com"], p:has(a[href*="froala.com"]), div:has(> a[href*="froala.com"]), .fr-wrapper + div, a[href*="froala"] {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      width: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+  </style>
+ </head>
+ <body class="bg-white">
+   <!-- ==================== EXACT GUCCI-STYLE WELCOME LANDING OVERLAY ==================== -->
+   <div id="gucciWelcomeOverlay" class="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4" style="background-color: #000000; z-index: 999999; transition: opacity 0.5s ease, visibility 0.5s ease; opacity: 0; visibility: hidden;">
+    <!-- Top Center Brand Logo -->
+    <div class="text-center mb-4">
+     <h1 class="fw-bold text-white tracking-widest text-uppercase mb-0" style="font-family: 'Cinzel', 'Playfair Display', Georgia, serif; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: 0.35em;">U S  V E S T A</h1>
+    </div>
+
+    <!-- Welcome Subtitle -->
+    <div class="text-center mb-5">
+     <h3 class="text-white fw-light mb-0" style="font-size: clamp(1.2rem, 3vw, 1.8rem); letter-spacing: 0.05em; font-family: sans-serif;">Welcome to US VESTA</h3>
+    </div>
+
+    <!-- Dropdown Selector Wrapper -->
+    <div class="w-100 mb-4" style="max-width: 420px; position: relative;">
+     <select id="gucciWelcomeSelect" aria-label="Select your country or region" class="form-select border-0 border-bottom bg-transparent text-white rounded-0 py-2 fs-6 shadow-none cursor-pointer" style="border-bottom: 1.5px solid #888888 !important; color: #ffffff !important; font-size: 1rem; appearance: none; -webkit-appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' fill=\'%23ffffff\' class=\'bi bi-chevron-down\' viewBox=\'0 0 16 16\'><path fill-rule=\'evenodd\' d=\'M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z\'/></svg>'); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 14px;" onchange="onGucciWelcomeSelectChange()">
+      <option value="" disabled selected style="background: #111; color: #aaa;">Select your country/region</option>
+      <optgroup label="Popular Destinations" style="background: #111; color: #c9a96e;">
+       <option value="INR" style="background: #111; color: #fff;">🇮🇳 India — INR (₹)</option>
+       <option value="USD" style="background: #111; color: #fff;">🇺🇸 United States — USD ($)</option>
+       <option value="GBP" style="background: #111; color: #fff;">🇬🇧 United Kingdom — GBP (£)</option>
+       <option value="EUR" style="background: #111; color: #fff;">🇪🇺 European Union — EUR (€)</option>
+       <option value="AED" style="background: #111; color: #fff;">🇦🇪 UAE / Dubai — AED (د.إ)</option>
+      </optgroup>
+      <optgroup label="Americas" style="background: #111; color: #c9a96e;">
+       <option value="USD" style="background: #111; color: #fff;">🇺🇸 United States (USD $)</option>
+       <option value="CAD" style="background: #111; color: #fff;">🇨🇦 Canada (CAD CA$)</option>
+       <option value="MXN" style="background: #111; color: #fff;">🇲🇽 Mexico (MXN Mex$)</option>
+       <option value="BRL" style="background: #111; color: #fff;">🇧🇷 Brazil (BRL R$)</option>
+       <option value="ARS" style="background: #111; color: #fff;">🇦🇷 Argentina (ARS $)</option>
+      </optgroup>
+      <optgroup label="Europe" style="background: #111; color: #c9a96e;">
+       <option value="GBP" style="background: #111; color: #fff;">🇬🇧 United Kingdom (GBP £)</option>
+       <option value="EUR" style="background: #111; color: #fff;">🇩🇪 Germany (EUR €)</option>
+       <option value="EUR" style="background: #111; color: #fff;">🇫🇷 France (EUR €)</option>
+       <option value="EUR" style="background: #111; color: #fff;">🇮🇹 Italy (EUR €)</option>
+       <option value="EUR" style="background: #111; color: #fff;">🇪🇸 Spain (EUR €)</option>
+       <option value="EUR" style="background: #111; color: #fff;">🇳🇱 Netherlands (EUR €)</option>
+       <option value="CHF" style="background: #111; color: #fff;">🇨🇭 Switzerland (CHF CHF)</option>
+      </optgroup>
+      <optgroup label="Middle East & Africa" style="background: #111; color: #c9a96e;">
+       <option value="AED" style="background: #111; color: #fff;">🇦🇪 UAE / Dubai (AED د.إ)</option>
+       <option value="SAR" style="background: #111; color: #fff;">🇸🇦 Saudi Arabia (SAR SR)</option>
+       <option value="QAR" style="background: #111; color: #fff;">🇶🇦 Qatar (QAR QR)</option>
+       <option value="KWD" style="background: #111; color: #fff;">🇰🇼 Kuwait (KWD KD)</option>
+       <option value="OMR" style="background: #111; color: #fff;">🇴🇲 Oman (OMR OR)</option>
+       <option value="BHD" style="background: #111; color: #fff;">🇧🇭 Bahrain (BHD BD)</option>
+       <option value="ZAR" style="background: #111; color: #fff;">🇿🇦 South Africa (ZAR R)</option>
+      </optgroup>
+      <optgroup label="Asia Pacific" style="background: #111; color: #c9a96e;">
+       <option value="INR" style="background: #111; color: #fff;">🇮🇳 India (INR ₹)</option>
+       <option value="AUD" style="background: #111; color: #fff;">🇦🇺 Australia (AUD AU$)</option>
+       <option value="NZD" style="background: #111; color: #fff;">🇳🇿 New Zealand (NZD NZ$)</option>
+       <option value="SGD" style="background: #111; color: #fff;">🇸🇬 Singapore (SGD SG$)</option>
+       <option value="MYR" style="background: #111; color: #fff;">🇲🇾 Malaysia (MYR RM)</option>
+       <option value="THB" style="background: #111; color: #fff;">🇹🇭 Thailand (THB ฿)</option>
+       <option value="IDR" style="background: #111; color: #fff;">🇮🇩 Indonesia (IDR Rp)</option>
+       <option value="PHP" style="background: #111; color: #fff;">🇵🇭 Philippines (PHP ₱)</option>
+       <option value="JPY" style="background: #111; color: #fff;">🇯🇵 Japan (JPY ¥)</option>
+       <option value="KRW" style="background: #111; color: #fff;">🇰🇷 South Korea (KRW ₩)</option>
+       <option value="HKD" style="background: #111; color: #fff;">🇭🇰 Hong Kong (HKD HK$)</option>
+      </optgroup>
+     </select>
+    </div>
+
+    <!-- Gucci SHOP Button -->
+    <div class="w-100" style="max-width: 420px;">
+     <button type="button" id="gucciShopBtn" class="btn w-100 py-3 fw-bold rounded-0 text-uppercase tracking-widest transition-all" style="background-color: #555555; color: #ffffff; letter-spacing: 0.25em; font-size: 0.9rem; border: none;" onclick="enterStoreFromGucciOverlay()">
+      SHOP
+     </button>
+    </div>
+   </div>
+
+  <div id="paymentLoader" style="
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:20px;
+">
+   ⏳ Processing Payment...
+  </div>
+  <div>
+   <div class="htmx-indicator" id="page-loader">
+    <div class="loader-bar">
+    </div>
+   </div>
+   <!-- ✅ FIXED TOP MAIN HEADER WRAPPER (ANNOUNCEMENT BAR + DESKTOP & MOBILE NAVBARS) -->
+   <header class="fixed-top w-100 shadow-sm" style="z-index: 1030;">
+    {% if cms.announcement_enabled %}
+    <div class="top-announcement-bar py-2 px-3 border-bottom d-flex align-items-center justify-content-between" style="background-color: {{ cms.announcement_bg_color|default:'#0d0d0d' }}; color: {{ cms.announcement_text_color|default:'#ffffff' }}; font-size: {{ cms.announcement_font_size|default:'0.75rem' }}; font-weight: {{ cms.announcement_font_weight|default:'600' }}; letter-spacing: 0.08em;">
+     <div class="flex-grow-1 text-center">
+      {{ cms.header_announcement_text|default:"FREE SHIPPING ON ALL ORDERS OVER ₹999" }}
+     </div>
+     <button type="button" class="btn btn-xs btn-outline-light rounded-pill py-0 px-2 fw-bold ms-2 d-none d-lg-inline-block" onclick="openGucciCountryModal()" style="font-size: 0.68rem; border-color: rgba(255,255,255,0.4);">
+      <span id="activeCountryPill">🌐 🇮🇳 IN (₹)</span> <i class="fas fa-chevron-down ms-1" style="font-size:0.6rem;"></i>
+     </button>
+    </div>
+    {% endif %}
+    <!-- ✅ COMET STYLE DESKTOP HEADER -->
+    <nav class="navbar navbar-expand-lg py-3 d-none d-lg-block transition-all luxury-navbar bg-white border-bottom" style="background-color: {{ cms.header_bg_color|default:'#ffffff' }} !important;">
+    <div class="container-fluid px-lg-5">
+     <div class="row w-100 align-items-center g-0">
+      <!-- Left: Bold Brand Logo -->
+      <div class="col-3 text-start">
+       <a class="text-decoration-none comet-header-logo d-inline-flex align-items-center" href="{{ cms.logo_link|default:'/' }}">
+        <img width="140" height="38" fetchpriority="high" src="{% if cms.header_logo %}{{ cms.header_logo.url }}{% else %}/static/images/us_vesta_logo.png{% endif %}" alt="US VESTA" class="img-fluid header-logo-img" style="height: {{ cms.logo_height|default:'38px' }}; width: {{ cms.logo_width|default:'auto' }}; object-fit: contain;" onerror="this.outerHTML='<span class=\'comet-header-logo\'>US VESTA</span>'">
+       </a>
+      </div>
+      <!-- Right Aligned: Navigation Links + Right Icons (Matching Screenshot media_1787678714494.png) -->
+      <div class="col-9 d-flex align-items-center justify-content-end gap-4">
+       <!-- Menu Items -->
+       <ul class="navbar-nav d-inline-flex flex-row gap-4 align-items-center mb-0 me-3">
+        <!-- 1. Men ⌄ (Click to Open Mega Menu Dropdown) -->
+        <li class="nav-item position-static nav-item-has-mega" id="menNavItem">
+         <a class="nav-link comet-nav-link text-dark fw-bold d-flex align-items-center gap-1 cursor-pointer" href="#" id="menLink">
+          Men <i class="fa-solid fa-chevron-down ms-1" style="font-size: 0.6rem;"></i>
+         </a>
+         <!-- Mega Menu Overlay (Men) -->
+         <div class="mega-menu-luxury" id="menMegaMenu">
+          <div class="container-fluid px-lg-5 py-4 text-start">
+           <div class="row g-4 align-items-stretch">
+            <!-- Column 1: Card 1 - NEW DROPS -->
+            <div class="col-lg-3">
+             <a href="{{ cms.mega_menu_cards_json.card1.url|default:'/shop' }}" class="comet-mega-card-hero d-block text-decoration-none shadow-sm">
+              <img width="280" height="380" loading="lazy" decoding="async" src="{% if cms.mega_card1_image %}{{ cms.mega_card1_image.url }}{% else %}{{ cms.mega_menu_cards_json.card1.img_url|default:'/static/images/ttt.webp' }}{% endif %}" alt="New Drops" class="img-fluid" onerror="this.src='/static/images/ttt.webp'">
+              <div class="card-title-overlay">{{ cms.mega_menu_cards_json.card1.title|default:'NEW DROPS' }}</div>
+              <div class="position-absolute top-50 start-50 translate-middle">
+               <span class="btn-comet-black">{{ cms.mega_menu_cards_json.card1.btn_text|default:'NEW DROPS' }}</span>
+              </div>
+             </a>
+            </div>
+
+            <!-- Column 2: 2x2 Sub-category Grid -->
+            <div class="col-lg-6">
+             <div class="row g-3">
+              <!-- Card 2: EDITIONS -->
+              <div class="col-6">
+               <a href="{{ cms.mega_menu_cards_json.card2.url|default:'/collections/oversize-printed-t-shirts/' }}" class="comet-subcard-item text-decoration-none shadow-sm">
+                <img width="280" height="180" loading="lazy" decoding="async" src="{% if cms.mega_card2_image %}{{ cms.mega_card2_image.url }}{% else %}{{ cms.mega_menu_cards_json.card2.img_url|default:'/static/web_images/Whisk_9709a154caeac4ab90545a5c952dfe2fdr.webp' }}{% endif %}" alt="Editions" onerror="this.src='/static/images/ttt.webp'">
+                <span class="comet-subcard-title">{{ cms.mega_menu_cards_json.card2.title|default:'EDITIONS' }}</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                 <span class="btn-comet-black">{{ cms.mega_menu_cards_json.card2.btn_text|default:'EDITIONS' }}</span>
+                </div>
+               </a>
+              </div>
+
+              <!-- Card 3: ARCHIVE -->
+              <div class="col-6">
+               <a href="{{ cms.mega_menu_cards_json.card3.url|default:'/shop' }}" class="comet-subcard-item text-decoration-none shadow-sm">
+                <img width="280" height="180" loading="lazy" decoding="async" src="{% if cms.mega_card3_image %}{{ cms.mega_card3_image.url }}{% else %}{{ cms.mega_menu_cards_json.card3.img_url|default:'/static/web_images/Whisk_78905a24721785ba3c444b0ee6258709dr.webp' }}{% endif %}" alt="Archive" onerror="this.src='/static/images/ttt.webp'">
+                <span class="comet-subcard-title">{{ cms.mega_menu_cards_json.card3.title|default:'ARCHIVE' }}</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                 <span class="btn-comet-black">{{ cms.mega_menu_cards_json.card3.btn_text|default:'ARCHIVE' }}</span>
+                </div>
+               </a>
+              </div>
+
+              <!-- Card 4: SIGNATURES -->
+              <div class="col-6">
+               <a href="{{ cms.mega_menu_cards_json.card4.url|default:'/shop' }}" class="comet-subcard-item text-decoration-none shadow-sm">
+                <img width="280" height="180" loading="lazy" decoding="async" src="{% if cms.mega_card4_image %}{{ cms.mega_card4_image.url }}{% else %}{{ cms.mega_menu_cards_json.card4.img_url|default:'/static/web_images/Whisk_023cdd4c364d7ba8ee54e503f83419b1dr.webp' }}{% endif %}" alt="Signatures" onerror="this.src='/static/images/ttt.webp'">
+                <span class="comet-subcard-title">{{ cms.mega_menu_cards_json.card4.title|default:'SIGNATURES' }}</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                 <span class="btn-comet-black">{{ cms.mega_menu_cards_json.card4.btn_text|default:'SIGNATURES' }}</span>
+                </div>
+               </a>
+              </div>
+
+              <!-- Card 5: LIMITED DROPS -->
+              <div class="col-6">
+               <a href="{{ cms.mega_menu_cards_json.card5.url|default:'/shop' }}" class="comet-subcard-item text-decoration-none shadow-sm">
+                <img width="280" height="180" loading="lazy" decoding="async" src="{% if cms.mega_card5_image %}{{ cms.mega_card5_image.url }}{% else %}{{ cms.mega_menu_cards_json.card5.img_url|default:'/static/web_images/Whisk_b62cac3c42d71e989da4dc9ba916baf3dr.webp' }}{% endif %}" alt="Limited Drops" onerror="this.src='/static/images/ttt.webp'">
+                <span class="comet-subcard-title">{{ cms.mega_menu_cards_json.card5.title|default:'LIMITED DROPS' }}</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                 <span class="btn-comet-black">{{ cms.mega_menu_cards_json.card5.btn_text|default:'LIMITED DROPS' }}</span>
+                </div>
+               </a>
+              </div>
+             </div>
+            </div>
+
+            <!-- Column 3: Right Vertical List Links (Featured Editions Links) -->
+            <div class="col-lg-3 border-start ps-lg-4 d-flex flex-column justify-content-start pt-1">
+             <div class="text-uppercase tracking-widest fw-bold text-dark mb-3" style="font-size: 0.72rem; letter-spacing: 0.18em;">✦ FEATURED EDITIONS</div>
+             <ul class="comet-right-link-list">
+              {% if cms.mega_menu_featured_links_json %}
+               {% for fl in cms.mega_menu_featured_links_json %}
+                <li>
+                 <a href="{{ fl.url }}" class="d-flex align-items-center justify-content-between py-1">
+                  <span>{{ fl.title }}</span>
+                  {% if fl.badge %}<span class="badge bg-dark text-white" style="font-size: 0.6rem; padding: 3px 8px; font-weight: 800;">{{ fl.badge }}</span>{% endif %}
+                 </a>
+                </li>
+               {% endfor %}
+              {% else %}
+               <li>
+                <a href="/shop" class="d-flex align-items-center justify-content-between py-1">
+                 <span>New In</span>
+                 <span class="badge bg-dark text-white" style="font-size: 0.6rem; padding: 3px 8px; font-weight: 800;">NEW</span>
+                </a>
+               </li>
+               <li>
+                <a href="/collections/oversize-printed-t-shirts/" class="d-flex align-items-center justify-content-between py-1">
+                 <span>Find your Silhouette</span>
+                 <i class="fa-solid fa-ruler-combined text-muted small ms-2"></i>
+                </a>
+               </li>
+               <li>
+                <a href="/shop" class="d-flex align-items-center justify-content-between py-1">
+                 <span>Only Few Left</span>
+                 <span class="badge bg-dark text-white" style="font-size: 0.6rem; padding: 3px 8px; font-weight: 800;">LIMITED</span>
+                </a>
+               </li>
+               <li>
+                <a href="/our-story" class="d-flex align-items-center justify-content-between py-1">
+                 <span>The Garage</span>
+                 <i class="fa-solid fa-warehouse text-muted small ms-2"></i>
+                </a>
+               </li>
+               <li>
+                <a href="/our-story" class="d-flex align-items-center justify-content-between py-1">
+                 <span>Gifting Guide</span>
+                 <i class="fa-solid fa-gift text-muted small ms-2"></i>
+                </a>
+               </li>
+              {% endif %}
+             </ul>
+
+             <!-- Express Shipping Banner Box -->
+             <div class="mt-4 p-3 rounded-2 bg-light border border-dashed text-dark">
+              <div class="fw-bold text-uppercase tracking-wider mb-1" style="font-size: 0.72rem; color: #111111;">
+               <i class="fa-solid fa-truck-fast me-1"></i> EXPRESS SHIPPING
+              </div>
+              <div class="text-muted small" style="font-size: 0.7rem; line-height: 1.3;">
+               Complimentary priority delivery on orders over ₹1,999.
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </li>
+
+        <!-- 2. Women ⌄ (Click to Open Mega Menu Dropdown or Coming Soon Modal) -->
+        <li class="nav-item position-static nav-item-has-mega" id="womenNavItem">
+         <a class="nav-link comet-nav-link text-dark fw-bold d-flex align-items-center gap-1 cursor-pointer" href="#" id="womenComingSoonLink" data-bs-toggle="modal" data-bs-target="#womenComingSoonModal">
+          Women <i class="fa-solid fa-chevron-down ms-1" style="font-size: 0.6rem;"></i>
+         </a>
+         <!-- Mega Menu Overlay (Women) -->
+         <div class="mega-menu-luxury" id="womenMegaMenu">
+          <div class="container-fluid px-lg-5 py-4 text-start">
+           <div class="row g-4 align-items-stretch">
+            <!-- Column 1: Card 1 - NEW DROPS -->
+            <div class="col-lg-3">
+             <a href="/shop" class="comet-mega-card-hero d-block text-decoration-none shadow-sm">
+              <img width="280" height="380" loading="lazy" decoding="async" src="/static/images/ttt.webp" alt="New Drops Women" class="img-fluid" onerror="this.src='/static/images/ttt.webp'">
+              <div class="card-title-overlay">NEW DROPS</div>
+              <div class="position-absolute top-50 start-50 translate-middle">
+               <span class="btn-comet-black">NEW DROPS</span>
+              </div>
+             </a>
+            </div>
+
+            <!-- Column 2: 2x2 Sub-category Grid -->
+            <div class="col-lg-6">
+             <div class="row g-3">
+              <!-- Card 2: EDITIONS -->
+              <div class="col-6">
+               <a href="/collections/oversize-printed-t-shirts/" class="comet-subcard-item text-decoration-none shadow-sm">
+                <img width="280" height="180" loading="lazy" decoding="async" src="{% static 'web_images/Whisk_9709a154caeac4ab90545a5c952dfe2fdr.webp' %}" alt="Editions" onerror="this.src='/static/images/ttt.webp'">
+                <span class="comet-subcard-title">EDITIONS</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                 <span class="btn-comet-black">EDITIONS</span>
+                </div>
+               </a>
+              </div>
+
+              <!-- Card 3: ARCHIVE -->
+              <div class="col-6">
+               <a href="/shop" class="comet-subcard-item text-decoration-none shadow-sm">
+                <img width="280" height="180" loading="lazy" decoding="async" src="{% static 'web_images/Whisk_78905a24721785ba3c444b0ee6258709dr.webp' %}" alt="Archive" onerror="this.src='/static/images/ttt.webp'">
+                <span class="comet-subcard-title">ARCHIVE</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                 <span class="btn-comet-black">ARCHIVE</span>
+                </div>
+               </a>
+              </div>
+
+              <!-- Card 4: SIGNATURES -->
+              <div class="col-6">
+               <a href="/shop" class="comet-subcard-item text-decoration-none shadow-sm">
+                <img width="280" height="180" loading="lazy" decoding="async" src="{% static 'web_images/Whisk_023cdd4c364d7ba8ee54e503f83419b1dr.webp' %}" alt="Signatures" onerror="this.src='/static/images/ttt.webp'">
+                <span class="comet-subcard-title">SIGNATURES</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                 <span class="btn-comet-black">SIGNATURES</span>
+                </div>
+               </a>
+              </div>
+
+              <!-- Card 5: LIMITED DROPS -->
+              <div class="col-6">
+               <a href="/shop" class="comet-subcard-item text-decoration-none shadow-sm">
+                <img width="280" height="180" loading="lazy" decoding="async" src="{% static 'web_images/Whisk_b62cac3c42d71e989da4dc9ba916baf3dr.webp' %}" alt="Limited Drops" onerror="this.src='/static/images/ttt.webp'">
+                <span class="comet-subcard-title">LIMITED DROPS</span>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                 <span class="btn-comet-black">LIMITED DROPS</span>
+                </div>
+               </a>
+              </div>
+             </div>
+            </div>
+
+            <!-- Column 3: Right Vertical List Links -->
+            <div class="col-lg-3 border-start ps-lg-4 d-flex flex-column justify-content-start pt-1">
+             <div class="text-uppercase tracking-widest fw-bold text-dark mb-3" style="font-size: 0.72rem; letter-spacing: 0.18em;">✦ WOMEN'S VAULT</div>
+             <ul class="comet-right-link-list">
+              <li>
+               <a href="/shop" class="d-flex align-items-center justify-content-between py-1">
+                <span>New Arrivals</span>
+                <span class="badge bg-dark text-white" style="font-size: 0.6rem; padding: 3px 8px; font-weight: 800;">NEW</span>
+               </a>
+              </li>
+              <li>
+               <a href="/collections/oversize-printed-t-shirts/" class="d-flex align-items-center justify-content-between py-1">
+                <span>Silhouette Guide</span>
+                <i class="fa-solid fa-ruler-combined text-muted small ms-2"></i>
+               </a>
+              </li>
+              <li>
+               <a href="/shop" class="d-flex align-items-center justify-content-between py-1">
+                <span>Limited Vault</span>
+                <span class="badge bg-dark text-white" style="font-size: 0.6rem; padding: 3px 8px; font-weight: 800;">LIMITED</span>
+               </a>
+              </li>
+             </ul>
+            </div>
+           </div>
+          </div>
+         </div>
+        </li>
+
+        <!-- 3. The Vault -->
+        <li class="nav-item">
+         <a class="nav-link comet-nav-link text-dark fw-bold" href="/shop">The Vault</a>
+        </li>
+
+        <!-- 4. About Us -->
+        <li class="nav-item">
+         <a class="nav-link comet-nav-link text-dark fw-bold" href="/our-story">About Us</a>
+        </li>
+       </ul>
+
+       <!-- Right Menu Icons (Search, Account, Cart) -->
+       <div class="d-flex align-items-center gap-4">
+        <div class="search-trigger cursor-pointer" data-bs-target="#desktopSearchCollapse" data-bs-toggle="collapse" type="button">
+         <i class="fa-solid fa-magnifying-glass fs-5 text-dark" title="Search"></i>
+        </div>
+        {% if request.user.is_authenticated %}
+        <div class="dropdown">
+         <a class="dropdown-toggle text-decoration-none text-dark d-flex align-items-center gap-2" data-bs-toggle="dropdown" href="#" role="button">
+          <i class="fa-regular fa-user fs-5 text-dark" title="Account"></i>
+         </a>
+         <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-4 p-3 mt-2">
+          <li><a class="dropdown-item py-2 px-3 rounded-3" href="/profile">Profile Info</a></li>
+          <li><a class="dropdown-item py-2 px-3 rounded-3" href="/profile">My Orders</a></li>
+          {% if request.user.is_authenticated and request.user.is_superuser %}
+          <li><a class="dropdown-item py-2 px-3 rounded-3 fw-semibold text-dark" href="/usvesta-deshboard/">👑 Admin Dashboard</a></li>
+          {% endif %}
+          <li><hr class="dropdown-divider my-2"/></li>
+          <li><a class="dropdown-item py-2 px-3 rounded-3 text-danger" href="/logout">Sign Out</a></li>
+         </ul>
+        </div>
+        {% else %}
+        <a class="text-decoration-none text-dark" data-bs-target="#exampleModal" data-bs-toggle="modal" href="#" title="Account">
+         <i class="fa-regular fa-user fs-5 text-dark"></i>
+        </a>
+        {% endif %}
+        <a aria-controls="offcanvasCart" class="text-decoration-none text-dark cursor-pointer position-relative" data-bs-target="#offcanvasCart" data-bs-toggle="offcanvas" title="Cart">
+         <i class="fa-solid fa-bag-shopping fs-5 text-dark"></i>
+         <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" style="font-size: 0.55rem; padding: 3px 6px; transform: translate(-30%, -30%) !important;">0</span>
+        </a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </nav>
+   <!-- Slide-down Desktop Search -->
+   <div class="collapse search-collapse-luxury" id="desktopSearchCollapse">
+    <div class="container py-4">
+     <form action="/shop?" class="position-relative">
+      <input autocomplete="off" class="search-input-luxury" id="searchbar_fullwebsite" name="searchbar" oninput="mainsearch_fut()" placeholder="Search our catalog..." type="text"/>
+      <button class="search-submit-luxury" type="submit">
+       <i class="fa-solid fa-arrow-right">
+       </i>
+      </button>
+      <ul class="list-group list-group-flush search-results-luxury mt-3" id="big_searvhbar_fullwebsite">
+      </ul>
+     </form>
+    </div>
+   </div>
+    <div class="d-lg-none w-100 border-bottom" style="transition: all 0.4s ease; background-color: {{ cms.mobile_header_bg_color|default:'#ffffff' }} !important;">
+     <nav class="navbar px-3 py-2" style="background-color: {{ cms.mobile_header_bg_color|default:'#ffffff' }} !important;">
+      <div class="container-fluid d-flex align-items-center justify-content-between">
+       <!-- Left Side: Hamburger Menu + Search Icon -->
+       <div class="d-flex align-items-center gap-3">
+        <button class="btn p-0 border-0" style="color: {{ cms.mobile_header_text_color|default:'#0d0d0d' }} !important;" data-bs-target="#mobileMenu" data-bs-toggle="offcanvas" aria-label="Toggle Navigation">
+         <i class="fa-solid fa-bars fs-4"></i>
+        </button>
+        <button class="btn p-0 border-0" style="color: {{ cms.mobile_header_text_color|default:'#0d0d0d' }} !important;" data-bs-target="#mobileSearchCanvas" data-bs-toggle="offcanvas" aria-label="Open Search">
+         <i class="fa-solid fa-magnifying-glass fs-5"></i>
+        </button>
+       </div>
+       <!-- Center Brand Logo -->
+       <a class="text-decoration-none text-center d-inline-flex align-items-center" href="/">
+        <img width="120" height="32" fetchpriority="high" src="{% if cms.mobile_header_logo %}{{ cms.mobile_header_logo.url }}{% elif cms.header_logo %}{{ cms.header_logo.url }}{% else %}/static/images/us_vesta_logo.png{% endif %}" alt="US VESTA" class="img-fluid header-logo-img" style="height: 32px; width: 120px; object-fit: contain;">
+       </a>
+       <!-- Right Side: Account + Cart Icon -->
+       <div class="d-flex align-items-center gap-3">
+        {% if request.user.is_authenticated %}
+        <a href="/profile" style="color: {{ cms.mobile_header_text_color|default:'#0d0d0d' }} !important;" title="Account">
+         <i class="fa-regular fa-user fs-5"></i>
+        </a>
+        {% else %}
+        <a style="color: {{ cms.mobile_header_text_color|default:'#0d0d0d' }} !important;" data-bs-target="#exampleModal" data-bs-toggle="modal" href="#" title="Account">
+         <i class="fa-regular fa-user fs-5"></i>
+        </a>
+        {% endif %}
+        <a class="cursor-pointer position-relative" style="color: {{ cms.mobile_header_text_color|default:'#0d0d0d' }} !important;" data-bs-target="#offcanvasCart" data-bs-toggle="offcanvas" title="Cart">
+         <i class="fa-solid fa-bag-shopping fs-5"></i>
+         <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" style="font-size: 0.55rem; padding: 3px 6px; transform: translate(-30%, -30%) !important;">0</span>
+        </a>
+       </div>
+      </div>
+     </nav>
+    </div>
+   </header>
+   <!-- ✅ Mobile Search Offcanvas (Compact Top Bar, Fixed Back Arrow, No Giant White Box) -->
+   <div class="offcanvas offcanvas-top border-0 search-canvas-mobile shadow-lg" id="mobileSearchCanvas" style="height: auto !important; min-height: 0 !important; max-height: 85vh; background-color: #ffffff;" tabindex="-1">
+    <div class="offcanvas-header py-2 px-3 d-flex align-items-center border-bottom bg-white" style="min-height: 64px;">
+     <button class="btn p-0 border-0 me-3 text-dark d-flex align-items-center justify-content-center flex-shrink-0" data-bs-dismiss="offcanvas" aria-label="Close Search" style="width: 32px; height: 32px;">
+      <i class="fa-solid fa-arrow-left fs-4"></i>
+     </button>
+     <form action="/shop?" class="flex-grow-1 mb-0 position-relative" onsubmit="return true;">
+      <div class="position-relative w-100">
+       <input aria-label="Search" class="form-control border-0 bg-light rounded-pill px-4 py-2 text-dark fs-6 w-100" id="searchbar_fullwebsite_phone" name="searchbar" oninput="mainsearch_fut_phone()" placeholder="Search products, collections..." type="search"/>
+       <button class="position-absolute end-0 top-50 translate-middle-y border-0 bg-transparent pe-3 text-dark" type="submit">
+        <i class="fa-solid fa-magnifying-glass fs-5"></i>
+       </button>
+      </div>
+     </form>
+    </div>
+    <div class="offcanvas-body p-0 border-0 overflow-auto" style="background-color: #ffffff;">
+     <ul class="list-group w-100 search-results-phone border-0 rounded-0" id="big_searvhbar_fullwebsite_phone" style="display: none; background: #ffffff;">
+     </ul>
+    </div>
+   </div>
+   <!-- ✅ Mobile Side Navigation Offcanvas -->
+   <div class="offcanvas offcanvas-start border-0 shadow-lg" id="mobileMenu" style="width: 320px; background-color: #ffffff;" tabindex="-1">
+    <div class="offcanvas-header border-bottom py-3 px-4 d-flex justify-content-between align-items-center bg-white">
+     <a class="text-decoration-none d-inline-flex align-items-center" href="/">
+      <img width="100" height="28" loading="lazy" decoding="async" src="/static/images/us_vesta_logo.png" alt="US VESTA" class="img-fluid header-logo-img" style="height: 28px; width: 100px; object-fit: contain;" onerror="this.outerHTML='<span class=\'comet-header-logo text-dark fw-black\'>US VESTA</span>'">
+     </a>
+     <button class="btn-close text-reset shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body py-4 px-4 d-flex flex-column justify-content-between bg-white">
+     <div>
+      <ul class="list-unstyled d-flex flex-column gap-3 mb-4">
+        {% if cms.header_nav_json %}
+         {% for item in cms.header_nav_json %}
+          <li>
+           {% if item.title|lower == 'women' %}
+           <a class="fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center justify-content-between mb-1 cursor-pointer" data-bs-toggle="modal" data-bs-target="#womenComingSoonModal" data-bs-dismiss="offcanvas">
+           {% else %}
+           <a class="fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center justify-content-between mb-1" href="{{ item.url }}">
+           {% endif %}
+            <span>{{ item.title }}</span>
+            <i class="fa-solid fa-arrow-right-long small text-muted"></i>
+           </a>
+           {% if item.children %}
+            <div class="ps-3 border-start border-2 border-dark d-flex flex-column gap-1 my-1">
+             {% for child in item.children %}
+              <a class="text-secondary text-decoration-none py-1 small fw-semibold" href="{{ child.url }}">{{ child.title }}</a>
+             {% endfor %}
+            </div>
+           {% endif %}
+          </li>
+         {% endfor %}
+        {% else %}
+         <li>
+          <a class="fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center justify-content-between" href="/shop">
+           <span>Shop Collection</span>
+           <i class="fa-solid fa-arrow-right-long small text-muted"></i>
+          </a>
+         </li>
+         <li>
+          <a class="fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center justify-content-between" href="/our-story">
+           <span>About Us</span>
+           <i class="fa-solid fa-gem small text-warning"></i>
+          </a>
+         </li>
+        {% endif %}
+       </ul>
+
+      <hr class="my-4" style="border-color: rgba(0,0,0,0.1);"/>
+      <h6 class="text-uppercase tracking-wider fw-bold text-dark mb-3" style="letter-spacing: 0.12em; font-size: 0.8rem;">
+       ✦ CATEGORIES
+      </h6>
+      <div class="accordion accordion-flush" id="mobileCategoriesAccordion">
+       {% for cat in nev_cat %}
+       {% if 'T-Shirts' in cat.name %}
+       <div class="accordion-item border-0">
+        <h2 class="accordion-header" id="headingCat{{ forloop.counter }}">
+         <button class="accordion-button collapsed text-dark fw-bold fs-6 py-2 px-0 shadow-none bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCat{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseCat{{ forloop.counter }}">
+          {{ cat.name }} ({{ cat.product_sub_category_set.count }})
+         </button>
+        </h2>
+        <div id="collapseCat{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="headingCat{{ forloop.counter }}" data-bs-parent="#mobileCategoriesAccordion">
+         <div class="accordion-body px-0 py-1 d-flex flex-column gap-1 ms-3 mb-2 border-start border-2 border-dark ps-3">
+          {% for sub in cat.product_sub_category_set.all %}
+           <a class="text-secondary text-decoration-none py-1 fw-semibold small" href="/collections/{{ sub.category_slug }}/">{{ sub.name|upper }} ({{ sub.product_set.count|default:"0" }})</a>
+          {% empty %}
+           <span class="text-muted small py-1">No subcategories</span>
+          {% endfor %}
+         </div>
+        </div>
+       </div>
+       {% endif %}
+       {% endfor %}
+      </div>
+
+
+      
+
+     </div>
+
+     <div class="mt-4 pt-3 border-top">
+      <!-- Country & Currency Selector Button (Triggers Gucci Landing Page Screen) -->
+      <button type="button" class="btn btn-outline-dark w-100 py-2 rounded-pill mb-3 fw-bold d-flex align-items-center justify-content-between px-3" onclick="openGucciCountryModal()" style="font-size: 0.82rem; letter-spacing: 0.03em; border-color: rgba(0,0,0,0.25);">
+       <span class="d-flex align-items-center gap-2">
+        <i class="fas fa-globe text-muted"></i> Country / Currency:
+       </span>
+       <span class="fw-bold activeCountryPillMobile">🌐 🇮🇳 IN (₹) <i class="fas fa-chevron-right ms-1 small"></i></span>
+      </button>
+      {% if request.user.is_authenticated %}
+      <a class="btn btn-dark w-100 py-3 rounded-pill mb-2 fw-bold text-uppercase" href="/profile" style="font-size: 0.85rem; letter-spacing: 0.1em;">
+       My Account
+      </a>
+      <a class="btn btn-outline-dark w-100 py-2 rounded-pill fw-bold text-uppercase" href="/logout" style="font-size: 0.8rem; letter-spacing: 0.1em;">
+       Sign Out
+      </a>
+      {% else %}
+      <a class="btn btn-dark w-100 py-3 rounded-pill fw-bold text-uppercase" data-bs-target="#exampleModal" data-bs-toggle="modal" style="font-size: 0.85rem; letter-spacing: 0.1em;">
+       Sign In
+      </a>
+      {% endif %}
+     </div>
+    </div>
+   </div>
+   </div>
+   <div id="main-content" class="main-content-padding">
+    {% block mainbody %}
+
+            {% endblock mainbody %}
+   </div>
+  </div>
+  <!-- 🛒 OFFCANVAS CART -->
+  <div id="shoping_card_dynemic00">
+   {% include "partials/cart_items.html" %}
+  </div>
+  <!-- ######### Edn cart modal  -->
+  <div class="container mb-5 d-none" id="seo-accordion-wrapper">
+   <div class="accordion" id="accordionExample">
+    {% for a in courdinators_pages %}
+
+        {% if request.path  in a.show_on_pages %}
+    <div class="accordion-item">
+     <h2 class="accordion-header">
+      <button aria-controls="collapseOne{{a.id}}" aria-expanded="true" class="accordion-button collapsed" data-bs-target="#collapseOne{{a.id}}" data-bs-toggle="collapse" type="button">
+       {{a.name}}
+      </button>
+     </h2>
+     <div class="accordion-collapse collapse" data-bs-parent="#accordionExample" id="collapseOne{{a.id}}">
+      <div class="accordion-body">
+       <div class="description-wrapper">
+        <div class="description-content" id="descBox">
+         {{a.containt|safe}}
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+   </div>
+  </div>
+  <style>
+      .footer-link-hover { color: #0d0d0d !important; text-decoration: none; transition: 0.3s; }
+      .footer-link-hover:hover { text-decoration: underline; text-decoration-color: #0d0d0d; }
+  </style>
+  <!-- ✅ LUXURY EDITORIAL FOOTER (LIGHT THEME) -->
+  <footer class="site-footer bg-black py-5 mt-0" style="background-color: #000000 !important; border-top: 1px solid rgba(0,0,0,0.08); box-shadow: 0 -4px 20px rgba(0,0,0,0.06); color: #ffffff !important;">
+   <div class="container py-4">
+    <div class="row gy-5">
+     <!-- Column 1: Brand -->
+     <div class="col-lg-4 text-center text-lg-start">
+      <a class="text-decoration-none d-inline-block mb-3" href="/">
+       <img src="{% if cms.header_logo %}{{ cms.header_logo.url }}{% else %}/static/images/us_vesta_logo.png{% endif %}" width="160" height="45" loading="lazy" decoding="async" alt="US VESTA" class="img-fluid footer-logo-img" style="height: 45px; width: 160px; object-fit: contain; filter: invert(1) brightness(200%);" onerror="this.outerHTML='<h2 class=\'footer-brand-name text-white\'>US VESTA</h2>'">
+      </a>
+      <p class="footer-tagline" style="font-size: 0.88rem; line-height: 1.6; max-width: 320px; color: #ffffff !important;">
+       {{ cms.footer_tagline|default:"Thoughtfully designed and built to endure. US Vesta merges modern luxury with functional simplicity." }}
+      </p>
+      <div class="d-flex justify-content-center justify-content-lg-start gap-3 mt-4">
+       <a aria-label="Facebook" class="footer-social-icon rounded-circle d-flex align-items-center justify-content-center border border-light" href="{{ cms.footer_facebook_url|default:'https://www.facebook.com/profile.php?id=61581390461341' }}" rel="noopener" target="_blank" style="width: 38px; height: 38px; color: #ffffff !important;">
+        <i class="fa-brands fa-facebook-f">
+        </i>
+       </a>
+       <a aria-label="Instagram" class="footer-social-icon rounded-circle d-flex align-items-center justify-content-center border border-light" href="{{ cms.footer_instagram_url|default:'https://www.instagram.com/usvesta25/' }}" rel="noopener" target="_blank" style="width: 38px; height: 38px; color: #ffffff !important;">
+        <i class="fa-brands fa-instagram">
+        </i>
+       </a>
+       <a aria-label="LinkedIn" class="footer-social-icon rounded-circle d-flex align-items-center justify-content-center border border-light" href="{{ cms.footer_linkedin_url|default:'https://www.linkedin.com/company/us-vesta/about/?viewAsMember=true' }}" rel="noopener" target="_blank" style="width: 38px; height: 38px; color: #ffffff !important;">
+        <i class="fa-brands fa-linkedin-in">
+        </i>
+       </a>
+      </div>
+     </div>
+     <!-- Column 2: Navigation Links -->
+     <div class="col-lg-3 col-6 text-start offset-lg-1">
+      <h6 class="footer-col-heading fw-bold text-uppercase tracking-wider mb-3" style="font-size: 0.88rem; letter-spacing: 0.1em; color: #ffffff !important;">
+       Navigation
+      </h6>
+      <ul class="list-unstyled d-flex flex-column gap-2">
+        {% if cms.footer_nav_json %}
+         {% for item in cms.footer_nav_json %}
+          <li>
+           <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="{{ item.url }}">
+            {{ item.title }}
+           </a>
+          </li>
+         {% endfor %}
+        {% else %}
+         <li>
+          <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="/shop">
+           Shop Catalog
+          </a>
+         </li>
+         <li>
+          <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="/for-corporates">
+           B2B Portal
+          </a>
+         </li>
+         <li>
+          <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="/our-story">
+           Our Philosophy
+          </a>
+         </li>
+         <li>
+          <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="/contact-us">
+           Contact Support
+          </a>
+         </li>
+         <li>
+          <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="/blog">
+           Blogs
+          </a>
+         </li>
+        {% endif %}
+      </ul>
+     </div>
+     <!-- Column 3: Legal Policy Links -->
+     <div class="col-lg-3 col-6 text-start">
+      <h6 class="footer-col-heading fw-bold text-uppercase tracking-wider mb-3" style="font-size: 0.88rem; letter-spacing: 0.1em; color: #ffffff !important;">
+       Policies
+      </h6>
+      <ul class="list-unstyled d-flex flex-column gap-2">
+       <li>
+        <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="/privacy-policy">
+         Privacy Policy
+        </a>
+       </li>
+       <li>
+        <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="/shipping-policy">
+         Shipping &amp; Delivery
+        </a>
+       </li>
+       <li>
+        <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="/return-policy">
+         Returns &amp; Exchanges
+        </a>
+       </li>
+       <li>
+        <a class="footer-link footer-link-hover" style="color: #ffffff !important;" href="/sitemap.xml">
+         Sitemap
+        </a>
+       </li>
+      </ul>
+     </div>
+    </div>
+    <!-- Footer Copyright Bottom -->
+    <div class="footer-bottom mt-5 pt-4 border-top border-secondary border-opacity-25 text-center">
+     <p class="footer-copyright mb-0" style="font-size: 0.82rem; letter-spacing: 0.04em; color: #ffffff !important;">
+      © 2013 — 2026 US Vesta. Designed for modern living. All rights reserved.
+     </p>
+    </div>
+   </div>
+  </footer>
+  <!-- ######### Login Modal ######### -->
+  <div class="modal fade" id="exampleModal" tabindex="-1">
+   <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content shadow-lg border-0 rounded-4">
+     <!-- Header -->
+     <div class="modal-header border-0 pb-0">
+      <h5 class="modal-title fw-bold">
+       Welcome Back 👋
+      </h5>
+      <button class="btn-close" data-bs-dismiss="modal" type="button">
+      </button>
+     </div>
+     <!-- Body -->
+     <div class="modal-body px-4 pb-4">
+      <div class="text-center mb-4">
+       <h4 class="fw-bold">
+        Login to Your Account
+       </h4>
+       <p class="text-muted small">
+        Access your orders and cart
+       </p>
+      </div>
+      <!-- Google Login -->
+      <div class="d-grid mb-3">
+       <a class="btn btn-light border d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm" href="{% provider_login_url 'google' process='login' %}">
+        <img width="20" height="20" alt="Optimized page graphic asset" loading="lazy" src="https://developers.google.com/identity/images/g-logo.png"/>
+        <span class="fw-semibold">
+         Continue with Google
+        </span>
+       </a>
+      </div>
+      <!-- Divider -->
+      <div class="text-center my-3 position-relative">
+       <hr/>
+       <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 small text-muted">
+        OR
+       </span>
+      </div>
+      <!-- OTP Form -->
+      <!-- <form method="post" id="otp_form">
+          {% csrf_token %}
+
+          <p id="alert_mesej" class="text-danger small text-center"></p>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Enter OTP</label>
+            <input type="text" 
+                   id="loginotp" 
+                   name="otp"
+                   class="form-control form-control-lg"
+                   placeholder="Enter OTP"
+                   required>
+          </div>
+
+          <input type="text" hidden readonly id="rendring_next_url" value="{{ request.GET.next }}">
+
+          <div class="d-grid">
+            <button type="button" onclick="verifyOTP()" class="btn btn-dark btn-lg">
+              Verify & Login
+            </button>
+          </div>
+
+        </form> -->
+     </div>
+    </div>
+   </div>
+  </div>
+  <!-- ######### End Login Modal ######### -->
+  <script>
+   document.addEventListener("DOMContentLoaded", () => {
+    const currentPath = window.location.pathname;
+
+    // Allow SEO accordion to show on any page if items are present
+    const seoAccordion = document.getElementById("seo-accordion-wrapper");
+    if (seoAccordion) {
+        if (seoAccordion.querySelectorAll('.accordion-item').length > 0) {
+            seoAccordion.classList.remove("d-none");
+        } else {
+            seoAccordion.remove();
+        }
+    }
+
+    // jaha footer remove karna hai
+    const removeFooterPages = [
+        "/profile",
+        "/checkout",
+    ];
+    const path = window.location.pathname;
+
+    if (path.includes("/products/")) {
+        document.querySelector("footer")?.remove();
+    }
+
+    if (removeFooterPages.includes(currentPath)) {
+        document.querySelector("footer")?.remove();
+    }
+});
+  </script>
+  <!-- jQuery (as is, but defer added) -->
+  <script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+  </script>
+  <!-- Owl -->
+  <script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <!-- Bootstrap -->
+  <script defer="" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <!-- Swiper JS -->
+  <script defer="" src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js">
+  </script>
+  <!-- GSAP -->
+  <script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
+  </script>
+  <script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js">
+  </script>
+  <!-- Custom -->
+  <script defer="" src="/static/js/home_page.js?v=8.0">
+  </script>
+  <script defer="" src="/static/js/cart.js">
+  </script>
+  <!-- Extra -->
+  <!-- Extra: On-demand Lazy Loaders -->
+  <script>
+    window.lazyLoadSwal = function(cb) {
+      if (window.swal && typeof window.swal === 'function' && !window.swal._shim) { if (cb) cb(); return; }
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/sweetalert/dist/sweetalert.min.js';
+      s.onload = function() { if (cb) cb(); };
+      document.head.appendChild(s);
+    };
+    window.lazyLoadConfetti = function(cb) {
+      if (window.confetti && typeof window.confetti === 'function' && !window.confetti._shim) { if (cb) cb(); return; }
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+      s.onload = function() { if (cb) cb(); };
+      document.head.appendChild(s);
+    };
+    if (!window.confetti) {
+      window.confetti = function() {
+        var args = arguments;
+        window.lazyLoadConfetti(function() { if (window.confetti) window.confetti.apply(window, args); });
+      };
+      window.confetti._shim = true;
+    }
+    if (!window.swal) {
+      window.swal = function() {
+        var args = arguments;
+        window.lazyLoadSwal(function() { if (window.swal) window.swal.apply(window, args); });
+      };
+      window.swal._shim = true;
+    }
+  </script>
+  <script>
+   window.addEventListener("load", function () {
+    let loader = document.getElementById("pageLoader");
+    if(loader){
+        // smooth fade out
+        loader.style.opacity = "0";
+        loader.style.transition = "0.4s";
+
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 400);
+    }
+});
+
+// Luxury Navbar Scroll Effect
+document.addEventListener("DOMContentLoaded", () => {
+    const navbar = document.querySelector(".luxury-navbar");
+    const mobileHeader = document.querySelector(".luxury-mobile-header");
+    const path = window.location.pathname;
+
+    if (path === "/" || path === "/index.html" || path === "") {
+        document.body.classList.add("home-page");
+        
+        const handleScroll = () => {
+            if (window.scrollY > 30) {
+                navbar?.classList.add("scrolled");
+                mobileHeader?.classList.add("scrolled");
+            } else {
+                navbar?.classList.remove("scrolled");
+                mobileHeader?.classList.remove("scrolled");
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
+    } else {
+        navbar?.classList.add("scrolled");
+        mobileHeader?.classList.add("scrolled");
+    }
+});
+
+// =========== GLOBAL TOAST NOTIFICATION ===========
+(function() {
+    var toastContainer = document.createElement('div');
+    toastContainer.id = 'usvesta-toast-container';
+    toastContainer.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;';
+    document.body.appendChild(toastContainer);
+
+    window.showToast = function(msg, type) {
+        var toast = document.createElement('div');
+        var bg = (type === 'error') ? '#e24444' : (type === 'warning') ? '#C9A96E' : '#111111';
+        toast.style.cssText = 'background:' + bg + ';color:#fff;padding:14px 28px;border-radius:100px;font-size:0.85rem;font-weight:400;letter-spacing:0.04em;opacity:0;transform:translateY(12px);transition:all 0.35s cubic-bezier(0.16,1,0.3,1);white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,0.15);pointer-events:none;max-width:90vw;text-align:center;';
+        toast.textContent = msg || 'Done!';
+        toastContainer.appendChild(toast);
+        requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            });
+        });
+        setTimeout(function() {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(12px)';
+            setTimeout(function() { if(toast.parentNode) toast.remove(); }, 400);
+        }, 2800);
+    };
+})();
+
+// =========== CART COUNT GLOBAL UPDATER ===========
+window.updateCartCount = function(count) {
+    document.querySelectorAll('.cart-count-badge').forEach(function(el) {
+        el.textContent = count;
+        el.style.display = count > 0 ? 'inline-block' : 'none';
+    });
+};
+
+// =========== CSRF TOKEN: COOKIE FALLBACK ===========
+window.getCsrfToken = function() {
+    var input = document.querySelector("[name='csrfmiddlewaretoken']");
+    if (input) return input.value;
+    var m = document.cookie.match(/csrftoken=([^;]+)/);
+    return m ? m[1] : '';
+};
+  </script>
+  <script defer="">
+   var availableTags = [
+    {% for a in search_data %}
+      "{{ a.product_name|truncatechars:55 }}",
+    {% endfor %}
+  ];
+
+  function mainsearch_fut() {
+    let sear_vl = document.getElementById("searchbar_fullwebsite").value.toLowerCase()
+    let tag_text = availableTags.filter(item => item.toLowerCase().includes(sear_vl))
+    let ul = document.getElementById("big_searvhbar_fullwebsite")
+    ul.innerHTML = ""
+
+    if (sear_vl.length <= 0) {
+      ul.style.display = "none"
+    } else {
+      ul.style.display = "block"
+    }
+
+    tag_text.forEach((elm) => {
+      let new_li = document.createElement("li");
+      new_li.className = "list-group-item d-flex align-items-center";
+
+      let icon = document.createElement("i");
+      icon.className = "fa fa-search me-2";
+      new_li.appendChild(icon);
+
+      new_li.appendChild(document.createTextNode(elm));
+      ul.appendChild(new_li);
+
+      new_li.addEventListener("click", () => {
+        const searchTerm = elm.replace(/["]+/g, '');
+        window.location.href = "/shop?searchbar=" + searchTerm
+      });
+    })
+  }
+  
+  
+  
+  
+  function mainsearch_fut_phone() {
+    let sear_vl = document.getElementById("searchbar_fullwebsite_phone").value.toLowerCase()
+    let tag_text = availableTags.filter(item => item.toLowerCase().includes(sear_vl))
+    let ul = document.getElementById("big_searvhbar_fullwebsite_phone")
+    ul.innerHTML = ""
+
+    if (sear_vl.length <= 0) {
+      ul.style.display = "none"
+    } else {
+      ul.style.display = "block"
+    }
+
+    tag_text.forEach((elm) => {
+      let new_li = document.createElement("li");
+      new_li.className = "list-group-item d-flex align-items-center w-100 py-3 px-3 border-bottom text-dark fw-semibold";
+
+      let icon = document.createElement("i");
+      icon.className = "fa-solid fa-magnifying-glass me-3 text-dark fs-6";
+      new_li.appendChild(icon);
+
+      new_li.appendChild(document.createTextNode(elm));
+      ul.appendChild(new_li);
+
+      new_li.addEventListener("click", () => {
+        const searchTerm = elm.replace(/["]+/g, '');
+        window.location.href = "/shop?searchbar=" + searchTerm
+      });
+    })
+  }
+  </script>
+   <script>
+   // ===== MEGA MENU: 100% CLICK TOGGLE CONTROLLER FOR MEN & WOMEN =====
+(function() {
+    var menLink = document.getElementById('menLink');
+    var menMegaMenu = document.getElementById('menMegaMenu');
+    var menNavItem = document.getElementById('menNavItem');
+
+    var womenLink = document.getElementById('womenLink');
+    var womenMegaMenu = document.getElementById('womenMegaMenu');
+    var womenNavItem = document.getElementById('womenNavItem');
+
+    function closeAllMega() {
+        if (menMegaMenu) menMegaMenu.classList.remove('show-mega');
+        if (womenMegaMenu) womenMegaMenu.classList.remove('show-mega');
+    }
+
+    if (menLink && menMegaMenu) {
+        menLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var isOpen = menMegaMenu.classList.contains('show-mega');
+            closeAllMega();
+            if (!isOpen) {
+                menMegaMenu.classList.add('show-mega');
+            }
+        });
+        menMegaMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+
+    if (womenLink && womenMegaMenu) {
+        womenLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var isOpen = womenMegaMenu.classList.contains('show-mega');
+            closeAllMega();
+            if (!isOpen) {
+                womenMegaMenu.classList.add('show-mega');
+            }
+        });
+        womenMegaMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+
+    document.addEventListener('click', function() {
+        closeAllMega();
+    });
+
+    // ===== AUTOMATIC CLOSE ON PAGE SCROLL =====
+    var lastScrollY = window.scrollY;
+    window.addEventListener('scroll', function() {
+        var currentScrollY = window.scrollY;
+        if (Math.abs(currentScrollY - lastScrollY) > 10) {
+            closeAllMega();
+        }
+        lastScrollY = currentScrollY;
+    }, { passive: true });
+})();
+  </script>
+
+<!-- ==================== GUCCI-STYLE COUNTRY & REGION SELECTOR ==================== -->
+
+<style>
+.badge-offer {
+    position: absolute !important;
+    top: 8px !important;
+    left: 8px !important;
+    background-color: #000000 !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+    padding: 4px 8px !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    border-radius: 6px !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4) !important;
+    z-index: 2 !important;
+}
+
+@media (max-width: 768px) {
+    .badge-offer {
+        top: 4px !important;
+        left: 4px !important;
+        padding: 3px 6px !important;
+        font-size: 8px !important;
+        border-radius: 4px !important;
+    }
+}
+
+.main-content-padding {
+    padding-top: 96px !important;
+}
+@media (max-width: 991px) {
+    .main-content-padding {
+        padding-top: 86px !important;
+    }
+}
+
+.country-option-card {
+ background: rgba(255, 255, 255, 0.05);
+ border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+ transition: all 0.25s ease;
+}
+.country-option-card:hover, .country-option-card.active-country {
+ background: rgba(201, 169, 110, 0.25) !important;
+ border-color: #c9a96e !important;
+ transform: translateY(-3px);
+ box-shadow: 0 8px 24px rgba(201, 169, 110, 0.35);
+}
+    .footer-link-hover {
+        position: relative;
+        display: inline-block;
+        color: #ffffff !important;
+        text-decoration: none;
+        padding-bottom: 2px;
+    }
+    .footer-link-hover::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+        background-color: #ffffff;
+        transition: width 0.3s ease-in-out;
+    }
+    .footer-link-hover:hover::after {
+        width: 100%;
+    }
+</style>
+
+<script>
+const GUCCI_CURRENCIES = {
+    'INR': { name: 'India', symbol: '₹', rate: 1.0, flag: '🇮🇳' },
+    'USD': { name: 'USA', symbol: '$', rate: {{ cms.usd_conversion_rate|default:0.012 }}, flag: '🇺🇸' },
+    'EUR': { name: 'Europe', symbol: '€', rate: {{ cms.eur_conversion_rate|default:0.011 }}, flag: '🇪🇺' },
+    'GBP': { name: 'UK', symbol: '£', rate: {{ cms.gbp_conversion_rate|default:0.0095 }}, flag: '🇬🇧' },
+    'AED': { name: 'UAE', symbol: 'AED ', rate: {{ cms.aed_conversion_rate|default:0.044 }}, flag: '🇦🇪' },
+    'CAD': { name: 'Canada', symbol: 'CA$', rate: 0.016, flag: '🇨🇦' },
+    'AUD': { name: 'Australia', symbol: 'AU$', rate: 0.018, flag: '🇦🇺' },
+    'SGD': { name: 'Singapore', symbol: 'SG$', rate: 0.016, flag: '🇸🇬' },
+    'JPY': { name: 'Japan', symbol: '¥', rate: 1.8, flag: '🇯🇵' }
+};
+
+let tempSelectedCurrency = 'INR';
+
+function selectGucciCountry(code, label, symbol) {
+    tempSelectedCurrency = code;
+    document.querySelectorAll('.country-option-card').forEach(c => c.classList.remove('active-country'));
+    let activeCard = document.getElementById('countryCard_' + code);
+    if (activeCard) activeCard.classList.add('active-country');
+    let statusText = document.getElementById('selectedCountryStatusText');
+    if (statusText) statusText.innerText = 'Selected: ' + label + ' (' + symbol + ')';
+}
+
+function onGucciWelcomeSelectChange() {
+    let select = document.getElementById('gucciWelcomeSelect');
+    let btn = document.getElementById('gucciShopBtn');
+    if (select && btn && select.value) {
+        btn.style.backgroundColor = '#ffffff';
+        btn.style.color = '#000000';
+        btn.style.fontWeight = 'bold';
+        btn.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.4)';
+    }
+}
+
+function enterStoreFromGucciOverlay() {
+    let select = document.getElementById('gucciWelcomeSelect');
+    let code = (select && select.value) ? select.value : 'INR';
+    localStorage.setItem('usvesta_gucci_currency', code);
+    applyGlobalCurrencyConversion(code);
+    
+    let overlay = document.getElementById('gucciWelcomeOverlay');
+    if (overlay) {
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+            overlay.style.visibility = 'hidden';
+            overlay.style.pointerEvents = 'none';
+        }, 500);
+    }
+}
+
+function openGucciCountryModal() {
+    let mobMenu = document.getElementById('mobileMenu');
+    if (mobMenu) {
+        let bsOff = bootstrap.Offcanvas.getInstance(mobMenu);
+        if (bsOff) bsOff.hide();
+    }
+    let overlay = document.getElementById('gucciWelcomeOverlay');
+    if (overlay) {
+        let current = localStorage.getItem('usvesta_gucci_currency') || 'INR';
+        let select = document.getElementById('gucciWelcomeSelect');
+        if (select) select.value = current;
+        onGucciWelcomeSelectChange();
+        overlay.style.visibility = 'visible';
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+    }
+}
+
+function applyGlobalCurrencyConversion(code) {
+    let curr = GUCCI_CURRENCIES[code] || GUCCI_CURRENCIES['INR'];
+    
+    // Update Top Announcement Bar & Mobile Navbar Pills
+    let pill = document.getElementById('activeCountryPill');
+    if (pill) {
+        pill.innerHTML = curr.flag + ' ' + code + ' (' + curr.symbol + ')';
+    }
+    document.querySelectorAll('.activeCountryPillMobile').forEach(el => {
+        el.innerHTML = curr.flag + ' ' + code + ' (' + curr.symbol + ')';
+    });
+
+    // Convert all text nodes containing ₹ prices
+    if (code !== 'INR') {
+        scanAndConvertTextPrices(curr);
+    }
+}
+
+function scanAndConvertTextPrices(curr) {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    while (node = walker.nextNode()) {
+        let text = node.nodeValue;
+        if (text && text.includes('₹')) {
+            let match = text.match(/₹\s*([0-9,]+(\.[0-9]+)?)/);
+            if (match) {
+                let rawNum = parseFloat(match[1].replace(/,/g, ''));
+                if (!isNaN(rawNum)) {
+                    let conv = (rawNum * curr.rate).toFixed(curr.rate < 0.1 ? 2 : 0);
+                    node.nodeValue = text.replace(/₹\s*[0-9,]+(\.[0-9]+)?/, curr.symbol + ' ' + conv);
+                }
+            }
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    let saved = localStorage.getItem('usvesta_gucci_currency');
+    let overlay = document.getElementById('gucciWelcomeOverlay');
+    if (!saved) {
+        if (overlay) {
+            overlay.style.visibility = 'visible';
+            overlay.style.opacity = '1';
+            overlay.style.pointerEvents = 'auto';
+        }
+    } else {
+        if (overlay) {
+            overlay.style.visibility = 'hidden';
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+        }
+        applyGlobalCurrencyConversion(saved);
+    }
+});
+</script>
+<!-- 🌟 Luxury Women's Collection 'Coming Soon' Modal -->
+<div class="modal fade" id="womenComingSoonModal" tabindex="-1" aria-labelledby="womenComingSoonModalLabel" aria-hidden="true" style="z-index: 999999;">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
+    <div class="modal-content border-0 rounded-4 shadow-2xl overflow-hidden text-center text-white p-2" style="background-color: #000000 !important;">
+      <div class="modal-header border-0 pb-0 justify-content-end">
+        <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body px-4 pb-4 pt-0">
+        <div class="mb-3">
+          <div class="bg-white text-dark rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg mb-3" style="width: 70px; height: 70px;">
+            <i class="fas fa-crown fs-2" style="color: #000;"></i>
+          </div>
+          <span class="badge bg-white text-dark rounded-pill px-3 py-1.5 fw-bold text-uppercase tracking-widest mb-2" style="font-size: 0.68rem;">Coming Soon</span>
+        </div>
+        
+        <h3 class="fw-bold text-uppercase tracking-wide mb-2 text-white" style="letter-spacing: 1px; font-family: 'Cinzel', serif;">
+          US VESTA Women
+        </h3>
+        
+        <p class="text-secondary small mb-4 px-2" style="color: #cccccc !important; font-size: 0.88rem; line-height: 1.6;">
+          Our exclusive <strong>Women's Luxury Collection</strong> is under creation. High-end silhouettes and modern fits are dropping very soon!
+        </p>
+
+        <div class="input-group mb-3 rounded-pill overflow-hidden bg-white p-1">
+          <input type="email" class="form-control border-0 shadow-none px-3 text-dark small" placeholder="Enter your email for early access..." id="womenNotifyEmail">
+          <button class="btn btn-dark rounded-pill px-4 fw-bold text-uppercase small" style="font-size: 0.78rem;" onclick="notifyWomenCollection()">
+            Notify Me
+          </button>
+        </div>
+        <small class="text-muted d-block" style="font-size: 0.7rem;">Be the first to get exclusive access when we launch.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+function notifyWomenCollection() {
+    const email = document.getElementById("womenNotifyEmail")?.value;
+    if (email && email.includes("@")) {
+        alert("✓ Thank you! You'll be notified as soon as US VESTA Women launches.");
+        const modalElem = document.getElementById("womenComingSoonModal");
+        if (modalElem && window.bootstrap) {
+            const modal = bootstrap.Modal.getInstance(modalElem);
+            if (modal) modal.hide();
+        }
+    } else {
+        alert("Please enter a valid email address.");
+    }
+}
+</script>
+ </body>
+</html>

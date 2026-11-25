@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Dashboard | US VESTA Payment Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0b0e14; color: #d0d7de; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        .admin-card { background: #161b22; border: 1px solid #30363d; border-radius: 16px; padding: 24px; margin-bottom: 24px; }
+        .stat-badge { font-size: 1.8rem; font-weight: 700; color: #ffffff; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid px-4 py-4">
+    <!-- Navbar Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <div>
+            <h3 class="fw-bold text-white mb-0"><i class="fa-solid fa-user-shield text-warning me-2"></i>Super Admin Gateway Control</h3>
+            <small class="text-secondary">Platform Management & Live Audit System</small>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/docs/" class="btn btn-outline-light btn-sm rounded-pill"><i class="fa-solid fa-book me-1"></i> API Docs</a>
+            <a href="/" class="btn btn-outline-info btn-sm rounded-pill"><i class="fa-solid fa-house me-1"></i> Store Homepage</a>
+        </div>
+    </div>
+
+    <!-- Analytics Stats Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="admin-card py-3">
+                <small class="text-secondary text-uppercase fw-bold">Active Merchants</small>
+                <div class="stat-badge text-warning">{{ merchants|length }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="admin-card py-3">
+                <small class="text-secondary text-uppercase fw-bold">Total Payment Orders</small>
+                <div class="stat-badge text-info">{{ total_orders }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="admin-card py-3">
+                <small class="text-secondary text-uppercase fw-bold">Successful Transactions</small>
+                <div class="stat-badge text-success">{{ successful_orders }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="admin-card py-3">
+                <small class="text-secondary text-uppercase fw-bold">Gross Volume Processed</small>
+                <div class="stat-badge text-white">₹{{ total_volume }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Merchants Onboarding & Status Panel -->
+        <div class="col-lg-6">
+            <div class="admin-card h-100">
+                <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-store me-2 text-warning"></i>Merchant Accounts</h5>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle small">
+                        <thead>
+                            <tr>
+                                <th>Business Name</th>
+                                <th>VPA</th>
+                                <th>Status</th>
+                                <th>Daily Limit</th>
+                                <th>Portal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in merchants %}
+                            <tr>
+                                <td class="fw-bold text-white">{{ m.business_name }}</td>
+                                <td class="font-monospace text-info">{{ m.merchant_vpa }}</td>
+                                <td>
+                                    <span class="badge {% if m.status == 'ACTIVE' %}bg-success{% else %}bg-danger{% endif %}">
+                                        {{ m.status }}
+                                    </span>
+                                </td>
+                                <td>₹{{ m.daily_amount_limit }}</td>
+                                <td>
+                                    <a href="/portal/{{ m.id }}/" class="btn btn-sm btn-outline-warning">Portal <i class="fa-solid fa-arrow-right"></i></a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5" class="text-secondary">No merchants onboarded yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Audit Logs -->
+        <div class="col-lg-6">
+            <div class="admin-card h-100">
+                <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-clock-rotate-left me-2 text-info"></i>System Audit Log</h5>
+                <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
+                    <table class="table table-dark table-hover align-middle small">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Merchant</th>
+                                <th>IP</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in audit_logs %}
+                            <tr>
+                                <td><span class="font-monospace text-warning">{{ log.action }}</span></td>
+                                <td>{{ log.merchant.business_name|default:"System" }}</td>
+                                <td class="text-secondary font-monospace">{{ log.ip_address|default:"127.0.0.1" }}</td>
+                                <td class="text-secondary">{{ log.created_at|date:"H:i:s" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-secondary">No audit logs recorded yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

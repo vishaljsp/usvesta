@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /usvesta-crm/
+Disallow: /checkout/
+Disallow: /profile/
+Disallow: /cart/
+Allow: /
+
+Host: www.usvesta.com
+Sitemap: https://www.usvesta.com/sitemap.xml

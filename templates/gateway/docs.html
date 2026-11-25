@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer API Documentation | US VESTA UPI Gateway</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        .doc-section { background: #161b22; border: 1px solid #30363d; border-radius: 16px; padding: 24px; margin-bottom: 24px; }
+        pre { background: #0d1117; color: #79c0ff; padding: 16px; border-radius: 10px; border: 1px solid #30363d; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <div>
+            <h3 class="fw-bold text-white mb-0"><i class="fa-solid fa-code text-warning me-2"></i>Developer API Documentation</h3>
+            <small class="text-secondary">Custom UPI Payment Gateway & QR Collection Platform v1.0</small>
+        </div>
+        <a href="/" class="btn btn-outline-light btn-sm rounded-pill"><i class="fa-solid fa-house me-1"></i> Return to Store</a>
+    </div>
+
+    <!-- 1. Authentication -->
+    <div class="doc-section">
+        <h4 class="text-white fw-bold"><i class="fa-solid fa-key me-2 text-warning"></i>1. Authentication Headers</h4>
+        <p class="text-secondary">All REST API requests require merchant authentication headers:</p>
+        <ul>
+            <li><code>X-Api-Public-Key</code>: Your Public Key (e.g. <code>pub_test_...</code> or <code>pub_live_...</code>)</li>
+            <li><code>X-Api-Secret-Key</code>: Your Secret Key (e.g. <code>sec_test_...</code> or <code>sec_live_...</code>)</li>
+        </ul>
+    </div>
+
+    <!-- 2. Create Order -->
+    <div class="doc-section">
+        <h4 class="text-white fw-bold"><i class="fa-solid fa-plus-circle me-2 text-success"></i>2. Create Payment Order</h4>
+        <p class="text-secondary">Endpoint: <code class="text-warning">POST /api/v1/payment/orders</code></p>
+
+        <h6 class="text-white mt-3">Python Request Code:</h6>
+<pre>import requests
+
+headers = {
+    "X-Api-Public-Key": "pub_test_your_public_key",
+    "X-Api-Secret-Key": "sec_test_your_secret_key",
+    "Content-Type": "application/json"
+}
+
+payload = {
+    "order_id": "ORDER_100293",
+    "amount": 999.00,
+    "currency": "INR"
+}
+
+response = requests.post("http://127.0.0.1:8000/api/v1/payment/orders", json=payload, headers=headers)
+print(response.json())
+</pre>
+
+        <h6 class="text-white mt-3">Node.js Request Code:</h6>
+<pre>const axios = require('axios');
+
+axios.post('http://127.0.0.1:8000/api/v1/payment/orders', {
+    order_id: 'ORDER_100293',
+    amount: 999.00,
+    currency: 'INR'
+}, {
+    headers: {
+        'X-Api-Public-Key': 'pub_test_your_public_key',
+        'X-Api-Secret-Key': 'sec_test_your_secret_key'
+    }
+}).then(res => console.log(res.data));
+</pre>
+    </div>
+
+    <!-- 3. Webhook Signature Verification -->
+    <div class="doc-section">
+        <h4 class="text-white fw-bold"><i class="fa-solid fa-shield-halved me-2 text-info"></i>3. Webhook HMAC SHA-256 Verification Guide</h4>
+        <p class="text-secondary">When a payment succeeds, our engine POSTs payload to your Webhook Endpoint. Verify signature using your webhook secret key (<code>whsec_...</code>):</p>
+
+        <h6 class="text-white mt-3">Python Signature Verification:</h6>
+<pre>import hmac
+import hashlib
+
+def verify_webhook_signature(raw_body_bytes, signature_header, secret_key):
+    expected = hmac.new(secret_key.encode('utf-8'), raw_body_bytes, hashlib.sha256).hexdigest()
+    return hmac.compare_digest(expected, signature_header)
+</pre>
+
+        <h6 class="text-white mt-3">PHP Signature Verification:</h6>
+<pre>&lt;?php
+$payload = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_GATEWAY_SIGNATURE'];
+$secret = 'whsec_your_webhook_secret';
+
+$expected = hash_hmac('sha256', $payload, $secret);
+
+if (hash_equals($expected, $signature)) {
+    // Valid Webhook Notification
+    http_response_code(200);
+}
+?&gt;
+</pre>
+    </div>
+</div>
+
+</body>
+</html>

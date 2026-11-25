@@ -1,0 +1,1076 @@
+{% extends "base.html" %}
+
+{% block header %}
+<title>Checkout – Secure Payment | US Vesta</title>
+<meta name="description" content="Complete your purchase securely at US Vesta. Fast delivery, safe payment options & premium product quality guaranteed.">
+<link rel="canonical" href="{{current_url}}" />
+<meta property="og:title" content="Checkout – Secure Payment | US Vesta" />
+<meta property="og:description" content="Complete your order securely with US Vesta. Fast delivery & safe payments." />
+<meta property="og:url" content="{{current_url}}" />
+
+<meta name="twitter:title" content="Checkout – Secure Payment | US Vesta" />
+<meta name="twitter:description" content="Complete your order securely with US Vesta. Fast delivery & safe payments." />
+
+
+<link rel="stylesheet" href="/static/css/checkout_phone_Degn.css">
+
+{% endblock header %}
+
+{% block mainbody %}
+
+
+<div class="d-none d-sm-block">
+    <!-- Main Content -->
+    <div class="mx-5 my-2">
+        <h1 class="mb-4 text-primary-custom fw-bold"><i class="bi bi-cart-check me-2"></i>Checkout</h1>
+
+        <!-- Progress Steps -->
+        <form id="checkoutForm" method="post">
+            {% csrf_token %}
+
+            <div class="row">
+                <!-- Order Summary -->
+
+                <div class="col-lg-5 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header card-header-custom">
+                            <h5 class="mb-0 text-white"><i class="bi bi-receipt me-2"></i>Order Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if product_main or product_inner %}
+                                {% include "singal_checkout.html" %}
+                            {% else %}
+                                {% include "cardproduct_checkout.html" %}
+                                <input type="text" name="product_card_wala_he" value="all_card_product" readonly hidden value="{{product_main.id}}" required>
+                                
+                            {% endif %} 
+                            
+                            <div class="order-summary-item">
+                                <span>Shipping</span>
+                                <span class="text-success fw-bold">FREE</span>
+                            </div>
+                        
+                            <div class="order-summary-item order-total">
+                                <span>Total</span>
+                                {% if amount %}
+                                <span id="total_amount_for_pay">₹{{amount}}</span>
+                                {% else %}
+                                <span id="total_amount_for_pay_forcart">₹ {{totalfinal}}</span>
+                                 {% endif %}
+                            </div>
+
+                            {% if amount %}
+                            <input type="text" value="{{amount}}" hidden id="product_total_bill" name="product_total_bill" required>
+                            {% else %} 
+                                <input type="text" value="{{totalfinal}}" hidden  id="total_amount_for_paycart" name="product_total_bill" required>
+                            {% endif %}
+                            <input type="text" value="" readonly hidden name="razorpay_payment_id" id="razorpay_payment_id">
+                            <input type="text" value="" readonly hidden name="razorpay_order_id" id="razorpay_order_id">
+                            <input type="text" value="" readonly hidden name="chashfree_payment_id_usingdecstop" id="chashfree_payment_id_usingdecstop">
+                            <input type="text" value="" readonly hidden name="chashfree_order_id_usingdecstop" id="chashfree_order_id_usingdecstop">
+                            <input type="text" name="product_id" readonly hidden value="{{product_main.id}}" required>
+                            <input type="text" name="inner_product_id" readonly hidden value="{{product_inner.id}}" required>
+                            <input type="text" name="product_size" readonly hidden value="{{size}}" required>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Information -->
+                    <div class="card shadow-sm mt-4" >
+                        <div class="card-header card-header-custom d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 text-white"><i class="bi bi-truck me-2"></i>Delivery Information</h5>
+                            <button type="button" class="btn btn-outline-light mt-2" data-bs-toggle="modal" data-bs-target="#dekstop_addres">
+                                <i class="bi bi-plus-circle ms-2"></i>Add Address
+                            </button>
+                        </div>
+                        <div class="card-body" style="overflow-y: scroll;height:300px" id="address_list">
+                        {% include "address_list.html" %}
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="col-lg-7">
+                    <div class="card shadow-sm">
+                        <div class="card-header card-header-custom">
+                            <h5 class="mb-0 text-white"><i class="bi bi-credit-card me-2"></i>Payment Method</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h6 class="section-title">Select Payment Method</h6>
+                                <div class="payment-method active">
+                                    <input class="form-check-input me-3" type="cc" name="paymentMethod000"
+                                        id="razorpay-paymnet" disabled>
+                                    <label class="form-check-label d-flex align-items-center" for="razorpay-paymnet">
+                                        <i class="bi bi-paypal me-2 fs-4 text-primary"></i> Razorpay
+                                    </label>
+                                </div>
+                                <div class="payment-method"> 
+                                    <input class="form-check-input me-3" type="radio" name="paymentMethod" checked id="cash-free-payment">
+                                    <label class="form-check-label d-flex align-items-center" for="cash-free-payment">
+                                        <img width="50"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/3840px-UPI-Logo-vector.svg.png" alt="online pay "> Pay Online
+                                    </label>
+                                </div> 
+                                
+                                <div class="payment-method">
+                                    <input class="form-check-input me-3" type="radio" name="paymentMethod" id="googlePay">
+                                    <label class="form-check-label d-flex align-items-center" for="googlePay">
+                                        <i class="bi bi-cash-coin fs-4 text-success  mx-2"></i> Cash on Delivery 
+                                       
+                                    </label> 
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="button" onclick="razorpay_fm()" class="btn btn-accent btn-lg py-2">
+                                    <i class="bi bi-lock-fill me-2"></i>Complete Order
+                                </button>
+                                
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Notice -->
+                    <div class="alert alert-info mt-4 d-flex align-items-center" role="alert">
+                        <i class="bi bi-shield-check me-3 fs-4"></i>
+                        <div>
+                            <h6 class="alert-heading mb-1">Secure Payment</h6>
+                            Your payment information is secure and encrypted. We do not store your payment details.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="dekstop_addres" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:9000">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header card-header-custom">
+            <h5 class="modal-title text-white" id="exampleModalLabel">Add New Address</h5>
+            <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form  
+            id="model_form_address"
+            method="post"
+            hx-post="/checkout" 
+            hx-target="#address_list"
+            hx-swap="innerHTML"
+            hx-on="htmx:afterRequest: hideModal()">
+                {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="fullName" class="form-label">Full Name *</label>
+                    <input type="text" class="form-control" value="" name="fullname" id="fullName" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="fullName" class="form-label">Phone Number *</label>
+                    <input type="number" class="form-control" value="" name="phone_nummber" id="phone_nummber" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Email *</label>
+                <input type="email" class="form-control" value="" name="email_if_in_addres" id="email_if_in_addres" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="addressLine1" class="form-label">Address *</label>
+                <input type="text" class="form-control" id="addressLine1" value="" name="address" required>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="state" class="form-label">State *</label>
+                    <input type="text" class="form-control" id="state" value="" name="state" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="zipCode" class="form-label">ZIP Code *</label>
+                    <input type="text" class="form-control" id="zipCode" value="" name="zipcode" required>
+                </div>
+            </div>
+            
+                <div class="mb-3">
+                    <label for="landmark" class="form-label"> Landmark * </label>
+                    <input type="text" class="form-control" id="landmark" value="" name="landmark" required>
+                </div>
+
+            <button type="subbmit" class="btn w-75 bg-primary-custom card-header-custom">Save address</button>
+        </form>
+        </div>
+        
+        </div>
+    </div>
+    </div>
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+    <div id="addressToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+        <div class="toast-body">
+            ✅ Address added successfully!
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+    </div>
+
+</div>
+
+
+ <!-- stad phone code here  -->
+
+<div class="d-block d-sm-none">
+    <form  method="post" id="checkoutForm_phone">
+        {% csrf_token %}
+    <!-- Checkout Container -->
+    <div class="checkout-container">
+        <!-- Address Section -->
+        <div class="checkout-card">
+            <div class="address-header">
+                <div class="deliver-to">Deliver to:</div>
+                <button type="button" class="change-btn" id="changeAddressBtn">Change</button>
+            </div>
+            <div id="phone_address_list">
+                {% include "phone_address_list.html" %}
+                
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary-card">
+        <div class="section-title">Order Summary</div>
+        
+            <!-- Product 1 -->
+            {% if product_main %}
+
+                <div class="product-item">
+                    <img loading="lazy"  src="{{product_main.product_image.url}}" alt="{{product_main.product_name}}" class="product-img" >
+                    <div class="product-details">
+                        <div>
+                            <div class="product-name">{{product_main.product_name|truncatechars:20}}</div>
+                           
+                            <div class="product-pricing">
+                                <span class="sale-price" id="ptotal_amount{{product_main.id}}">₹ {{amount}}</span>
+                                <span class="regular-price">₹ {{product_main.discount_price}}</span>
+                                <span class="discount">{{product_main.get_discount_percentage}} % OFF</span>
+                            </div>
+                            <span class="quantity-labe">Color: {{product_main.color}} Size: {{size}}</span>
+                                
+                        </div>
+                        <div class="quantity-controls">
+                            <span class="quantity-label">Quantity:</span>
+                            <div class="quantity-buttons">
+                                <button class="qty-btn" type="button" onclick="phone_decrease_quantity({{product_main.id}},{{amount}},{{product_main.product_quantity_offer}},{{product_main.product_amount_offer}})">-</button>
+                                <input type="text" name="totalquantity" class="quantity-input" id="pquantity_inputval{{product_main.id}}" value="{{quanityt}}" readonly>
+                                <button class="qty-btn" type="button" onclick="phone_increase_quantity({{product_main.id}},{{amount}},{{product_main.product_quantity_offer}},{{product_main.product_amount_offer}})">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="offer-box mt-2">
+                    <div id="poffer_Session{{product_main.id}}">
+                        <span class="fw-semibold text-dark">🎉 Special Offer!</span>
+                        <span class="text-muted">Add More <b>{{product_main.product_quantity_offer}} </b> & Pay Only </span>
+                        <span class="text-success fw-bold">₹{{product_main.product_amount_offer}}</span>
+                    </div>
+                </div>  
+            
+            {% elif product_inner %}
+
+                <div class="product-item">
+                    <img loading="lazy" src="{% if product_inner.color_images %}{{product_inner.color_images.url}}{% endif %} " alt="{{product_inner.product.product_name}}" class="product-img" >
+                    <div class="product-details">
+                        <div>
+                            <div class="product-name">{{product_inner.product.product_name|truncatechars:20}}</div>
+                           
+                            <div class="product-pricing">
+                                <span class="sale-price" id="ptotal_amount{{product_inner.id}}">₹ {{amount}}</span>
+                                <span class="regular-price">₹ {{product_inner.product.discount_price}}</span>
+                                <span class="discount">{{product_inner.product.get_discount_percentage}} % OFF</span>
+                            </div>
+                            <span class="quantity-labe">Color: {{product_inner.color}} Size: {{size}}</span>
+                                
+                        </div>
+                        <div class="quantity-controls">
+                            <span class="quantity-label">Quantity:</span>
+                            <div class="quantity-buttons">
+                                <button class="qty-btn" type="button" onclick="phone_decrease_quantity({{product_inner.id}},{{amount}},{{product_inner.product.product_quantity_offer}},{{product_inner.product.product_amount_offer}})">-</button>
+                                <input type="text" name="totalquantity" class="quantity-input" id="pquantity_inputval{{product_inner.id}}" value="{{quanityt}}" readonly>
+                                <button class="qty-btn" type="button"  onclick="phone_increase_quantity({{product_inner.id}},{{amount}},{{product_inner.product.product_quantity_offer}},{{product_inner.product.product_amount_offer}})">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="offer-box mt-2">
+                    <div id="poffer_Session{{product_inner.id}}">
+                        <span class="fw-semibold text-dark">🎉 Special Offer!</span>
+                        <span class="text-muted">Add More <b>{{product_inner.product.product_quantity_offer}} </b> & Pay Only </span>
+                        <span class="text-success fw-bold">₹{{product_inner.product.product_amount_offer}}</span>
+                    </div>
+                </div> 
+            
+            {% else %}
+                <input type="text" name="product_card_wala_he" value="all_card_product" readonly hidden value="{{product_main.id}}" required>
+
+
+                {% for a in cart_products %}
+                {% if a.product %}
+                    <div class="product-item">
+                        <img loading="lazy" src="{{a.product.product_image.url}}" alt="{{a.product.product_name}}" class="product-img" >
+                        <div class="product-details">
+                            <div>
+                                <div class="product-name">{{a.product.product_name|truncatechars:20}}</div>
+                               
+                                <div class="product-pricing">
+                                    <span class="sale-price" dir="pper_product_price" id="pcard_total_amount{{a.id}}">₹ {{a.total_price}}</span>
+                                    <span class="regular-price">₹ {{a.product.discount_price}}</span>
+                                    <span class="discount">{{a.product.get_discount_percentage}} % OFF</span>
+                                </div>
+                                <span class="quantity-labe">Color: {{a.product.color}} Size: {{a.size}}</span>
+                                    
+                            </div>
+                            <div class="quantity-controls">
+                                <span class="quantity-label">Quantity:</span>
+                                <div class="quantity-buttons">
+                                    <button class="qty-btn" type="button" onclick="phone_decrease_quantity_for_card({{a.id}},{{a.product.b2c_price}},{{a.product.product_quantity_offer}},{{a.product.product_amount_offer}})">-</button>
+                                    <input type="text" name="totalquantity" class="quantity-input" id="pcard_quantity_inputval{{a.id}}" value="{{a.quantity}}" readonly>
+                                    <button class="qty-btn" type="button" onclick="phone_increase_quantity_for_cart({{a.id}},{{a.product.b2c_price}},{{a.product.product_quantity_offer}},{{a.product.product_amount_offer}})">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="offer-box mt-2">
+                        <div id="poffer_Session{{a.id}}">
+                            <span class="fw-semibold text-dark">🎉 Special Offer!</span>
+                            <span class="text-muted">Add More <b>{{a.product.product_quantity_offer}} </b> & Pay Only </span>
+                            <span class="text-success fw-bold">₹{{a.product.product_amount_offer}}</span>
+                        </div>
+                    </div>
+                {% elif a.inner_products_card %}    
+                
+                <div class="product-item">
+                        <img loading="lazy"  src="{% if a.inner_products_card.color_images %}{{a.inner_products_card.color_images.url}}{% endif %} " alt="{{a.inner_products_card.product_name}}" class="product-img" >
+                        <div class="product-details">
+                            <div>
+                                <div class="product-name">{{a.inner_products_card.product_name|truncatechars:20}}</div>
+                               
+                                <div class="product-pricing">
+                                    <span class="sale-price" dir="pper_product_price" id="pcard_total_amount{{a.id}}">₹ {{a.total_inner_product_price}}</span>
+                                    <span class="regular-price">₹ {{a.inner_products_card.discount_price}}</span>
+                                    <span class="discount">{{a.inner_products_card.get_discount_percentage}} % OFF</span>
+                                </div>
+                                <span class="quantity-labe">Color: {{a.inner_products_card.color}} Size: {{a.size}}</span>
+                                    
+                            </div>
+                            <div class="quantity-controls">
+                                <span class="quantity-label">Quantity:</span>
+                                <div class="quantity-buttons">
+                                    <button class="qty-btn" type="button" onclick="phone_decrease_quantity_for_card({{a.id}},{{a.inner_products_card.product.b2c_price}},{{a.inner_products_card.product.product_quantity_offer}},{{a.inner_products_card.product.product_amount_offer}})">-</button>
+                                    <input type="text" name="totalquantity" class="quantity-input" id="pcard_quantity_inputval{{a.id}}" value="{{a.quantity}}" readonly>
+                                    <button class="qty-btn" type="button" onclick="phone_increase_quantity_for_cart({{a.id}},{{a.inner_products_card.product.b2c_price}},{{a.inner_products_card.product.product_quantity_offer}},{{a.inner_products_card.product.product_amount_offer}})">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
+                <div class="offer-box mt-2">
+                    <div id="poffer_Session{{a.id}}">
+                        <span class="fw-semibold text-dark">🎉 Special Offer!</span>
+                        <span class="text-muted">Add More <b>{{a.inner_products_card.product_quantity_offer}} </b> & Pay Only </span>
+                        <span class="text-success fw-bold">₹{{a.inner_products_card.product_amount_offer}}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+
+
+            {% endif %}
+
+        </div>
+
+        <!-- Price Details -->
+        <div class="checkout-card">
+
+            <div class="checkout-title">
+                <i class="fas fa-receipt"></i> Price Details
+            </div>
+            
+            <div class="price-details">
+                <div class="price-row">
+                    <span>Shipping</span>
+                    <span>FREE</span>
+                </div>
+                <div class="price-row price-total">
+                    <span>Total Amount</span>
+                    {% if amount %}
+                    <span id="ptotal_amount_for_pays">₹ {{amount}}</span>
+                    <input type="text" hidden  value="{{amount}}" id="sending_price_in_django_view" name="sending_price_in_django_view">
+
+                    {% else %}
+                    <span id="ptotal_amount_for_pay">₹ {{totalfinal}}</span>
+
+                    {% endif %}
+                </div>
+            </div>
+            <input type="text" hidden  value="{% if amount %} {{amount}} {% else %} {{totalfinal}} {% endif %}" id="pproduct_total_bill" name="product_total_bill" required>
+            <input type="text" value="" hidden  name="razorpay_payment_id" id="razorpay_payment_id">
+            <input type="text" value="" hidden  name="razorpay_order_id" id="razorpay_order_id">
+            <input type="text" hidden name="product_id"  readonly  value="{{product_main.id}}" required>
+            <input type="text"  hidden name="inner_product_id" readonly  value="{{product_inner.id}}" required>
+            <input type="text" hidden name="product_size" readonly  value="{{size}}" required>
+
+            <input type="text" hidden id="cashfree_order_id_phone" name="chashfree_order_id_usingdecstop">
+            
+            <input type="text" hidden  id="cashfree_payment_id_phone" name="chashfree_payment_id_usingdecstop">
+
+
+           
+        </div>
+    </div>
+    <br><br>
+
+    <!-- Footer with Total -->
+    <div class="checkout-footer" style="z-index: 9000;">
+        <div>
+            <div class="text-muted">Total Amount</div>
+            {% if amount %}
+            <div class="total-amount" id="total_bill_of_phone_i_place_buttons">₹ {{amount}} </div>
+            {% else %}
+            <div class="total-amount" id="total_bill_of_phone_i_place_button">₹  {{totalfinal}} </div>
+
+            {% endif %}
+        </div>
+        <button type="button" class="btn btn-outline-warning" onclick="check_address_axist_before_payment()"> Continue </button>
+    </div>
+    <!-- Payment Offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRightpaymet_method" aria-labelledby="paymentLabel"
+        style="z-index: 9000; width: 100%; max-width: 420px;">
+    
+    <!-- Header -->
+    <div class="offcanvas-header border-bottom">
+        <button type="button" class="btn" data-bs-dismiss="offcanvas"><i class="fa-solid fa-arrow-left"></i></button>
+        <h5 class="fw-bold" id="paymentLabel">Choose Payment Method</h5>
+
+    </div>
+
+    <!-- Body -->
+    <div class="offcanvas-body d-flex flex-column p-0">
+
+        <div class="list-group list-group-flush payment-list">
+
+        <!-- Razorpay -->
+        <label class="list-group-item d-flex align-items-center gap-3">
+            <input class="form-check-input payment-radio" type="radio" name="payment_method" id="ponerazorpay-paymnet" disabled value="razorpay">
+            <img loading="lazy" src="https://w7.pngwing.com/pngs/93/992/png-transparent-razorpay-logo-tech-companies.png" width="60">
+            <div>
+            <div class="fw-semibold">Razorpay</div>
+            <small class="text-muted">Pay securely using UPI, Card, Wallets</small>
+            </div>
+        </label>
+
+        <!-- Cashfree -->
+        <label class="list-group-item d-flex align-items-center gap-3" aria-disabled="true">
+            <input class="form-check-input payment-radio" type="radio" id="cashfree_payment_chek" name="payment_method"  checked value="cashfree">
+            <img loading="lazy"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/3840px-UPI-Logo-vector.svg.png" width="28">
+            <div>
+            <div class="fw-semibold">Online</div>
+            <small class="text-muted">Fast checkout with all payment modes</small>
+            </div>
+        </label>
+        
+        <!-- COD -->
+
+        <label class="list-group-item d-flex  m align-items-center gap-3">
+            <input class="form-check-input payment-radio" type="radio" name="payment_method" value="cod">
+            <i class="bi bi-cash-coin fs-4 text-success"></i>
+            <div>
+            <div class="fw-semibold">Cash on Delivery</div>
+            <small class="text-muted">Pay when your order arrives</small>
+            </div>
+        </label>
+
+        </div>
+
+        <!-- Bottom Button -->
+        <div class="checkout-footer" style="z-index: 9000;">
+            <div>
+                <div class="text-muted">Total Amount</div>
+                {% if amount %}
+                <div class="total-amount" id="total_bill_of_phone_i_place_button_upi_screens">₹ {{amount}}</div>
+                {% else %}
+                <div class="total-amount" id="total_bill_of_phone_i_place_button_upi_screen">₹ {{totalfinal}}</div>
+                {% endif %}
+            </div>
+            <button type="button" class="btn btn-primary btn-lg" onclick="razorpay_fm_phone()"> Placed Order </button>
+        </div>
+
+    </div>
+    </div>
+
+    {% comment %} address model i offcanvas {% endcomment %}
+
+
+
+    </form>
+
+  
+</div>
+
+<div class="offcanvas offcanvas-end w-100" tabindex="-1" id="offcanvasRightaddresphone" aria-labelledby="offcanvasRightLabel" style="z-index:9000;">
+  <div class="offcanvas-header">
+    <button type="button" class="btn" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <h5 id="offcanvasRightLabel">Add New Address</h5>
+  </div>
+
+  <div class="offcanvas-body">
+    <form
+      method="post"
+      hx-post="/checkout"
+      hx-target="#phone_address_list"
+      hx-swap="innerHTML"
+      hx-on::after-request="phonehideModal()">
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        <label for="fullName" class="form-label">Full Name</label>
+        <input type="text" class="form-control" name="fullname" id="fullName" required>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="email_if_in_addres" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email_if_in_addres" name="email_if_in_addres" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="phone_nummber" class="form-label">Phone Number</label>
+          <input type="number" class="form-control" id="phone_nummber" name="phone_nummber" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="addressLine1" class="form-label">Address</label>
+        <input type="text" class="form-control" id="addressLine1" name="address" required>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="state" class="form-label">State</label>
+          <input type="text" class="form-control" id="state" name="state" required>
+        </div>
+        <div class="col-md-6">
+          <label for="zipCode" class="form-label">ZIP Code</label>
+          <input type="text" class="form-control" id="zipCode" name="zipcode" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="landmark" class="form-label">Landmark</label>
+          <input type="text" class="form-control" id="landmark" name="landmark" required>
+          <input type="hidden" id="phone_addresS" value="phone_addresS" name="phone_addresS">
+        </div>
+      </div>
+
+      <button type="submit" class="btn text_color_custom btn-outline-dark w-100">Save address</button>
+    </form>
+  </div>
+</div>
+
+
+
+ <!-- paymet of cavas  -->
+        <!-- const form = document.getElementById("checkoutForm"); -->
+
+
+ <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+ 
+<script>
+
+function showLoader() {
+    let loader = document.getElementById("paymentLoader");
+    if (loader) loader.style.display = "flex";
+}
+
+async function cashfree_fm() {
+
+    const form = document.getElementById("checkoutForm");
+
+    let input =
+    document.getElementById("pproduct_total_bill") ||
+    document.getElementById("product_total_bill");
+
+    let t_amount = input ? input.value : 0;
+
+    let csrf_token = document.querySelector("[name='csrfmiddlewaretoken']").value;
+
+    let formdata = new FormData();
+    formdata.append("chasfreeamount", t_amount);
+
+    let response = await fetch("/create-cashfree-order", {
+        method: "POST",
+        body: formdata,
+
+        headers:{
+            "X-CSRFToken": csrf_token
+        }
+    });
+
+    let data = await response.json();
+
+    const cashfree = Cashfree({
+        mode: "production"
+    });
+
+    cashfree.checkout({
+        paymentSessionId: data.payment_session_id,
+        redirectTarget: "_modal"
+    }).then(function(result) {
+
+        if (result.paymentDetails) {
+
+            document.getElementById("chashfree_payment_id_usingdecstop").value="cash_free"
+            document.getElementById("chashfree_order_id_usingdecstop").value="cash_free"
+            form.submit();
+            showLoader();
+        }
+
+        if (result.error) {
+
+            console.log("Payment Failed");
+            console.log(result.error);
+
+        }
+
+    });
+
+}
+
+
+async function phone_cashfree_fm() {
+
+    const form = document.getElementById("checkoutForm_phone");
+    const t_amount = document.getElementById("pproduct_total_bill").value;
+
+
+    let csrf_token = document.querySelector("[name='csrfmiddlewaretoken']").value;
+
+    let formdata = new FormData();
+    formdata.append("chasfreeamount", t_amount);
+
+    let response = await fetch("/create-cashfree-order", {
+        method: "POST",
+        body: formdata,
+        headers:{
+            "X-CSRFToken": csrf_token
+        }
+    });
+
+    let data = await response.json();
+
+    const cashfree = Cashfree({
+        mode: "production"
+    });
+
+    cashfree.checkout({
+        paymentSessionId: data.payment_session_id,
+        redirectTarget: "_modal"
+    }).then(function(result) {
+
+        if (result.paymentDetails) {
+
+            document.getElementById("cashfree_order_id_phone").value="cash_free"
+            document.getElementById("cashfree_payment_id_phone").value="cash_free"
+            form.submit();
+            showLoader();
+
+        }
+
+        if (result.error) {
+
+            console.log("Payment Failed");
+            console.log(result.error);
+
+        }
+
+    });
+
+}
+</script>
+<!-- Bootstrap JS -->
+<script>
+    // Payment method selection
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentMethods = document.querySelectorAll('.payment-method');
+
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function () {
+                // Remove active class from all methods
+                paymentMethods.forEach(m => m.classList.remove('active'));
+                // Add active class to clicked method
+                this.classList.add('active');
+                // Check the corresponding radio button
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+            });
+        });
+
+        // Address selection
+        const addressCards = document.querySelectorAll('.address-card');
+        addressCards.forEach(card => {
+            card.addEventListener('click', function () {
+                // Remove active class from all cards
+                addressCards.forEach(c => c.classList.remove('active'));
+                // Add active class to clicked card
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize totals
+    });
+</script>
+<script>
+// 🚀 PHONE ADDRESS DROPDOWN + ADD ADDRESS HANDLER
+function initPhoneAddressSystem() {
+    const changeBtn = document.getElementById("changeAddressBtn");
+    const addressDropdown = document.getElementById("addressDropdown");
+
+    function getAddressOptions() {
+        return document.querySelectorAll(".address-option");
+    }
+
+    function updateButtonText() {
+        if (getAddressOptions().length === 0) {
+            changeBtn.textContent = "Add Address";
+        } else {
+            changeBtn.textContent = "Change";
+        }
+    }
+
+    // Initial load
+    updateButtonText();
+
+    // 🌟 Global click handler
+    document.addEventListener("click", function (e) {
+
+        // -------------------------
+        // 1️⃣ Change / Add Address / Close Button
+        // -------------------------
+        if (e.target.id === "changeAddressBtn") {
+
+            const options = getAddressOptions();
+
+            if (options.length === 0) {
+                // Open Add Address Offcanvas (No address exists)
+                const el = document.getElementById("offcanvasRightaddresphone");
+                let offcanvas = new bootstrap.Offcanvas(el);
+                offcanvas.show();
+                return;
+            }
+
+            // Toggle dropdown
+            addressDropdown.classList.toggle("show");
+
+            // Set button text
+            changeBtn.textContent = addressDropdown.classList.contains("show")
+                ? "Close"
+                : "Change";
+        }
+
+        // -------------------------
+        // 2️⃣ Address Selection
+        // -------------------------
+        const option = e.target.closest(".address-option");
+        if (option) {
+            const selectedAddress = document.getElementById("selectedAddress");
+
+            document.querySelectorAll(".address-option")
+                .forEach(o => o.classList.remove("selected"));
+
+            option.classList.add("selected");
+
+            selectedAddress.innerHTML = option.innerHTML;
+
+            addressDropdown.classList.remove("show");
+            changeBtn.textContent = "Change";
+        }
+
+        // -------------------------
+        // 3️⃣ Click outside → Close dropdown
+        // -------------------------
+        if (
+            !e.target.closest(".address-header") &&
+            !e.target.closest(".address-dropdown") &&
+            !e.target.closest(".address-display")
+        ) {
+            addressDropdown?.classList.remove("show");
+
+            if (getAddressOptions().length > 0) {
+                changeBtn.textContent = "Change";
+            }
+        }
+    });
+}
+
+// -------------------------
+// 4️⃣ Reinitialize after HTMX swaps phone address list
+// -------------------------
+document.addEventListener("htmx:afterSwap", function (e) {
+    if (e.target.id === "phone_address_list") {
+        initPhoneAddressSystem();
+    }
+});
+
+// -------------------------
+// 5️⃣ Initialize on first load
+// -------------------------
+document.addEventListener("DOMContentLoaded", function () {
+    initPhoneAddressSystem();
+});
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+function check_address_axist_before_payment(){
+    let selectedAddress = document.querySelector("#selectedAddress input[name='address_ids']");
+    let selectedId = selectedAddress ? selectedAddress.value : null;
+
+    if (!selectedId){
+        swal({
+            text: "Please select an address",
+            icon: "error",
+            buttons:{
+                addAddress:{
+                    text:"Add Address",
+                    value:"address_val",
+                },
+            }
+        })
+        .then((value)=>{
+            if(value === "address_val"){
+                var el = document.getElementById('offcanvasRightaddresphone');
+                let offcanvas = new bootstrap.Offcanvas(el); 
+                offcanvas.show();     // ✔ this works
+            }
+        })
+        return;
+    }
+
+    else{
+        var el = document.getElementById('offcanvasRightpaymet_method');
+        let offcanvas = new bootstrap.Offcanvas(el);
+        offcanvas.show();   // ✔ this works
+    }
+}
+</script>
+
+
+<!-- Razorpay Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+
+<script>
+    function razorpay_fm_phone() {
+        const isChecked = document.getElementById("ponerazorpay-paymnet").checked;
+        const cashfree_payment_chek = document.getElementById("cashfree_payment_chek").checked;
+        let selectedAddress = document.querySelector("#selectedAddress input[name='address_ids']");
+
+        let selectedId = selectedAddress ? selectedAddress.value : null;
+        if (!selectedId){
+             swal({
+                text: "Please select an address",
+                icon: "error",
+            })
+            return;
+
+        }
+        // Select the form
+        const form = document.getElementById("checkoutForm_phone");
+        
+        // Check validity of all required fields
+        if (!form.checkValidity()) {
+            form.reportValidity(); // Shows native browser error messages
+            return; // Stop execution if invalid
+        }
+
+        if (isChecked){
+            razorpay_getway_phone()
+        }
+        else if(cashfree_payment_chek){
+            // cashfree_getway_phone()
+            phone_cashfree_fm()
+        }
+        else {
+            form.submit();
+            showLoader() 
+
+        }
+
+    }
+   
+    function razorpay_getway_phone() {
+      
+        let t_amount = document.getElementById("pproduct_total_bill").value;
+
+        var options = {
+            "key": "{{ key_id }}",
+            "amount": t_amount * 100,
+            "currency": "INR",
+            "name": "Us Vesta",
+            "image": "/static/logo.png",
+            "order_id": "{{ order_id }}",
+            "handler": function (response) {
+                document.getElementById("razorpay_payment_id").value = response.razorpay_payment_id
+                document.getElementById("razorpay_order_id").value = response.razorpay_order_id
+
+                form.submit();
+
+
+            },
+            "modal": {
+                "ondismiss": function () {
+                    let csrf_token = document.querySelector("[name='csrfmiddlewaretoken']").value;
+                    let formdata = new FormData();
+
+                    formdata.append("address_id_leave",selectedId);
+                    
+
+                    fetch("/checkout", {
+                        method: "POST",
+                        body: formdata,
+                        headers: {
+                            "X-CSRFToken": csrf_token
+                            // ✅ Don't set Content-Type manually with FormData
+                        }
+                    });
+                }
+            }
+            ,
+            "prefill": {
+                "name": "{{request.user.first_name}}",
+                "email":'{{request.user.email}}',
+                "contact":'{{request.user.phone}}'
+            },
+            "theme": {
+                "color": "#022149"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        
+    }
+  
+    
+    
+    
+    
+    
+    function razorpay_fm() {
+        const freecash = document.getElementById("cash-free-payment").checked;
+
+        const isChecked = document.getElementById("razorpay-paymnet").checked;
+        let selectedAddress = document.querySelector('input[name="address_id"]:checked');
+        if (!selectedAddress){
+             swal({
+                text: "Please select an address",
+                icon: "error",
+            })
+            return;
+
+        }
+
+        // Select the form
+        const form = document.getElementById("checkoutForm");
+
+        // Check validity of all required fields
+        if (!form.checkValidity()) {
+            form.reportValidity(); // Shows native browser error messages
+            return; // Stop execution if invalid
+        }
+
+        if (isChecked) {
+
+           let input =
+                document.getElementById("pproduct_total_bill") ||
+                document.getElementById("product_total_bill");
+
+            let t_amount = input ? input.value : 0;
+
+            var options = {
+                "key": "{{ key_id }}",
+                "amount": t_amount * 100,
+                "currency": "INR",
+                "name": "Us Vesta",
+                "image": "/static/logo.png",
+                "order_id": "{{ order_id }}",
+                "handler": function (response) {
+                    document.getElementById("razorpay_payment_id").value = response.razorpay_payment_id
+                    document.getElementById("razorpay_order_id").value = response.razorpay_order_id
+
+                    form.submit();
+
+
+                },
+                "modal": {
+                    "ondismiss": function () {
+                        let csrf_token = document.querySelector("[name='csrfmiddlewaretoken']").value;
+                        let formdata = new FormData();
+
+                        formdata.append("address_id_leave", form['address_id'].value);
+                        
+
+                        fetch("/checkout", {
+                            method: "POST",
+                            body: formdata,
+                            headers: {
+                                "X-CSRFToken": csrf_token
+                                // ✅ Don't set Content-Type manually with FormData
+                            }
+                        });
+                    }
+                }
+                ,
+                "prefill": {
+                    "name": "{{request.user.first_name}}",
+                    "email":'{{request.user.email}}',
+                    "contact":'{{request.user.phone}}'
+                },
+                "theme": {
+                    "color": "#022149"
+                }
+            };
+
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        } 
+        else if(freecash){
+            cashfree_fm()
+            
+        }
+        else {
+            form.submit();
+        }
+    }
+</script>
+ <!-- removing footer  -->
+
+{% endblock mainbody %}

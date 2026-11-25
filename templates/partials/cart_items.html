@@ -1,0 +1,282 @@
+<div class="offcanvas offcanvas-end shadow-lg border-0" tabindex="-1" id="offcanvasCart"
+    aria-labelledby="offcanvasCartLabel" style="width:400px; z-index:9000; overflow-x: hidden;">
+    <!-- Header -->
+    <div class="offcanvas-header bg-black text-white px-3 py-2.5 d-flex align-items-center justify-content-between border-bottom border-dark">
+        <h5 class="fw-bold mb-0 text-white d-flex align-items-center gap-2" id="offcanvasCartLabel" style="font-size: 1.05rem; letter-spacing: 1px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            CART<sup class="fw-normal fs-6 text-white-50">({% if shopping_cart %}{{ shopping_cart|length }}{% elif shopping_cart_inner %}{{ shopping_cart_inner|length }}{% else %}0{% endif %})</sup>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <!-- Body -->
+    <div class="offcanvas-body d-flex flex-column justify-content-between p-0 bg-light" style="overflow-x: hidden;">
+        {% if shopping_cart or shopping_cart_inner %}
+        <!-- SCROLLABLE CART ITEMS CONTAINER -->
+        <div class="cart-items p-2.5 overflow-auto flex-grow-1" id="shoping_card_dynemic" style="max-height: calc(100vh - 150px); overflow-x: hidden;">
+
+                {% if request.user.is_authenticated %}
+                <!-- 🧍 Logged-In User Products -->
+                    {% for a in shopping_cart %}
+                        {% if a.product %}
+                            <div class="card border border-light-subtle rounded-3 mb-1 p-1 bg-white shadow-sm" id="card_item{{a.id}}">
+                                <div class="d-flex align-items-start">
+                                    <!-- Image: 80px x 105px with generous right margin -->
+                                    <img loading="lazy" src="{{ a.product.product_image.url }}" class="rounded-3 border flex-shrink-0 bg-light"
+                                        style="width: 80px; height: 105px; object-fit: cover; margin-right: 14px;"
+                                        alt="{{ a.product.product_image_alt }}">
+
+                                    <div class="flex-grow-1 min-w-0">
+                                        <!-- Top Row: Unbold Product Title + Price -->
+                                        <div class="d-flex justify-content-between align-items-start mb-1 gap-2">
+                                            <p class="mb-0 text-dark lh-sm text-truncate text-uppercase" style="font-size: 0.82rem; font-weight: 500; letter-spacing: 0.3px;" title="{{ a.product.product_name }}">
+                                                {{ a.product.product_name|truncatechars:20 }}
+                                            </p>
+                                            <span id="total_amount{{a.id}}" class="fw-bold text-dark flex-shrink-0" style="font-size: 0.88rem;">₹ {{a.total_price_int}}</span>
+                                        </div>
+
+                                        <!-- Subtitle: MRP + Discount Badge -->
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            {% if a.product.discount_price %}
+                                            <del class="text-muted small" style="font-size: 0.76rem;">₹ {{a.product.get_discount_price_int}}</del>
+                                            {% endif %}
+                                            {% if a.product.get_discount_percentage > 0 %}
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{a.product.get_discount_percentage}}% OFF</span>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Bottom Control: Size Dropdown + Delete Trash Button -->
+                                        <div class="d-flex align-items-center justify-content-end mt-2">
+                                            <div class="d-inline-flex align-items-center border rounded-2 overflow-hidden bg-light shadow-2xs">
+                                                <button type="button" class="btn btn-sm btn-white border-end rounded-0 text-danger px-2 py-0.5"
+                                                    style="font-size: 0.82rem;"
+                                                    onclick="remove_item_in_card(this, {{a.id}})" title="Remove item">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <div class="px-1.5 py-0.5 bg-white">
+                                                    <select class="form-select form-select-sm border-0 py-0 text-dark fw-semibold shadow-none"
+                                                        id="p_size{{a.id}}"
+                                                        onchange="ste_size_in_cart({{a.id}})" style="font-size: 0.76rem; height: 24px; width: 76px; cursor: pointer;">
+                                                        <option value="">Size: M</option>
+                                                        <option value="M" {% if a.size == "M" %}selected{% endif %}>Size: M</option>
+                                                        <option value="L" {% if a.size == "L" %}selected{% endif %}>Size: L</option>
+                                                        <option value="XL" {% if a.size == "XL" %}selected{% endif %}>Size: XL</option>
+                                                        <option value="XXL" {% if a.size == "XXL" %}selected{% endif %}>Size: XXL</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- 🧥 Inner Products -->
+                    {% for a in shopping_cart_inner %}
+                        {% if a.inner_products_card %}
+                            <div class="card border border-light-subtle rounded-3 mb-1 p-1 bg-white shadow-sm" id="inner_card_item{{a.id}}">
+                                <div class="d-flex align-items-start">
+                                    <img loading="lazy" src="{% if a.inner_products_card.color_images %}{{ a.inner_products_card.color_images.url }}{% endif %}"
+                                        class="rounded-3 border flex-shrink-0 bg-light" style="width: 80px; height: 105px; object-fit: cover; margin-right: 14px;" alt="{{ a.inner_products_card.alt }}">
+                                    
+                                    <div class="flex-grow-1 min-w-0">
+                                        <div class="d-flex justify-content-between align-items-start mb-1 gap-2">
+                                            <p class="mb-0 text-dark lh-sm text-truncate text-uppercase" style="font-size: 0.82rem; font-weight: 500; letter-spacing: 0.3px;" title="{{ a.inner_products_card.product.product_name }}">
+                                                {{ a.inner_products_card.product.product_name|truncatechars:18 }}
+                                            </p>
+                                            <span id="total_amount{{a.id}}" class="fw-bold text-dark flex-shrink-0" style="font-size: 0.88rem;">₹ {{a.total_inner_product_price_int}}</span>
+                                        </div>
+
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            {% if a.inner_products_card.product.discount_price %}
+                                            <del class="text-muted small" style="font-size: 0.76rem;">₹ {{a.inner_products_card.product.get_discount_price_int}}</del>
+                                            {% endif %}
+                                            {% if a.inner_products_card.product.get_discount_percentage > 0 %}
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{a.inner_products_card.product.get_discount_percentage}}% OFF</span>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="d-flex align-items-center justify-content-end mt-2">
+                                            <div class="d-inline-flex align-items-center border rounded-2 overflow-hidden bg-light shadow-2xs">
+                                                <button type="button" class="btn btn-sm btn-white border-end rounded-0 text-danger px-2 py-0.5"
+                                                    style="font-size: 0.82rem;"
+                                                    onclick="inner_p_remove_item_in_card(this, {{a.id}})" title="Remove item">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <div class="px-1.5 py-0.5 bg-white">
+                                                    <select class="form-select form-select-sm border-0 py-0 text-dark fw-semibold shadow-none"
+                                                        id="p_size{{a.id}}"
+                                                        onchange="ste_size_in_cart_inner({{a.id}})" style="font-size: 0.76rem; height: 24px; width: 76px; cursor: pointer;">
+                                                        <option value="">Size: M</option>
+                                                        <option value="M" {% if a.size == "M" %}selected{% endif %}>Size: M</option>
+                                                        <option value="L" {% if a.size == "L" %}selected{% endif %}>Size: L</option>
+                                                        <option value="XL" {% if a.size == "XL" %}selected{% endif %}>Size: XL</option>
+                                                        <option value="XXL" {% if a.size == "XXL" %}selected{% endif %}>Size: XXL</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+            {% else %}
+                <!-- 👤 Guest Users -->
+                {% for a in shopping_cart %}
+                    <div class="card border border-light-subtle rounded-3 mb-1 p-1 bg-white shadow-sm" id="card_item{{a.id}}">
+                        <div class="d-flex align-items-start">
+                            <img loading="lazy" src="{{ a.product_image.url }}" class="rounded-3 border flex-shrink-0 bg-light"
+                                style="width: 80px; height: 105px; object-fit: cover; margin-right: 14px;"
+                                alt="{{ a.product_image_alt }}">
+                            
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="d-flex justify-content-between align-items-start mb-1 gap-2">
+                                    <p class="mb-0 text-dark lh-sm text-truncate text-uppercase" style="font-size: 0.82rem; font-weight: 500; letter-spacing: 0.3px;" title="{{ a.product_name }}">
+                                        {{ a.product_name|truncatechars:30 }}
+                                    </p>
+                                    <span id="total_amount{{a.id}}" class="fw-bold text-dark flex-shrink-0" style="font-size: 0.88rem;">₹ {{a.get_b2c_price_int}}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    {% if a.discount_price %}
+                                    <del class="text-muted small" style="font-size: 0.76rem;">₹ {{a.get_discount_price_int}}</del>
+                                    {% endif %}
+                                    {% if a.get_discount_percentage > 0 %}
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{a.get_discount_percentage}}% OFF</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-end mt-2">
+                                    <div class="d-inline-flex align-items-center border rounded-2 overflow-hidden bg-light shadow-2xs">
+                                        <button type="button" class="btn btn-sm btn-white border-end rounded-0 text-danger px-2 py-0.5"
+                                            style="font-size: 0.82rem;"
+                                            onclick="remove_item_in_card(this, {{a.id}})" title="Remove item">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                        <div class="px-1.5 py-0.5 bg-white">
+                                            <select class="form-select form-select-sm border-0 py-0 text-dark fw-semibold shadow-none"
+                                                id="p_size{{a.id}}"
+                                                onchange="ste_size_in_cart({{a.id}})" style="font-size: 0.76rem; height: 24px; width: 76px; cursor: pointer;">
+                                                <option value="">Size: M</option>
+                                                <option value="M" {% if a.size == "M" %}selected{% endif %}>Size: M</option>
+                                                <option value="L" {% if a.size == "L" %}selected{% endif %}>Size: L</option>
+                                                <option value="XL" {% if a.size == "XL" %}selected{% endif %}>Size: XL</option>
+                                                <option value="XXL" {% if a.size == "XXL" %}selected{% endif %}>Size: XXL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                {% for a in shopping_cart_inner %}
+                    <div class="card border border-light-subtle rounded-3 mb-1 p-1 bg-white shadow-sm" id="inner_card_item{{a.id}}">
+                        <div class="d-flex align-items-start">
+                            <img loading="lazy" src="{% if a.color_images %}{{ a.color_images.url }}{% endif %}" class="rounded-3 border flex-shrink-0 bg-light" style="width: 80px; height: 105px; object-fit: cover; margin-right: 14px;" alt="{{ a.alt }}">
+                            
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="d-flex justify-content-between align-items-start mb-1 gap-2">
+                                    <p class="mb-0 text-dark lh-sm text-truncate text-uppercase" style="font-size: 0.82rem; font-weight: 500; letter-spacing: 0.3px;" title="{{ a.product.product_name }}">
+                                        {{ a.product.product_name|truncatechars:18 }}
+                                    </p>
+                                    <span id="total_amount{{a.id}}" class="fw-bold text-dark flex-shrink-0" style="font-size: 0.88rem;">₹ {{a.product.get_b2c_price_int}}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    {% if a.product.discount_price %}
+                                    <del class="text-muted small" style="font-size: 0.76rem;">₹ {{a.product.get_discount_price_int}}</del>
+                                    {% endif %}
+                                    {% if a.product.get_discount_percentage > 0 %}
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{a.product.get_discount_percentage}}% OFF</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-end mt-2">
+                                    <div class="d-inline-flex align-items-center border rounded-2 overflow-hidden bg-light shadow-2xs">
+                                        <button type="button" class="btn btn-sm btn-white border-end rounded-0 text-danger px-2 py-0.5"
+                                            style="font-size: 0.82rem;"
+                                            onclick="inner_p_remove_item_in_card(this, {{a.id}})" title="Remove item">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                        <div class="px-1.5 py-0.5 bg-white">
+                                            <select class="form-select form-select-sm border-0 py-0 text-dark fw-semibold shadow-none"
+                                                id="p_size{{a.id}}"
+                                                onchange="ste_size_in_cart_inner({{a.id}})" style="font-size: 0.76rem; height: 24px; width: 76px; cursor: pointer;">
+                                                <option value="">Size: M</option>
+                                                <option value="M" {% if a.size == "M" %}selected{% endif %}>Size: M</option>
+                                                <option value="L" {% if a.size == "L" %}selected{% endif %}>Size: L</option>
+                                                <option value="XL" {% if a.size == "XL" %}selected{% endif %}>Size: XL</option>
+                                                <option value="XXL" {% if a.size == "XXL" %}selected{% endif %}>Size: XXL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- 🛡️ UNBOLDED MINIMALIST 4-COLUMN TRUST FEATURES BANNER (Directly below product) -->
+            <div class="row g-0 text-center border rounded-3 py-1 my-1 bg-white text-secondary shadow-2xs" style="font-size: 0.62rem; font-weight: 500; letter-spacing: 0.3px;">
+                <div class="col border-end px-1 py-1">
+                    <i class="fa-solid fa-truck-fast mb-1 fs-6 text-dark opacity-75 d-block"></i>
+                    <div class="text-uppercase" style="line-height: 1.15; font-weight: 500;">FREE<br>SHIPPING</div>
+                </div>
+                <div class="col border-end px-1 py-1">
+                    <i class="fa-solid fa-rotate-left mb-1 fs-6 text-dark opacity-75 d-block"></i>
+                    <div class="text-uppercase" style="line-height: 1.15; font-weight: 500;">7 DAYS<br>RETURNS</div>
+                </div>
+                <div class="col border-end px-1 py-1">
+                    <i class="fa-solid fa-box-open mb-1 fs-6 text-dark opacity-75 d-block"></i>
+                    <div class="text-uppercase" style="line-height: 1.15; font-weight: 500;">3-5 DAYS<br>DELIVERY</div>
+                </div>
+                <div class="col px-1 py-1">
+                    <i class="fa-solid fa-user-check mb-1 fs-6 text-dark opacity-75 d-block"></i>
+                    <div class="text-uppercase" style="line-height: 1.15; font-weight: 500;">40L+<br>CUSTOMERS</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 🧾 FROZEN / STICKY BOTTOM SUBTOTAL & CHECKOUT -->
+        <div class="p-3 pt-2 bg-white border-top shadow-lg position-sticky bottom-0 w-100" style="z-index: 100;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-semibold text-uppercase text-secondary small" style="letter-spacing: 0.8px; font-size: 0.78rem;">SUBTOTAL</span>
+                <span class="fw-bold fs-6 text-dark" id="total_bill00" style="font-size: 1.05rem !important;"></span>
+            </div>
+
+            <button type="button" class="btn w-100 py-2.5 fw-bold text-white rounded-3 shadow-sm text-uppercase"
+                style="background-color: #000000 !important; color: #ffffff !important; letter-spacing: 0.8px; font-size: 0.85rem;"
+                onclick="checkout_checking_size()">
+                PROCEED TO BUY
+            </button>
+        </div>
+
+        {% else %}
+        <!-- 🕳 Ultra-Attractive Empty Cart View -->
+        <div class="d-flex flex-column align-items-center justify-content-center h-100 p-4 text-center my-auto">
+            <div class="empty-cart-icon mb-4 position-relative">
+                <div class="bg-white rounded-circle p-4 shadow-sm border border-light d-inline-flex align-items-center justify-content-center" style="width: 110px; height: 110px;">
+                    <i class="fa-solid fa-bag-shopping text-dark" style="font-size: 3rem; opacity: 0.85;"></i>
+                </div>
+                <span class="position-absolute bottom-0 end-0 bg-black text-white rounded-circle p-1.5 shadow-sm" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-plus small"></i>
+                </span>
+            </div>
+
+            <h5 class="fw-bold text-dark mb-2 text-uppercase" style="letter-spacing: 1px;">Your Cart is Empty</h5>
+            <p class="text-muted small mb-4 px-2" style="max-width: 280px; line-height: 1.5;">
+                Looks like you haven't added any luxury pieces to your cart yet. Explore our oversized collection!
+            </p>
+
+            <a href="/shop" data-bs-dismiss="offcanvas" class="btn btn-dark text-white rounded-pill px-4 py-2.5 fw-bold shadow-sm text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">
+                <i class="fa-solid fa-cart-plus me-2"></i> Start Shopping
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>

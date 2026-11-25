@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+{% block header %}
+
+<link rel="stylesheet" href="/static/css/order-details.css">
+
+{% endblock header %}
+{% block mainbody %}
+
+
+    <div class="container py-4">
+
+        <div class="row g-3">
+
+            <!-- LEFT SIDE -->
+            <div class="col-lg-8">
+
+                <div class="card-box shadow-sm border-0 rounded-4 p-4 mb-4">
+                    <!-- PRODUCT -->
+                    <div class="d-flex gap-3 align-items-center mb-3">
+                        <img src="{% if orderd_product.inner_color_product and orderd_product.inner_color_product.color_images %}{{orderd_product.inner_color_product.color_images.url}}{% elif orderd_product.product and orderd_product.product.product_image %}{{orderd_product.product.product_image.url}}{% else %}/static/images/logo2.png{% endif %}" alt="Product Image" class="img-fluid rounded-3 border p-2 bg-light" style="max-height: 110px; max-width: 110px; object-fit: contain;">
+                        <div>
+                            <h5 class="fw-bold mb-1 text-dark">
+                                {% if orderd_product.inner_color_product %}
+                                {{orderd_product.inner_color_product.product.product_name}}
+                                {% elif orderd_product.product %}
+                                {{orderd_product.product.product_name}}
+                                {% else %}
+                                US VESTA Product
+                                {% endif %}
+                            </h5>
+                            <div class="d-flex flex-wrap gap-2 align-items-center mt-2">
+                                <span class="badge bg-light text-dark border">Size: {{orderd_product.product_size|default:"M"}}</span>
+                                <span class="badge bg-light text-dark border">Qty: {{orderd_product.quantity|default:1}}</span>
+                                <span class="badge bg-primary-subtle text-primary fw-semibold">Order ID: #{{orderd_product.id}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- STATUS -->
+
+                    <h6 class="fw-bold">Order</h6>
+                    <p class="text-muted small">Your order status is being updated. Please wait a moment...</p>
+
+                    <div class="tracking-container">
+
+                        {% if orderd_product.status == "Cancelled" %}
+
+                        <div class="alert alert-danger">
+                            <i class="fa fa-times-circle"></i>
+                            Order Cancelled
+                        </div>
+
+                        {% elif orderd_product.status == "Return in process" %}
+
+                        <div class="alert alert-warning">
+                            <i class="fa fa-undo"></i>
+                            Return Request in Process
+                        </div>
+
+                        {% elif orderd_product.status == "Return Accepte" %}
+
+                        <div class="alert alert-info">
+                            <i class="fa fa-check"></i>
+                            Return Accepted
+                        </div>
+
+                        {% elif orderd_product.status == "Return reject" %}
+
+                        <div class="alert alert-danger">
+                            <i class="fa fa-ban"></i>
+                            Return Rejected
+                        </div>
+
+                        {% elif orderd_product.status == "Refund" %}
+
+                        <div class="alert alert-success">
+                            <i class="fa fa-money-bill"></i>
+                            Refund Completed
+                        </div>
+                        {% else %}
+
+
+
+                        <div class="tracking-line"></div>
+                        <div class="tracking-progress"></div>
+
+                        <!-- Ordered -->
+                        <div class="tracking-step completed active">
+                            <div class="circle"><i class="fas fa-check"></i></div>
+                            <div class="text">Ordered</div>
+                        </div>
+
+                        <!-- Shipped -->
+                        <div class="tracking-step {% if orderd_product.status == 'Shipped' or orderd_product.status == 'Out for Delivery' or orderd_product.status == 'Delivered' %}completed active{% endif %}">
+                            <div class="circle"><i class="fas fa-truck"></i></div>
+                            <div class="text">Shipped</div>
+                        </div>
+
+                        <!-- Out for Delivery -->
+                        <div class="tracking-step {% if orderd_product.status == 'Out for Delivery' or orderd_product.status == 'Delivered' %}completed active{% endif %}">
+                            <div class="circle"><i class="fa-solid fa-person-biking"></i></div>
+                            <div class="text">Out for Delivery</div>
+                        </div>
+
+                        <!-- Delivered -->
+                        <div class="tracking-step {% if orderd_product.status == 'Delivered' %}completed active{% endif %}">
+                            <div class="circle"><i class="fa-solid fa-box"></i></div>
+                            <div class="text">Delivered</div>
+                        </div>
+                        {% endif %}
+
+
+                    </div>
+                     
+                        {% if orderd_product.status in "Ordered,Shipped" %}
+                        <button type="button" class="btn btn-outline-dark " onclick="cancel_model_in_profile({{orderd_product.id}})">
+
+                            Cancel Order
+                        </button>
+
+                    {% elif orderd_product.status == 'Delivered' %}
+                        <button type="button" class="btn btn-outline-danger"
+                                onclick="retun_modelusing_js({{orderd_product.id}})">
+
+                            Return Product
+                        </button>
+
+                    {% endif %}
+                    <div class="d-flex justify-content-between small">
+
+                        <span>Order Confirmed <br><b>{{orderd_product.created_at}}</b></span>
+                        <span class="text-end">Status <br><b>{{orderd_product.status}}</b></span>
+                    </div>
+
+                  
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="col-lg-4">
+
+                <!-- DELIVERY -->
+                <div class="card-box shadow-sm border-0 rounded-4 p-4 mb-3">
+                    <h6 class="fw-bold mb-3 text-dark"><i class="fas fa-map-marker-alt text-primary me-2"></i>Delivery details</h6>
+
+                    <div class="info-box p-3 rounded-3 bg-light border-0">
+                        <p class="mb-2"><strong>Name:</strong> {{ parsed_address.first_name|default:request.user.first_name }}</p>
+                        <p class="mb-2"><strong>Phone:</strong> {{ parsed_address.phone|default:request.user.phone }}</p>
+                        <p class="mb-2"><strong>Email:</strong> {{ parsed_address.email|default:request.user.email }}</p>
+                        <p class="mb-2"><strong>Address:</strong> {{ parsed_address.address }}{% if parsed_address.landmark %}, {{ parsed_address.landmark }}{% endif %}</p>
+                        <p class="mb-0"><strong>State:</strong> {{ parsed_address.state }}{% if parsed_address.pincode %} - {{ parsed_address.pincode }}{% endif %}</p>
+                    </div>
+                </div>
+
+                <!-- PRICE DETAILS -->
+                <div class="card-box shadow-sm border-0 rounded-4 p-4">
+                    <h6 class="fw-bold mb-3 text-dark"><i class="fas fa-receipt text-primary me-2"></i>Price Details</h6>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Total MRP</span>
+                        <span>
+                            {% if discount_amount > 0 %}
+                            <del class="text-muted me-1">₹ {{ total_mrp|floatformat:0 }}</del>
+                            {% else %}
+                            <span class="fw-semibold">₹ {{ total_mrp|floatformat:0 }}</span>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Quantity</span>
+                        <span class="fw-semibold">{{ qty }}</span>
+                    </div>
+
+                    {% if discount_amount > 0 %}
+                    <div class="d-flex justify-content-between mb-2 text-success fw-bold">
+                        <span>Discount Saved</span>
+                        <span>- ₹ {{ discount_amount|floatformat:0 }} ({{ discount_percent }}% OFF)</span>
+                    </div>
+                    {% endif %}
+
+                    {% if orderd_product.payment_status %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Payment Status</span>
+                        <span class="badge {% if orderd_product.payment_status == 'paid' %}bg-success-subtle text-success{% else %}bg-warning-subtle text-warning-emphasis{% endif %} fw-bold px-2 py-1">
+                            {{ orderd_product.payment_status|title }}
+                        </span>
+                    </div>
+                    {% endif %}
+
+                    <hr class="my-3">
+
+                    <div class="d-flex justify-content-between fw-bold fs-5 text-dark">
+                        <span>Total Amount</span>
+                        <span class="text-primary">₹ {{ total_price|floatformat:0 }}</span>
+                    </div>
+
+                    {% if discount_amount > 0 %}
+                    <div class="mt-3 text-center p-2 rounded-3 bg-success-subtle text-success border border-success-subtle small fw-bold">
+                        🎉 You saved ₹ {{ discount_amount|floatformat:0 }} ({{ discount_percent }}% OFF) on this order!
+                    </div>
+                    {% endif %}
+
+                    <div class="mt-3 p-3 bg-light rounded-3 border small d-flex align-items-center justify-content-between">
+                        <span class="text-muted">Paid By:</span>
+                        <span class="fw-bold text-dark"><i class="fas fa-credit-card me-1 text-primary"></i>{{ orderd_product.payment_method|default:"Online" }}</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<div class="modal fade" id="returnModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0 rounded-4">
+
+            <div class="modal-header bg-danger text-white rounded-top-4">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-arrow-return-left"></i> Request Product Return
+                </h5>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+
+            <div class="modal-body">
+
+                <form id="returnForm" method="post" action="/retun_request_cancel_requ" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="retun_model" id="retun_model">
+                    <!-- Reason -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Return Reason</label>
+
+                        <select class="form-select" name="retun_selectreason" required >
+                            <option value="">Select reason</option>
+                            <option>Wrong Size</option>
+                            <option>Damaged Product</option>
+                            <option>Wrong Product Delivered</option>
+                            <option>Quality Not As Expected</option>
+                            <option>Changed Mind</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Message -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Explain Issue</label>
+
+                        <textarea class="form-control" rows="4" name="retun_message"
+                            placeholder="Please explain why you want to return this product..." required></textarea>
+                    </div>
+
+
+                    <!-- Image Upload -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Upload Proof (Optional)</label>
+
+                        <input type="file" class="form-control" name="return_image" accept="image/*" required>
+                    </div>
+
+
+                    <!-- Warning -->
+                    <div class="alert alert-warning small">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        Returns are accepted within <b>7 days</b> of delivery.
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div class="modal-footer border-0">
+
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button type="submit" form="returnForm" class="btn btn-danger px-4">
+                    Submit Request
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- cnacel order  
+  -->
+
+<!-- Cancel Order Modal -->
+
+<div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content shadow border-0 rounded-4">
+
+
+            <!-- HEADER -->
+            <div class="modal-header bg-dark text-white">
+
+                <h5 class="modal-title fw-bold" id="cancelOrderLabel">
+
+                    Cancel Order
+
+                </h5>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <!-- BODY -->
+            <div class="modal-body">
+
+                <form id="cancelOrderForm" method="POST" method="post" action="/retun_request_cancel_requ">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" required name="cancel_order_id" id="cancel_order_id">
+
+
+                    <!-- Reason -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                            Cancel Reason
+
+                        </label>
+
+                        <select class="form-select" name="cancel_reason" required>
+
+                            <option value="">Select reason</option>
+
+                            <option>Ordered by mistake</option>
+
+                            <option>Found cheaper elsewhere</option>
+
+                            <option>Shipping time too long</option>
+
+                            <option>Change in plan</option>
+
+                            <option>Other</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Message -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                             Message
+
+                        </label>
+
+                        <textarea class="form-control" name="cancel_message" rows="4" required placeholder="Optional message...">
+
+                        </textarea>
+
+                    </div>
+
+
+                    <div class="alert alert-warning small">
+
+                        Order cancellation is allowed only before shipping.
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer border-0">
+
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+
+                    Close
+
+                </button>
+
+                <button type="submit" form="cancelOrderForm" class="btn btn-danger px-4">
+
+                    Cancel Order
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+    {% endblock mainbody %}

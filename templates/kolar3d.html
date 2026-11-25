@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Premium T-Shirt Designer
+  </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   :root {
+            --primary: #0b2e57;
+            --primary-light: #0f3a6b;
+            --accent: #fac13c;
+            --accent-hover: #fbd154;
+            --dark-bg: #0c0c0c;
+            --panel-bg: #151515;
+            --card-bg: #1a1a1a;
+            --border: rgba(255,255,255,0.08);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.6);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-md: 0 6px 20px rgba(0,0,0,0.4);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+            --shadow-glow: 0 0 20px rgba(250,193,60,0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --glass: rgba(255,255,255,0.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .designer-app {
+            display: flex;
+            max-width: 1440px;
+            margin: 0 auto;
+            background: var(--panel-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            height: 90vh;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+
+        /* ===== LEFT: Upload Panel ===== */
+        .upload-panel {
+            width: 280px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .panel-header {
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .panel-header h2 i {
+            color: var(--accent);
+            width: 34px;
+            height: 34px;
+            background: rgba(250,193,60,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .upload-card {
+            background: linear-gradient(135deg, rgba(250,193,60,0.04), rgba(11,46,87,0.04));
+            border: 2px dashed rgba(250,193,60,0.25);
+            border-radius: var(--radius-md);
+            padding: 28px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .upload-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(250,193,60,0.06), transparent 70%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .upload-card:hover::before { opacity: 1; }
+
+        .upload-icon {
+            font-size: 40px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .upload-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .upload-subtitle {
+            color: var(--text-secondary);
+            font-size: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .uploads-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .upload-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.04);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .upload-item:hover {
+            border-color: rgba(250,193,60,0.3);
+            background: rgba(250,193,60,0.04);
+            transform: translateX(3px);
+        }
+
+        .upload-thumbnail {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 12px;
+        }
+
+        .upload-details { flex-grow: 1; min-width: 0; }
+
+        .upload-name {
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .upload-size {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .remove-btn {
+            color: var(--text-secondary);
+            background: none;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .remove-btn:hover {
+            background: rgba(220,53,69,0.15);
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+
+        /* ===== CENTER: 2D Design Canvas ===== */
+        .design-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0a0a0a;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+            position: relative;
+        }
+
+        .design-canvas-container {
+            width: 92%;
+            height: 92%;
+            background: #0d0d0d;
+            border-radius: var(--radius-md);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.04), var(--shadow-lg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #design-canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* ===== RIGHT: 3D Preview Panel ===== */
+        .preview-panel {
+            width: 320px;
+            background: var(--card-bg);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .preview-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .preview-header h2 i {
+            color: var(--accent);
+            width: 34px;
+            height: 34px;
+            background: rgba(250,193,60,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-header p {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* Premium Color Swatches */
+        .color-swatches {
+            margin-top: 14px;
+        }
+
+        .color-swatches label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .swatch-grid {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .swatch:hover { transform: scale(1.15); }
+
+        .swatch.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(250,193,60,0.3);
+            transform: scale(1.1);
+        }
+
+        .swatch.white { background: #f0f0f0; }
+        .swatch.black { background: #1a1a1a; border-color: rgba(255,255,255,0.15); }
+        .swatch.navy { background: #0b2e57; }
+        .swatch.gold { background: #fac13c; }
+        .swatch.red { background: #dc2626; }
+        .swatch.blue { background: #2563eb; }
+        .swatch.gray { background: #6b7280; }
+        .swatch.green { background: #059669; }
+        .swatch.purple { background: #7c3aed; }
+        .swatch.pink { background: #ec4899; }
+
+        .preview-container {
+            flex: 1;
+            position: relative;
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+
+        #preview-canvas { width: 100%; height: 100%; }
+
+        /* ===== 3D Preview Controls ===== */
+        .preview-controls {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            padding: 8px 14px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .preview-btn {
+            padding: 7px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+            border: none;
+            letter-spacing: 0.2px;
+        }
+
+        .preview-btn.primary {
+            background: linear-gradient(135deg, var(--accent), #f5a623);
+            color: #0c0c0c;
+            box-shadow: 0 2px 10px rgba(250,193,60,0.25);
+        }
+
+        .preview-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(250,193,60,0.35);
+        }
+
+        .preview-btn.secondary {
+            background: rgba(255,255,255,0.06);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .preview-btn.secondary:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .preview-btn.save {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(5,150,105,0.25);
+        }
+
+        .preview-btn.save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(5,150,105,0.35);
+        }
+
+        /* ===== Badge ===== */
+        .premium-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(250,193,60,0.12);
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+
+        /* ===== Animations ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse { animation: pulse 2s infinite; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1200px) {
+            .designer-app { height: auto; flex-direction: column; }
+            .upload-panel, .preview-panel { width: 100%; }
+            .preview-panel { height: 380px; border-left: none; border-top: 1px solid var(--border); }
+            .design-area { min-height: 450px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .upload-panel { padding: 16px; }
+            .preview-panel { width: 100%; }
+        }
+  </style>
+  <meta content="Professional optimized web page with high performance, security compliance, and full mobile SEO optimization." name="description"/>
+ </head>
+ <body>
+  <div class="designer-app">
+   <!-- Left Upload Panel -->
+   <div class="upload-panel">
+    <div class="panel-header">
+     <h2>
+      <i class="fas fa-cloud-upload-alt">
+      </i>
+      Upload Images
+     </h2>
+    </div>
+    <div class="upload-card" id="upload-area">
+     <i class="fas fa-images upload-icon pulse">
+     </i>
+     <h3 class="upload-title">
+      Drag &amp; Drop Images
+     </h3>
+     <p class="upload-subtitle">
+      or click to browse files
+     </p>
+     <p class="upload-subtitle">
+      Supports JPG, PNG, SVG
+     </p>
+    </div>
+    <div class="uploads-list" id="uploads-list">
+     <!-- Uploaded images will appear here -->
+    </div>
+   </div>
+   <!-- Center Design Area -->
+   <div class="design-area">
+    <div class="design-canvas-container">
+     <canvas id="design-canvas">
+     </canvas>
+    </div>
+   </div>
+   <!-- Right 3D Preview -->
+   <div class="preview-panel">
+    <div class="preview-header">
+     <h2>
+      <i class="fas fa-tshirt">
+      </i>
+      3D Preview
+     </h2>
+     <p>
+      Drag to rotate • Scroll to zoom
+     </p>
+     <div class="color-swatches">
+      <label>
+       T-shirt Color
+      </label>
+      <div class="swatch-grid">
+       <div class="swatch white active" data-color="#f0f0f0" onclick="selectSwatch(this)">
+       </div>
+       <div class="swatch black" data-color="#1a1a1a" onclick="selectSwatch(this)">
+       </div>
+       <div class="swatch navy" data-color="#0b2e57" onclick="selectSwatch(this)">
+       </div>
+       <div class="swatch gold" data-color="#fac13c" onclick="selectSwatch(this)">
+       </div>
+       <div class="swatch red" data-color="#dc2626" onclick="selectSwatch(this)">
+       </div>
+       <div class="swatch blue" data-color="#2563eb" onclick="selectSwatch(this)">
+       </div>
+       <div class="swatch gray" data-color="#6b7280" onclick="selectSwatch(this)">
+       </div>
+       <div class="swatch green" data-color="#059669" onclick="selectSwatch(this)">
+       </div>
+       <div class="swatch purple" data-color="#7c3aed" onclick="selectSwatch(this)">
+       </div>
+       <div class="swatch pink" data-color="#ec4899" onclick="selectSwatch(this)">
+       </div>
+      </div>
+     </div>
+     <div class="premium-badge">
+      <i class="fas fa-crown">
+      </i>
+      Premium 3D
+     </div>
+    </div>
+    <div class="preview-container">
+     <div id="preview-canvas">
+     </div>
+     <div class="preview-controls">
+      <button class="preview-btn primary" data-bs-target="#exampleModal" data-bs-toggle="modal">
+       <i class="fas fa-shopping-bag">
+       </i>
+       Order
+      </button>
+      <button class="preview-btn save" onclick="saveDesign()">
+       <i class="fas fa-download">
+       </i>
+       Save
+      </button>
+      <button class="preview-btn secondary" onclick="toggleRotation()">
+       <i class="fas fa-pause">
+       </i>
+      </button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js">
+  </script>
+  <script>
+   let selectedTshirtColor = '#f0f0f0';
+
+        function selectSwatch(el) {
+            document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+            const newColor = el.getAttribute('data-color');
+            selectedTshirtColor = newColor;
+
+            if (backgroundImage) {
+                canvas.backgroundColor = newColor;
+                canvas.renderAll();
+            }
+
+            if (tshirtModel) {
+                tshirtModel.traverse((child) => {
+                    if (child.isMesh && child.material) {
+                        if (child.material.map) {
+                            child.material.color.set(newColor);
+                        } else {
+                            child.material = new THREE.MeshStandardMaterial({
+                                color: newColor,
+                                roughness: 0.5,
+                                metalness: 0.1
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
+        // Enhanced Configuration
+        const config = {
+            tshirtTexture: '/static/whitepolo/uploads_files_4834809_Texture/Polo%20t-shirt_UV_opacity_1001.webp',
+            tshirtModelPath: '/static/whitepolo/o.obj',
+            canvasBackground: 'transparent',
+            autoRotateSpeed: 0.005,
+            initialCameraPosition: 5,
+            minZoomDistance: 2,
+            
+            maxZoomDistance: 15,
+            baseTextureResolution: 1024,
+            maxTextureResolution: 2048,
+            qualityMultiplier: 2
+        };
+
+        // Global variables
+        let canvas, scene, camera, renderer, tshirtModel, controls;
+        let isRotating = true;
+        let designTexture = null;
+        let originalTshirtTexture = null;
+        let backgroundImage = null;
+        let uploadedImages = [];
+        let currentTextureResolution = config.baseTextureResolution;
+
+        // Initialize the application
+        function init() {
+            init2DEditor();
+            init3DPreview();
+            setupEventListeners();
+            window.addEventListener('resize', handleResize);
+            handleResize();
+        }
+        // 2D Editor Setup with crisp rendering
+        function init2DEditor() {
+            const container = document.querySelector('.design-canvas-container');
+
+            canvas = new fabric.Canvas('design-canvas', {
+                backgroundColor: config.canvasBackground,
+                preserveObjectStacking: true,
+                selection: true,
+                width: container.clientWidth,
+                height: container.clientHeight,
+                imageSmoothingEnabled: false,
+                renderOnAddRemove: true
+            });
+
+            // Load T-shirt texture as background with crisp rendering
+            fabric.Image.fromURL(config.tshirtTexture, function (img) {
+                // Scale image to fit within the canvas
+                const scaleX = canvas.width / img.width;
+                const scaleY = canvas.height / img.height;
+                const scale = Math.min(scaleX, scaleY) * 1.2; // Fit inside with 90% scale
+                
+                img.scale(scale);
+
+                img.set({
+                    originX: 'center',
+                    originY: 'center',
+                    left: canvas.width / 2,
+                    top: canvas.height / 2,
+                    selectable: false,
+                    evented: false,
+                    lockMovementX: true,
+                    lockMovementY: true,
+                    lockRotation: true,
+                    lockScalingX: true,
+                    lockScalingY: true,
+                    lockUniScaling: true,
+                    imageSmoothing: false
+                });
+
+                originalTshirtTexture = img;
+                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+                    backgroundImageOpacity: 1,
+                    backgroundImageStretch: false
+                });
+                backgroundImage = img;
+                
+                setupCanvasEventListeners();
+            }, {
+                crossOrigin: 'anonymous',
+                imageSmoothingEnabled: false
+            });
+        }
+
+        // Setup canvas event listeners
+        function setupCanvasEventListeners() {
+            canvas.on('object:modified', function() {
+                update3DPreview({ forceHighRes: true });
+            });
+            canvas.on('object:added', update3DPreview);
+            canvas.on('object:removed', update3DPreview);
+            canvas.on('object:moving', update3DPreview);
+            canvas.on('object:scaling', update3DPreview);
+            canvas.on('object:rotating', update3DPreview);
+        }
+
+        // Setup other event listeners
+        function setupEventListeners() {
+            // Upload area click handler
+            document.getElementById('upload-area').addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.multiple = true;
+                input.onchange = handleFileUpload;
+                input.click();
+            });
+
+            // Drag and drop for images
+            const uploadArea = document.getElementById('upload-area');
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary)';
+                uploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.08)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = 'rgba(67, 97, 238, 0.3)';
+                uploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.03)';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'rgba(67, 97, 238, 0.3)';
+                uploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.03)';
+                
+                if (e.dataTransfer.files.length > 0) {
+                    handleFileUpload({ target: { files: e.dataTransfer.files } });
+                }
+            });
+        }
+
+        // Handle file upload
+        function handleFileUpload(e) {
+            const files = e.target.files;
+            if (!files) return;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.match('image.*')) continue;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    addImageToDesign(event.target.result, file.name, file.size);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Add image to design with crisp rendering
+        function addImageToDesign(imageData, fileName, fileSize) {
+            fabric.Image.fromURL(imageData, (img) => {
+                // Scale image to fit within the t-shirt area
+                const maxWidth = canvas.width * 0.3;
+                const maxHeight = canvas.height * 0.3;
+
+                let scale = 1;
+                if (img.width > maxWidth || img.height > maxHeight) {
+                    scale = Math.min(
+                        maxWidth / img.width,
+                        maxHeight / img.height
+                    );
+                }
+
+                // Create a new image element with higher quality settings
+                const highResImg = new Image();
+                highResImg.onload = function() {
+                    const fabricImg = new fabric.Image(highResImg, {
+                        left: canvas.width / 2,
+                        top: canvas.height / 2,
+                        originX: 'center',
+                        originY: 'center',
+                        scaleX: scale,
+                        scaleY: scale,
+                        hasControls: true,
+                        borderColor: '#4361ee',
+                        cornerColor: '#4361ee',
+                        cornerSize: 8,
+                        transparentCorners: false,
+                        name: fileName,
+                        objectCaching: false,
+                        imageSmoothing: false,
+                        zIndex: 800,
+                        scaleFactor: window.devicePixelRatio || 1
+                    });
+
+                    canvas.add(fabricImg);
+                    canvas.setActiveObject(fabricImg);
+                    update3DPreview({ forceHighRes: true });
+                    
+                    addToUploadList(imageData, fileName, fileSize, fabricImg);
+                };
+                highResImg.src = imageData;
+            }, {
+                crossOrigin: 'anonymous',
+                imageSmoothingEnabled: false
+            });
+        }
+
+        // Add image to upload list
+        function addToUploadList(imageData, fileName, fileSize, fabricObj) {
+            const uploadsList = document.getElementById('uploads-list');
+            const uploadId = 'upload-' + Date.now();
+            
+            const fileSizeMB = (fileSize / (1024 * 1024)).toFixed(2);
+            
+            const uploadItem = document.createElement('div');
+            uploadItem.className = 'upload-item fade-in';
+            uploadItem.id = uploadId;
+            
+            uploadItem.innerHTML = `
+                <img src="${imageData}" loading="lazy" class="upload-thumbnail" alt="${fileName}">
+                <div class="upload-details">
+                    <div class="upload-name" title="${fileName}">${fileName}</div>
+                    <div class="upload-size">${fileSizeMB} MB</div>
+                </div>
+                <button class="remove-btn" onclick="removeUpload('${uploadId}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            uploadsList.appendChild(uploadItem);
+            
+            uploadedImages.push({
+                id: uploadId,
+                fabricObj: fabricObj,
+                imageData: imageData
+            });
+        }
+
+        // Remove uploaded image
+        function removeUpload(uploadId) {
+            const uploadIndex = uploadedImages.findIndex(img => img.id === uploadId);
+            if (uploadIndex !== -1) {
+                canvas.remove(uploadedImages[uploadIndex].fabricObj);
+                uploadedImages.splice(uploadIndex, 1);
+                update3DPreview();
+            }
+            
+            const uploadItem = document.getElementById(uploadId);
+            if (uploadItem) {
+                uploadItem.classList.add('fade-out');
+                setTimeout(() => uploadItem.remove(), 300);
+            }
+        }
+
+        // Update 3D preview with current design
+        function update3DPreview(options = {}) {
+            if (!tshirtModel) return;
+
+            // Create a temporary canvas with optimal resolution
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = config.baseTextureResolution;
+            tempCanvas.height = config.baseTextureResolution;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.imageSmoothingEnabled = false;
+            tempCtx.imageSmoothingQuality = 'high';
+
+            // Clear the canvas
+            tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+            // Draw original t-shirt texture first
+            const bgImg = originalTshirtTexture.getElement();
+            tempCtx.drawImage(bgImg, 0, 0, tempCanvas.width, tempCanvas.height);
+
+            // Draw all design objects with proper scaling and positioning
+            const objects = canvas.getObjects().filter(obj => obj !== backgroundImage);
+            if (objects.length === 0) {
+                update3DTexture(tempCanvas);
+                return;
+            }
+
+            // Calculate scaling factors
+            const scaleX = tempCanvas.width / canvas.width;
+            const scaleY = tempCanvas.height / canvas.height;
+
+            objects.forEach(obj => {
+                if (obj && obj.width && obj.height) {
+                    // Calculate position and size on the texture
+                    const objWidth = obj.width * obj.scaleX * scaleX;
+                    const objHeight = obj.height * obj.scaleY * scaleY;
+                    
+                    // Calculate center position - adjust for proper UV mapping
+                    const centerX = (obj.left * scaleX) - (objWidth / 2);
+                    const centerY = (obj.top * scaleY) - (objHeight / 2);
+                    
+                    // Create a temporary canvas for this object
+                    const objCanvas = document.createElement('canvas');
+                    objCanvas.width = objWidth;
+                    objCanvas.height = objHeight;
+                    const objCtx = objCanvas.getContext('2d');
+                    objCtx.imageSmoothingEnabled = false;
+                    
+                    // Draw the object onto its canvas
+                    const objDataURL = obj.toDataURL({
+                        format: 'png',
+                        quality: 1,
+                        multiplier: config.qualityMultiplier
+                    });
+                    
+                    const img = new Image();
+                    img.onload = function() {
+                        objCtx.drawImage(img, 0, 0, objWidth, objHeight);
+                        
+                        // Draw onto the main texture canvas
+                        tempCtx.drawImage(
+                            objCanvas, 
+                            Math.round(centerX), 
+                            Math.round(centerY), 
+                            Math.round(objWidth), 
+                            Math.round(objHeight)
+                        );
+                        
+                        update3DTexture(tempCanvas);
+                    };
+                    img.src = objDataURL;
+                }
+            });
+        }
+
+        // Update 3D model texture
+        function update3DTexture(sourceCanvas) {
+            if (!tshirtModel) return;
+            
+            // Create texture directly from canvas
+            const texture = new THREE.Texture(sourceCanvas);
+            texture.encoding = THREE.sRGBEncoding;
+            texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+            texture.minFilter = THREE.LinearFilter;
+            texture.magFilter = THREE.LinearFilter;
+            texture.generateMipmaps = false;
+            texture.needsUpdate = true;
+            
+            // Apply to model
+            tshirtModel.traverse((child) => {
+                if (child.isMesh) {
+                    // Create new material or update existing one
+                    if (!child.material || typeof child.material.clone !== 'function') {
+                        child.material = new THREE.MeshStandardMaterial({
+                            map: texture,
+                            roughness: 0.5,
+                            metalness: 0.1
+                        });
+                    } else {
+                        // Clone material and update texture
+                        const newMaterial = child.material.clone();
+                        newMaterial.map = texture;
+                        newMaterial.needsUpdate = true;
+                        child.material = newMaterial;
+                    }
+                }
+            });
+            
+            designTexture = texture;
+        }
+
+        // 3D Mockup Setup
+        function init3DPreview() {
+            // Scene setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color("#1b1a1a");
+            
+            // Camera setup
+            const container = document.querySelector('.preview-container');
+            camera = new THREE.PerspectiveCamera(
+                30, 
+                container.clientWidth / container.clientHeight, 
+                0.1, 
+                1000
+            );
+            camera.position.z = config.initialCameraPosition;
+            
+            // Renderer setup with high quality settings
+            renderer = new THREE.WebGLRenderer({ 
+                antialias: true,
+                alpha: true,
+                powerPreference: "high-performance",
+                precision: "highp"
+            });
+            renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            document.getElementById('preview-canvas').appendChild(renderer.domElement);
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            directionalLight.position.set(1,1, 1);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 2048;
+            directionalLight.shadow.mapSize.height =2048;
+            scene.add(directionalLight);
+            
+            const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.3);
+            scene.add(hemisphereLight);
+            
+            // Controls (OrbitControls)
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.screenSpacePanning = false;
+            controls.minDistance = config.minZoomDistance;
+            controls.maxDistance = config.maxZoomDistance;
+            controls.maxPolarAngle = Math.PI;
+            
+            // Load OBJ model
+            const objLoader = new THREE.OBJLoader();
+            objLoader.load(
+                config.tshirtModelPath,
+                (object) => {
+                    tshirtModel = object;
+                    
+                    // First apply basic material
+                    tshirtModel.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material = new THREE.MeshStandardMaterial({
+                                color: 0xFFFFFF,
+                                roughness: 0.5,
+                                metalness: 0.1
+                            });
+                        }
+                    });
+                    
+                    scene.add(tshirtModel);
+                    
+                    // Center and scale the model
+                    const box = new THREE.Box3().setFromObject(tshirtModel);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+                    
+                    tshirtModel.position.sub(center);
+                    tshirtModel.position.y = -1.8; // Adjust vertical position to center it
+                    
+                    // Auto-scale based on model size
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 1 / maxDim;
+                    tshirtModel.scale.set(scale, scale, scale);
+                    
+                    // Load texture after model is scaled and positioned
+                    const textureLoader = new THREE.TextureLoader();
+                    textureLoader.load(config.tshirtTexture, (texture) => {
+                        texture.encoding = THREE.sRGBEncoding;
+                        texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+                        texture.minFilter = THREE.LinearFilter;
+                        texture.magFilter = THREE.LinearFilter;
+                        
+                        tshirtModel.traverse((child) => {
+                            if (child.isMesh) {
+                                child.material.map = texture;
+                                child.material.needsUpdate = true;
+                            }
+                        });
+                        
+                        designTexture = texture;
+                        update3DPreview();
+                    });
+                },
+                undefined,
+                (error) => {
+                    console.error("Error loading OBJ model:", error);
+                    // Show error message
+                    const previewContainer = document.querySelector('.preview-container');
+                    const errorDiv = document.createElement('div');
+                    errorDiv.style.position = 'absolute';
+                    errorDiv.style.top = '50%';
+                    errorDiv.style.left = '50%';
+                    errorDiv.style.transform = 'translate(-50%, -50%)';
+                    errorDiv.style.color = 'white';
+                    errorDiv.style.textAlign = 'center';
+                    errorDiv.innerHTML = '<h3>Error Loading 3D Model</h3><p>Please check console for details</p>';
+                    previewContainer.appendChild(errorDiv);
+                }
+            );
+            
+            animate();
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (isRotating && tshirtModel) {
+                tshirtModel.rotation.y += config.autoRotateSpeed;
+            }
+
+            if (controls) {
+                controls.update();
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Reset 3D view
+        
+
+        // Toggle auto rotation
+        function toggleRotation() {
+            isRotating = !isRotating;
+            const button = document.querySelector('.preview-btn.secondary');
+            if (isRotating) {
+                button.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            } else {
+                button.innerHTML = '<i class="fas fa-play"></i> Play';
+            }
+        }
+
+        // Save the design
+        function saveDesign() {
+            const link = document.createElement('a');
+            link.download = 'tshirt-design.png';
+            link.href = canvas.toDataURL({
+                format: 'png',
+                quality: 1,
+                multiplier: 2
+            });
+            link.click();
+        }
+
+        // Handle window resize
+        function handleResize() {
+            const container = document.querySelector('.design-canvas-container');
+            canvas.setDimensions({
+                width: container.clientWidth,
+                height: container.clientHeight
+            });
+
+            if (originalTshirtTexture) {
+                originalTshirtTexture.set({
+                    left: canvas.width / 2,
+                    top: canvas.height / 2
+                });
+                canvas.renderAll();
+            }
+
+            const previewContainer = document.querySelector('.preview-container');
+            camera.aspect = previewContainer.clientWidth / previewContainer.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(previewContainer.clientWidth, previewContainer.clientHeight);
+        }
+
+        // Initialize the app
+        window.onload = init;
+  </script>
+  {% include "3dmodelpopu.html" %}
+ </body>
+</html>

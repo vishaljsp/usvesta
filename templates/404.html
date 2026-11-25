@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="text-center">
+
+        <!-- Image -->
+        <img src="/static/404.webp" 
+            loading="lazy"
+             alt="404 Error" 
+             class="img-fluid mb-4">
+
+        <!-- Heading -->
+        <h1 class="display-5 fw-bold text-dark">Oops! Page Not Found 😕</h1>
+
+        <!-- Description -->
+        <p class="text-muted mt-3 mb-4">
+            The page you are looking for might have been removed, 
+            had its name changed, or is temporarily unavailable.
+        </p>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+            <a href="/" class="btn btn-primary px-4 py-2">
+                🏠 Go to Home
+            </a>
+
+            <a href="/shop" class="btn btn-outline-dark px-4 py-2">
+                🛍️ Continue Shopping
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock mainbody %}

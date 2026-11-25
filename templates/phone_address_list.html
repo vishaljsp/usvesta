@@ -1,0 +1,79 @@
+{% for a in user_address %}
+
+    {% if new_id == a.id  %}
+        <div class="address-display" id="selectedAddress">
+            <div class="address-name">
+                {{a.name}} 
+            </div>
+            <div class="address-details">
+                {{a.user_address}}
+            </div>
+             <div class="address-details">
+                {{a.state}} {{a.pin_code}}
+            </div>
+             <div class="address-details">
+                {{a.email}}
+            </div>
+            <div class="address-details">{{a.phone_numer}}</div>
+                <div class="address-details">
+            <input type="number" hidden name="address_ids" value="{{a.id}}" >
+            </div>
+        </div>
+    {% else %}
+        {% if forloop.first %}
+            <div class="address-display" id="selectedAddress">
+                <div class="address-name">
+                    {{a.name}} 
+                </div>
+                <div class="address-details">
+                    {{a.user_address}}
+                </div>
+                <div class="address-details">
+                    {{a.state}} {{a.pin_code}}
+                </div>
+                <div class="address-details">
+                    {{a.email}}
+                </div>
+                <div class="address-details">{{a.phone_numer}}</div>
+                    <div class="address-details">
+                <input type="number" hidden name="address_ids" value="{{a.id}}" >
+                </div>
+            </div>
+        
+        {% endif %}
+    {% endif %}
+   
+{% endfor %}
+ <div class="address-dropdown" id="addressDropdown">
+    {% for a in user_address %}
+        <div class="address-option selected" data-address="vishal-home">
+            <div class="address-name">
+                {{a.name}}
+            </div>
+            <div class="address-details">
+                {{a.user_address}}
+            </div>
+            <div class="address-details">
+                {{a.state}} {{a.pin_code}}
+            </div>
+            <div class="address-details">
+                {{a.email}}
+            </div>
+            <div class="address-details">{{a.phone_numer}}</div>
+            <div class="address-details">
+            <input type="number" hidden name="address_ids" value="{{a.id}}" >
+            </div>
+
+        </div>
+    {% endfor %}
+    
+    
+    <div class="add-new-address" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightaddresphone" aria-controls="offcanvasRight">
+        <i class="fas fa-plus"></i> Add New Address
+    </div>
+</div>
+
+
+
+
+

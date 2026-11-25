@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block header %}
+<title>
+ {{ blog_details.meta_title }} - US Vesta Blog
+</title>
+<meta content="{{ blog_details.meta_description }}" name="description"/>
+<meta content="{{ blog_details.meta_keyword }}" name="keywords"/>
+<style>
+ .blog-search-input:focus {
+        border-color: #052043 !important;
+        box-shadow: 0 0 0 3px rgba(5, 32, 67, 0.1) !important;
+    }
+    .hover-accent:hover .fw-semibold {
+        color: #fac13c !important;
+    }
+    .category-link {
+        transition: all 0.2s ease;
+        border-radius: 8px;
+        font-weight: 500;
+        color: #52525b !important;
+    }
+    .category-link:hover {
+        background-color: rgba(5, 32, 67, 0.05);
+        color: #052043 !important;
+        padding-left: 10px;
+    }
+    .btn-blog-back {
+        background-color: transparent !important;
+        color: #052043 !important;
+        border: 2px solid #052043 !important;
+        transition: all 0.2s ease;
+    }
+    .btn-blog-back:hover {
+        background-color: #052043 !important;
+        color: #ffffff !important;
+    }
+</style>
+{% endblock header %}
+
+{% block mainbody %}
+<div class="container my-5" style="min-height: 70vh;">
+ <div class="row">
+  <!-- Blog Details Content -->
+  <div class="col-lg-9 col-md-8">
+   <!-- Breadcrumbs -->
+   <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+     <li class="breadcrumb-item">
+      <a class="text-secondary text-decoration-none" href="/">
+       Home
+      </a>
+     </li>
+     <li class="breadcrumb-item">
+      <a class="text-secondary text-decoration-none" href="/blog">
+       Blog
+      </a>
+     </li>
+     <li aria-current="page" class="breadcrumb-item active text-dark">
+      {{ blog_details.category.category }}
+     </li>
+    </ol>
+   </nav>
+   <!-- Category Badge -->
+   <span class="badge mb-3 fw-bold text-white" style="font-size: 0.8rem; background-color: #052043;">
+    {{ blog_details.category.category }}
+   </span>
+   <!-- Title -->
+   <h1 class="fw-bold tracking-tight mb-3" style="font-size: 2.5rem; color: #052043; letter-spacing: -1px; line-height: 1.2;">
+    {{ blog_details.meta_title }}
+   </h1>
+   <!-- Metadata -->
+   <div class="d-flex align-items-center gap-3 text-muted mb-4 border-bottom pb-3">
+    <div>
+     <i class="far fa-user me-1">
+     </i>
+     By
+     <strong>
+      {{ blog_details.author }}
+     </strong>
+    </div>
+    <div>
+     <i class="far fa-calendar-alt me-1">
+     </i>
+     Published:
+     <strong>
+      {{ blog_details.date|date:"d M Y" }}
+     </strong>
+    </div>
+   </div>
+   <!-- Main Image -->
+   {% if blog_details.blog_image %}
+   <div class="mb-5 rounded-4 overflow-hidden shadow-sm border" style="border-color: rgba(5, 32, 67, 0.05) !important;">
+    <img alt="{{ blog_details.image_alt_name }}" class="w-100 img-fluid" loading="lazy" src="{{ blog_details.blog_image.url }}" style="max-height: 480px; object-fit: cover;"/>
+   </div>
+   {% endif %}
+   <!-- Content -->
+   <div class="blog-html-content text-dark fs-5 mb-5" style="line-height: 1.8;">
+    {{ blog_details.blog_content|safe }}
+   </div>
+   <hr class="my-5"/>
+   <!-- Back to Blog Button -->
+   <div class="text-center mb-5">
+    <a class="btn btn-blog-back px-4 py-2 rounded-3 fw-bold" href="/blog">
+     <i class="fas fa-arrow-left me-2">
+     </i>
+     Back to Blog Articles
+    </a>
+   </div>
+  </div>
+  <!-- Sidebar -->
+  <div class="col-lg-3 col-md-4">
+   <!-- Search Widget -->
+   <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid rgba(5, 32, 67, 0.05) !important;">
+    <h5 class="fw-bold text-dark mb-3" style="font-size: 1.1rem; color: #052043 !important;">
+     Search Article
+    </h5>
+    <form action="/blog" method="GET">
+     <div class="input-group">
+      <input class="form-control blog-search-input" name="q" placeholder="Type keywords..." style="border-radius: 8px 0 0 8px; border: 1px solid #e4e6eb;" type="text"/>
+      <button class="btn text-white px-3" style="background-color: #052043; border-radius: 0 8px 8px 0; border: none;" type="submit">
+       <i class="fas fa-search">
+       </i>
+      </button>
+     </div>
+    </form>
+   </div>
+   <!-- Categories Widget -->
+   <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid rgba(5, 32, 67, 0.05) !important;">
+    <h5 class="fw-bold text-dark mb-3" style="font-size: 1.1rem; color: #052043 !important;">
+     Categories
+    </h5>
+    <div class="d-flex flex-column gap-1">
+     <a class="category-link px-3 py-2 text-decoration-none" href="/blog">
+      All Categories
+     </a>
+     {% for cat in b_cat %}
+     <a class="category-link px-3 py-2 text-decoration-none {% if blog_details.category.ct_slug == cat.ct_slug %}active bg-light{% endif %}" href="/blog?category={{ cat.ct_slug }}">
+      {{ cat.category }}
+     </a>
+     {% endfor %}
+    </div>
+   </div>
+   <!-- Recent Posts Widget -->
+   <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" style="border: 1px solid rgba(5, 32, 67, 0.05) !important;">
+    <h5 class="fw-bold text-dark mb-3" style="font-size: 1.1rem; color: #052043 !important;">
+     Recent Posts
+    </h5>
+    <div class="d-flex flex-column gap-3">
+     {% for post in recent_blogs %}
+     <a class="d-flex align-items-center gap-3 text-decoration-none hover-accent text-dark" href="/blogs/{{ post.slug }}">
+      {% if post.blog_image %}
+      <img alt="Optimized page graphic asset" class="rounded-3 border" loading="lazy" src="{{ post.blog_image.url }}" style="width: 55px; height: 55px; object-fit: cover;"/>
+      {% endif %}
+      <div class="overflow-hidden">
+       <div class="fw-semibold text-dark text-truncate" style="font-size: 0.85rem;" title="{{ post.meta_title }}">
+        {{ post.meta_title }}
+       </div>
+       <small class="text-muted" style="font-size: 10px;">
+        <i class="far fa-calendar-alt me-1">
+        </i>
+        {{ post.date|date:"d M Y" }}
+       </small>
+      </div>
+     </a>
+     {% empty %}
+     <div class="text-muted small">
+      No recent posts.
+     </div>
+     {% endfor %}
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock mainbody %}

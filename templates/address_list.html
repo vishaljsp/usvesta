@@ -1,0 +1,76 @@
+                                                                                                                                                                                                                                                                          {% if phone_addresS == "phone_addresS" %}
+{% for a in user_address %}
+    {% if new_id == a.id  %}
+        <div class="address-display" id="selectedAddress">
+            <div class="address-name">
+                {{a.name}} 
+            </div>
+            <div class="address-details">
+                {{a.user_address}}
+            </div>
+             <div class="address-details">
+                {{a.state}} {{a.pin_code}}
+            </div>
+             <div class="address-details">
+                {{a.email}}
+            </div>
+            <div class="address-details">{{a.phone_numer}}</div>
+                <div class="address-details">
+            <input type="number" hidden name="address_ids" value="{{a.id}}" >
+            </div>
+        </div>
+        
+    {% endif %}
+    <div class="address-dropdown" id="addressDropdown">
+        {% for a in user_address %}
+            <div class="address-option selected" data-address="vishal-home">
+                <div class="address-name">
+                    {{a.name}}
+                </div>
+                <div class="address-details">
+                    {{a.user_address}}
+                </div>
+                <div class="address-details">
+                    {{a.state}} {{a.pin_code}}
+                </div>
+                <div class="address-details">
+                    {{a.email}}
+                </div>
+                <div class="address-details">{{a.phone_numer}}</div>
+                <div class="address-details">
+                <input type="number" hidden name="address_ids" value="{{a.id}}" >
+                </div>
+
+            </div>
+        {% endfor %}
+        
+        
+        <div class="add-new-address" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightaddresphone" aria-controls="offcanvasRight">
+            <i class="fas fa-plus"></i> Add New Address
+        </div>
+    </div>
+{% endfor %}
+
+{% else %}
+
+{% for a in user_address %}
+<label for="addresscheckbox{{a.id}}" class="w-100">
+    <div class="address-card {% if new_id == a.id %}active{% endif %}">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h6 class="mb-1">Home Address</h6>
+                <p class="mb-1">{{a.name}}</p>
+                <p class="mb-1">{{a.user_address}}</p>
+                <p class="mb-0">{{a.state}} {{a.pin_code}}</p>
+                <h6 class="mb-1">Contact Details</h6>
+                <p class="mb-0">{{a.phone_numer}}</p>
+                <p class="mb-0">{{a.email}}</p>
+            </div>
+        </div>
+    </div>
+</label>
+<input type="radio" hidden value="{{a.id}}"  id="addresscheckbox{{a.id}}"  {% if new_id == a.id %}checked{% endif %}  name="address_id" required>
+{% endfor %}
+{% endif %}
+
+

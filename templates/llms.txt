@@ -1,0 +1,43 @@
+# llms.txt for US Vesta
+# Purpose: Help LLM crawlers understand our website content, structure, and brand.
+
+site_name: US Vesta
+url: https://www.usvesta.com/
+description: US Vesta is an Indian premium brand offering printed, stylish, oversized, gym and custom T-shirts for men. We focus on comfort, design and affordable fashion.
+
+contact_email: support@usvesta.com
+author: US Vesta Team
+
+documentation:
+  - https://www.usvesta.com/about/
+  - https://www.usvesta.com/custom-tshirt/
+  - https://www.usvesta.com/blog/
+
+content_types:
+  - product_pages
+  - blog_articles
+  - fashion_guides
+  - custom_printing_service
+
+allowed_paths:
+  - /
+  - /shop/
+  - /product/
+  - /blog/
+  - /custom-tshirt/
+
+disallowed_paths:
+  - /cart/
+  - /checkout/
+  - /login/
+  - /wishlist/
+  - /admin/
+
+policies:
+  ai_training: allowed
+  ai_reuse: allowed with attribution
+  ai_scraping: allowed for non-sensitive pages
+
+license: Content belongs to US Vesta. Reuse allowed with attribution.
+
+last_updated: 2025-01-01

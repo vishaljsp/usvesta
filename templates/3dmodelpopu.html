@@ -1,0 +1,368 @@
+<!-- CSS Dependencies -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- Modal Form Structure -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <!-- Modal Header -->
+      <div class="modal-header bg-gradient-primary text-white py-4">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-tshirt-fill fs-2 me-3"></i>
+          <div>
+            <h5 class="modal-title fs-4 mb-0" id="exampleModalLabel">Custom T-Shirt Designer</h5>
+            <p class="small mb-0 opacity-75">Create your unique style with us</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body p-0">
+        <form method="post" id="checkoutForm" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% if product_id %}
+          <input type="text" readonly hidden value="{{product_id}}" name="proid">
+          {% else %}
+          <input type="text" readonly hidden value="{{product_id_inner}}" name="product_id_inner">
+          {% endif %}
+          
+          <div class="row g-0">
+            <!-- Left Column - Design Section -->
+            <div class="col-lg-6 p-4">
+              <div class="sticky-top" style="top: 20px;">
+                <!-- Design Upload Card -->
+                <div class="card border-0 shadow-sm mb-4 overflow-hidden">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0 fw-bold"><i class="bi bi-cloud-arrow-up-fill me-2" style="color:#970640"></i>Upload Your Design</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="text-center py-3">
+                      <i class="bi bi-file-earmark-pdf-fill text-danger display-4 mb-3"></i>
+                      <div class="file-upload-wrapper">
+                        <input type="file" accept=".pdf" name="pdf_design" class="form-control file-upload-input" id="design-upload" required>
+                      </div>
+                      <small class="text-muted d-block mt-2">PDF format only • Max 5MB</small>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            
+            <!-- Right Column - Form Section -->
+            <div class="col-lg-6 bg-light p-4">
+              <!-- Progress Steps -->
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="step active">
+                  <span class="step-number">1</span>
+                  <span class="step-text">Design</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                  <span class="step-number">2</span>
+                  <span class="step-text">Details</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                  <span class="step-number">3</span>
+                  <span class="step-text">Payment</span>
+                </div>
+              </div>
+              
+              <!-- Personal Information -->
+              <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                  <h6 class="mb-0 fw-bold"><i class="bi bi-person-badge-fill  me-2" style="color:#970640"></i>Your Information</h6>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="customer-name" class="form-label">Full Name</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-white"><i class="bi bi-person-fill"></i></span>
+                      <input type="text" name="customer_name" class="form-control" id="customer-name" placeholder="John Doe" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="mb-3">
+                      <label for="customer-email" class="form-label">Email</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-envelope-fill"></i></span>
+                        <input type="email" name="emailid" class="form-control" id="customer-email" placeholder="your@email.com" required>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="customer-phone" class="form-label">Phone</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-telephone-fill"></i></span>
+                        <input type="tel" name="phonenumber" class="form-control" id="customer-phone" placeholder="+91 9876543210" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Order Details -->
+              <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                  <h6 class="mb-0 fw-bold"><i class="bi bi-cart-fill me-2" style="color:#970640"></i>Order Details</h6>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <div class="input-group">
+                      <button class="btn btn-outline-dark  quantity-btn" type="button" onclick="adjustQuantity(-1)">-</button>
+                      <input type="number" class="form-control text-center" value="10" name="quantity" id="quantity" min="10" required oninput="calculateTotal()">
+                      <button class="btn btn-outline-dark  quantity-btn" type="button" onclick="adjustQuantity(1)">+</button>
+                    </div>
+                    <small class="text-muted">Minimum order: 10 pieces</small>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label for="totalAmount" class="form-label">Total Amount</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-white">₹</span>
+                      <input type="text" class="form-control fw-bold fs-5" value="{{price}}" name="totalAmount" id="totalAmount" readonly>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label for="address" class="form-label">Shipping Address</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-white"><i class="bi bi-geo-alt-fill"></i></span>
+                      <textarea class="form-control" name="address" id="address" rows="2" placeholder="House no, Street, City, Pincode" required></textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label for="message" class="form-label">Special Instructions</label>
+                    <textarea class="form-control" name="meseg" id="message" rows="2" placeholder="Any special requests or notes..."></textarea>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Payment Method -->
+              <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                  <h6 class="mb-0 fw-bold"><i class="bi bi-credit-card-fill me-2 " style="color:#970640"></i>Payment Method</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <input type="radio" class="btn-check" name="payment_method" id="payment-method-2" value="Online" autocomplete="off" checked>
+                      <label class="btn btn-outline-primary w-100 py-3 payment-method-label" for="payment-method-2">
+                        <i class="bi bi-credit-card-2-front-fill fs-4 d-block mb-2"></i>
+                        Online Payment
+                        <small class="d-block text-muted mt-1">Pay now (Cards/UPI/NetBanking)</small>
+                      </label>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="radio" class="btn-check" name="payment_method" id="payment-method-3" value="COD" autocomplete="off">
+                      <label class="btn btn-outline-success w-100 py-3 payment-method-label" for="payment-method-3">
+                        <i class="bi bi-cash-stack fs-4 d-block mb-2"></i>
+                        Cash on Delivery
+                        <small class="d-block text-muted mt-1">+ ₹50 COD charge</small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+        </form>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-outline-dark px-4 rounded-pill" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-2"></i>Cancel
+        </button>
+        <button type="button" class="btn px-4 rounded-pill text-white shadow" style="background-color:#970640" onclick="razorpay_fm()">
+          <i class="bi bi-bag-check me-2"></i>Place Order - ₹<span id="footer-amount">{{price}}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript Dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Custom CSS -->
+<style>
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #970640 0%, #cd145e 100%);
+  }
+  
+  .file-upload-input::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  .file-upload-input::before {
+    content: 'Browse Files';
+    display: inline-block;
+    background: linear-gradient(to right, #970640, #cd145e);
+    color: white;
+    border-radius: 50px;
+    padding: 8px 16px;
+    outline: none;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: all 0.3s;
+    border: none;
+  }
+  .file-upload-input:hover::before {
+    background: linear-gradient(to right, #970640, #cd145e);
+    transform: translateY(-1px);
+  }
+  
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .step-number {
+    width: 30px;
+    height: 30px;
+    background-color: #dee2e6;
+    color: #6c757d;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .step-line {
+    height: 2px;
+    background-color: #dee2e6;
+    flex-grow: 1;
+    margin: 0 10px;
+    margin-top: 14px;
+  }
+  .step.active .step-number {
+    background: linear-gradient(to right, #970640, #be1a5c);
+    color: white;
+  }
+  .step.active .step-text {
+    color: #970640;
+    font-weight: bold;
+  }
+  .step-text {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+  
+  .payment-method-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s;
+    border-radius: 10px !important;
+  }
+  .payment-method-label:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  .btn-check:checked + .payment-method-label {
+    border: 2px solid #3a7bd5;
+    background-color: rgba(58, 123, 213, 0.1);
+  }
+  
+  .quantity-btn {
+    width: 40px;
+    font-weight: bold;
+  }
+  
+  .design-preview-placeholder {
+    background: repeating-linear-gradient(
+      45deg,
+      #f8f9fa,
+      #f8f9fa 10px,
+      #e9ecef 10px,
+      #e9ecef 20px
+    );
+  }
+  
+  .modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  .modal-header {
+    border-bottom: none;
+  }
+  .card {
+    border-radius: 12px !important;
+    transition: transform 0.3s;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+  }
+</style>
+
+<!-- Custom JavaScript -->
+<script defer>
+  function calculateTotal() {
+    const quantity = Number(document.getElementById("quantity").value);
+    const basePrice = parseFloat("{{ price }}");
+    
+    if (quantity >= 10) {
+      const totalAmount = basePrice * quantity;
+      document.getElementById("totalAmount").value = totalAmount.toFixed(2);
+      document.getElementById("footer-amount").textContent = totalAmount.toFixed(2);
+    } else {
+      document.getElementById("quantity").value = 10;
+      const totalAmount = basePrice * 10;
+      document.getElementById("totalAmount").value = totalAmount.toFixed(2);
+      document.getElementById("footer-amount").textContent = totalAmount.toFixed(2);
+    }
+  }
+
+  function adjustQuantity(change) {
+    const quantityInput = document.getElementById("quantity");
+    let newValue = parseInt(quantityInput.value) + change;
+    if (newValue < 10) newValue = 10;
+    quantityInput.value = newValue;
+    calculateTotal();
+  }
+
+  function razorpay_fm() {
+    const form = document.getElementById("checkoutForm");
+    if (form && !form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if (form) form.submit();
+  }
+      Swal.fire({
+        title: 'Confirm Cash on Delivery',
+        text: "You've selected Cash on Delivery.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3a7bd5',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, place order',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.submit();
+        }
+      });
+    }
+  }
+
+  // Initialize form calculations
+  document.addEventListener('DOMContentLoaded', function() {
+    calculateTotal();
+    
+    // Set default payment method to Online
+    document.getElementById("payment-method-2").checked = true;
+  });
+</script>

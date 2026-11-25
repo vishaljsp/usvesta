@@ -1,0 +1,538 @@
+{% extends 'base.html' %}
+{% block header %}
+<link href="/static/css/profile.css" rel="stylesheet"/>
+{% endblock header %}
+{% block mainbody %}
+<div class="breadcrumb-area">
+ <div class="mx-5">
+  <div class="breadcrumb-content">
+   <ul>
+    <li>
+     <a href="/">
+      Home
+     </a>
+    </li>
+    <li class="active">
+     My account
+    </li>
+   </ul>
+  </div>
+ </div>
+</div>
+<!-- my account wrapper start -->
+<div class="my-account-wrapper pt-50 pb-100">
+ <div class="profile-dive">
+  <div class="row">
+   <div class="col-lg-12">
+    <!-- My Account Page Start -->
+    <div class="myaccount-page-wrapper">
+     <!-- My Account Tab Menu Start -->
+     <div class="row">
+      <div class="col-lg-3 col-md-4">
+       <div class="myaccount-tab-menu nav" role="tablist">
+        <a class="{% if active_tab != 'orders' %}active{% endif %}" data-bs-toggle="tab" href="#dashboad">
+         <i class="fa fa-dashboard">
+         </i>
+         Dashboard
+        </a>
+        <a class="{% if active_tab == 'orders' %}active{% endif %}" data-bs-toggle="tab" href="#orders">
+         <i class="fa fa-cart-arrow-down">
+         </i>
+         Orders
+        </a>
+        <a data-bs-toggle="tab" href="#account-info">
+         <i class="fa fa-user">
+         </i>
+         Account Details
+        </a>
+        <a href="/logout">
+         <i class="fa fa-sign-out">
+         </i>
+         Logout
+        </a>
+       </div>
+      </div>
+      <!-- My Account Tab Menu End -->
+      <!-- My Account Tab Content Start -->
+      <div class="col-lg-9 col-md-8">
+       <div class="tab-content" id="myaccountContent">
+        <!-- Single Tab Content Start -->
+        <div class="tab-pane fade {% if active_tab != 'orders' %}show active{% endif %}" id="dashboad" role="tabpanel">
+         <div class="myaccount-content">
+          <h3>
+           Dashboard
+          </h3>
+          <div class="welcome">
+           <div class="profile-img-container my-1">
+            {% if request.user.profile_image %}
+            <img alt="{{request.user.first_name}}" class="profile-img" id="profile-img" loading="lazy" src="{{request.user.profile_image.url}}"/>
+            {% else %}
+            <img alt="{{request.user.first_name}}" class="profile-img" id="profile-img" loading="lazy" src="/static/images/user_profile.png"/>
+            {% endif %}
+            <div class="profile-edit-overlay">
+             <i class="fas fa-camera profile-edit-icon">
+             </i>
+            </div>
+           </div>
+           <p>
+            Hello,
+            <strong>
+             {{request.user.first_name}}
+            </strong>
+            !
+           </p>
+           <p>
+            <i class="fas fa-envelope me-2">
+            </i>
+            <strong>
+             Email: {{address_of_user.email}}
+            </strong>
+            {{request.user.email}}
+           </p>
+           <p>
+            <i class="fas fa-phone me-2">
+            </i>
+            <strong>
+             Phone: {{address_of_user.phone_numer}}
+            </strong>
+           </p>
+          </div>
+         </div>
+        </div>
+        <!-- Single Tab Content End -->
+        <!-- Single Tab Content Start -->
+        <div class="tab-pane fade {% if active_tab == 'orders' %}show active{% endif %}" id="orders" role="tabpanel">
+         <div class="myaccount-content border-0 p-4 rounded-4 shadow-sm bg-white">
+          <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+           <h3 class="fw-bold text-dark mb-0 d-flex align-items-center">
+            <i class="fas fa-shopping-bag text-primary me-2"></i> Order History
+           </h3>
+           <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2 rounded-pill fs-6">
+            {{ orders_of_user.count }} Orders
+           </span>
+          </div>
+
+          {% for a in orders_of_user %}
+          <a class="text-decoration-none text-dark d-block mb-3" href="/order-details/{% if a.inner_color_product %}{{a.inner_color_product.product.uuid_product}}{% elif a.product %}{{a.product.uuid_product}}{% endif %}">
+           <div class="card border rounded-4 shadow-sm hover-shadow transition-all overflow-hidden" style="transition: all 0.3s ease;">
+            <div class="card-body p-3">
+             <div class="row align-items-center g-3">
+              <!-- Thumbnail -->
+              <div class="col-3 col-md-2 text-center">
+               <div class="bg-light p-2 rounded-3 d-flex align-items-center justify-content-center" style="height: 85px; width: 85px; margin: 0 auto;">
+                <img alt="Product Image" class="img-fluid rounded" loading="lazy" src="{% if a.inner_color_product and a.inner_color_product.color_images %}{{a.inner_color_product.color_images.url}}{% elif a.product and a.product.product_image %}{{a.product.product_image.url}}{% else %}/static/images/logo2.png{% endif %}" style="max-height:75px; max-width: 75px; object-fit:contain;"/>
+               </div>
+              </div>
+              <!-- Title & Meta -->
+              <div class="col-9 col-md-5">
+               <h6 class="mb-1 text-truncate fw-bold text-dark fs-6">
+                {% if a.inner_color_product %}
+                {{a.inner_color_product.product.product_name}}
+                {% elif a.product %}
+                {{a.product.product_name}}
+                {% else %}
+                US VESTA Product
+                {% endif %}
+               </h6>
+               <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
+                <span class="badge bg-light text-secondary border small">Size: {{ a.product_size|default:"M" }}</span>
+                <span class="badge bg-light text-secondary border small">Qty: {{ a.quantity|default:1 }}</span>
+                <span class="badge bg-light text-secondary border small"><i class="fas fa-credit-card me-1"></i>{{ a.payment_method|default:"Online" }}</span>
+               </div>
+               <div class="text-muted small mt-1">
+                <i class="far fa-calendar-alt me-1"></i>{{ a.created_at|date:"d M Y"|default:"Recently Ordered" }}
+               </div>
+              </div>
+              <!-- Status Pill -->
+              <div class="col-6 col-md-3 text-start text-md-center">
+               {% if a.status == "Delivered" %}
+               <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-bold">
+                <i class="fas fa-check-circle me-1"></i> Delivered
+               </span>
+               {% elif a.status == "Cancelled" %}
+               <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill fw-bold">
+                <i class="fas fa-times-circle me-1"></i> Cancelled
+               </span>
+               {% elif a.status == "Shipped" %}
+               <span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-2 rounded-pill fw-bold">
+                <i class="fas fa-truck me-1"></i> Shipped
+               </span>
+               {% else %}
+               <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 rounded-pill fw-bold">
+                <i class="fas fa-clock me-1"></i> {{ a.status|default:"Ordered" }}
+               </span>
+               {% endif %}
+              </div>
+              <!-- Price & Arrow -->
+              <div class="col-6 col-md-2 text-end">
+               <div class="fw-extrabold text-primary fs-5">
+                ₹ {{a.total_price|floatformat:0}}
+               </div>
+               <span class="small text-muted fw-semibold">
+                Details <i class="fas fa-arrow-right ms-1 text-primary"></i>
+               </span>
+              </div>
+             </div>
+            </div>
+           </div>
+          </a>
+          {% empty %}
+          <div class="text-center py-5">
+           <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+           <h5 class="fw-bold text-dark">No Orders Placed Yet</h5>
+           <p class="text-muted small">Explore our latest streetwear collection and place your first order!</p>
+           <a href="/" class="btn btn-primary rounded-pill px-4 fw-bold">Shop Now</a>
+          </div>
+          {% endfor %}
+         </div>
+        </div>
+        <!-- Single Tab Content End -->
+        <!-- Single Tab Content Start -->
+        <div class="tab-pane fade" id="account-info" role="tabpanel">
+         <div class="myaccount-content">
+          <h3>
+           Account Details
+          </h3>
+          <div class="account-details-form">
+           <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div class="row">
+             <div class="col-lg-6">
+              <div class="profile-img-container my-1">
+               {% if request.user.profile_image %}
+               <img alt="{{request.user.first_name}}" class="profile-img" id="profile-img" loading="lazy" src="{{request.user.profile_image.url}}"/>
+               {% else %}
+               <img alt="{{request.user.first_name}}" class="profile-img" id="profile-img" loading="lazy" src="/static/images/user_profile.png"/>
+               {% endif %}
+               <div class="profile-edit-overlay">
+                <i class="fas fa-camera profile-edit-icon">
+                </i>
+               </div>
+              </div>
+              <br/>
+              <label class="btn btn-danger mx-5" for="upload-img">
+               Change
+                                                            Photo
+              </label>
+              <input id="upload-img" name="profile_image" style="display: none;" type="file"/>
+             </div>
+             <div class="col-lg-8">
+              <div class="single-input-item">
+               <label class="required" for="first-name">
+                First Name
+               </label>
+               <input id="first-name" name="full_name" required="" type="text" value="{{request.user.first_name}}"/>
+              </div>
+             </div>
+             <div class="col-lg-8">
+              <div class="single-input-item">
+               <label class="required" for="phone">
+                Phone Number
+               </label>
+               <input id="phone" name="phone" required="" type="tel" value="{{request.user.phone}}"/>
+              </div>
+             </div>
+            </div>
+            <div class="single-input-item">
+             <label class="required" for="email">
+              Email Address
+             </label>
+             <input id="email" name="email" required="" type="email" value="{{request.user.email}}"/>
+            </div>
+            <div class="form-floating">
+             <textarea class="form-control" id="floatingTextarea2" name="about" placeholder="Leave a comment here" style="height: 100px">{{request.user.about}}</textarea>
+             <label for="floatingTextarea2">
+              About
+             </label>
+            </div>
+            <fieldset>
+             <legend>
+              Password Change
+             </legend>
+             <div class="row">
+              <div class="col-lg-6">
+               <div class="single-input-item">
+                <label for="new-pwd">
+                 New Password
+                </label>
+                <input id="new-pwd" name="new_pwd" type="password"/>
+               </div>
+              </div>
+              <div class="col-lg-6">
+               <div class="single-input-item">
+                <label for="confirm-pwd">
+                 Confirm New Password
+                </label>
+                <input id="confirm-pwd" name="confirm_pwd" type="password"/>
+               </div>
+              </div>
+             </div>
+            </fieldset>
+            <div class="single-input-item">
+             <button class="check-btn sqr-btn" type="submit">
+              Save
+                                                        Changes
+             </button>
+            </div>
+           </form>
+          </div>
+         </div>
+        </div>
+        <!-- Single Tab Content End -->
+       </div>
+      </div>
+      <!-- My Account Tab Content End -->
+     </div>
+    </div>
+    <!-- My Account Page End -->
+   </div>
+  </div>
+ </div>
+</div>
+<div class="modal fade" id="returnModal" tabindex="-1">
+ <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content shadow-lg border-0 rounded-4">
+   <div class="modal-header bg-danger text-white rounded-top-4">
+    <h5 class="modal-title fw-bold">
+     <i class="bi bi-arrow-return-left">
+     </i>
+     Request Product Return
+    </h5>
+    <button class="btn-close btn-close-white" data-bs-dismiss="modal" type="button">
+    </button>
+   </div>
+   <div class="modal-body">
+    <form action="/retun_request_cancel_requ" enctype="multipart/form-data" id="returnForm" method="post">
+     {% csrf_token %}
+     <input id="retun_model" name="retun_model" type="hidden"/>
+     <!-- Reason -->
+     <div class="mb-3">
+      <label class="form-label fw-semibold">
+       Return Reason
+      </label>
+      <select class="form-select" name="retun_selectreason" required="">
+       <option value="">
+        Select reason
+       </option>
+       <option>
+        Wrong Size
+       </option>
+       <option>
+        Damaged Product
+       </option>
+       <option>
+        Wrong Product Delivered
+       </option>
+       <option>
+        Quality Not As Expected
+       </option>
+       <option>
+        Changed Mind
+       </option>
+       <option>
+        Other
+       </option>
+      </select>
+     </div>
+     <!-- Message -->
+     <div class="mb-3">
+      <label class="form-label fw-semibold">
+       Explain Issue
+      </label>
+      <textarea class="form-control" name="retun_message" placeholder="Please explain why you want to return this product..." required="" rows="4"></textarea>
+     </div>
+     <!-- Image Upload -->
+     <div class="mb-3">
+      <label class="form-label fw-semibold">
+       Upload Proof (Optional)
+      </label>
+      <input accept="image/*" class="form-control" name="return_image" required="" type="file"/>
+     </div>
+     <!-- Warning -->
+     <div class="alert alert-warning small">
+      <i class="bi bi-exclamation-triangle">
+      </i>
+      Returns are accepted within
+      <b>
+       7 days
+      </b>
+      of delivery.
+     </div>
+    </form>
+   </div>
+   <div class="modal-footer border-0">
+    <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+     Cancel
+    </button>
+    <button class="btn btn-danger px-4" form="returnForm" type="submit">
+     Submit Request
+    </button>
+   </div>
+  </div>
+ </div>
+</div>
+<!-- cnacel order  
+  -->
+<!-- Cancel Order Modal -->
+<div aria-hidden="true" aria-labelledby="cancelOrderLabel" class="modal fade" id="cancelOrderModal" tabindex="-1">
+ <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content shadow border-0 rounded-4">
+   <!-- HEADER -->
+   <div class="modal-header bg-dark text-white">
+    <h5 class="modal-title fw-bold" id="cancelOrderLabel">
+     Cancel Order
+    </h5>
+    <button class="btn-close btn-close-white" data-bs-dismiss="modal" type="button">
+    </button>
+   </div>
+   <!-- BODY -->
+   <div class="modal-body">
+    <form action="/retun_request_cancel_requ" id="cancelOrderForm" method="post">
+     {% csrf_token %}
+     <input id="cancel_order_id" name="cancel_order_id" required="" type="hidden"/>
+     <!-- Reason -->
+     <div class="mb-3">
+      <label class="form-label fw-semibold">
+       Cancel Reason
+      </label>
+      <select class="form-select" name="cancel_reason" required="">
+       <option value="">
+        Select reason
+       </option>
+       <option>
+        Ordered by mistake
+       </option>
+       <option>
+        Found cheaper elsewhere
+       </option>
+       <option>
+        Shipping time too long
+       </option>
+       <option>
+        Change in plan
+       </option>
+       <option>
+        Other
+       </option>
+      </select>
+     </div>
+     <!-- Message -->
+     <div class="mb-3">
+      <label class="form-label fw-semibold">
+       Message
+      </label>
+      <textarea class="form-control" name="cancel_message" placeholder="Optional message..." required="" rows="4">
+
+                        </textarea>
+     </div>
+     <div class="alert alert-warning small">
+      Order cancellation is allowed only before shipping.
+     </div>
+    </form>
+   </div>
+   <!-- FOOTER -->
+   <div class="modal-footer border-0">
+    <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+     Close
+    </button>
+    <button class="btn btn-danger px-4" form="cancelOrderForm" type="submit">
+     Cancel Order
+    </button>
+   </div>
+  </div>
+ </div>
+</div>
+<script>
+ function initProfilePage(){
+
+    // image upload
+    let upload = document.getElementById("upload-img")
+
+    if(upload){
+        upload.addEventListener("change", function(event){
+
+            const file = event.target.files[0]
+
+            if(file){
+
+                const reader = new FileReader()
+
+                reader.onload = function(e){
+                    document.getElementById("profile-img").src = e.target.result
+                }
+
+                reader.readAsDataURL(file)
+
+            }
+
+        })
+    }
+
+
+    // click profile image
+    let profileContainer = document.querySelector(".profile-img-container")
+
+    if(profileContainer){
+        profileContainer.addEventListener("click", function(){
+            document.getElementById("upload-img").click()
+        })
+    }
+
+
+    // tracking bar
+    document.querySelectorAll('.tracking-container').forEach(container => {
+
+        const steps = container.querySelectorAll('.tracking-step')
+
+        const progressBar = container.querySelector('.tracking-progress')
+
+        let activeIndex = -1
+
+        steps.forEach((step, index) => {
+
+            if(step.classList.contains('active')){
+                activeIndex = index
+            }
+
+        })
+
+        if(activeIndex >= 0){
+
+            const progressWidth = (activeIndex / (steps.length - 1)) * 100
+
+            progressBar.style.width = `${progressWidth}%`
+
+        }
+
+    })
+
+}
+
+
+/* normal page load */
+
+document.addEventListener("DOMContentLoaded", function() {
+    initProfilePage();
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    const hashParam = window.location.hash;
+    if (tabParam === 'orders' || hashParam === '#orders') {
+        const orderTabBtn = document.querySelector('a[href="#orders"]');
+        if (orderTabBtn) {
+            try {
+                const tab = new bootstrap.Tab(orderTabBtn);
+                tab.show();
+            } catch(e) {
+                orderTabBtn.click();
+            }
+        }
+    }
+});
+
+/* HTMX load */
+
+document.body.addEventListener("htmx:afterSwap", function(){
+    initProfilePage();
+});
+</script>
+{% endblock mainbody %}

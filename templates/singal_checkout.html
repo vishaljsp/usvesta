@@ -1,0 +1,73 @@
+<div>
+    {% comment %} singal products {% endcomment %}
+    <!-- Product 1 -->
+    {% if product_main %}
+
+    <div class="order-summary-item">
+        <div class="d-flex">
+            <img src="{{product_main.product_image.url}}" loading="lazy"  alt="{{product_main.product_name}}"
+                class="product-image me-3">
+            <div>
+                <h6 class="mb-1">{{product_main.product_name|truncatechars:20}}</h6>
+                <p class="text-muted mb-0">Color: {{product_main.color}} Size: {{size}}</p>
+                <div class="d-flex">
+                    <p class="text-muted mb-0 fw-bold" id="total_amount{{product_main.id}}"> ₹ {{amount}} </p>
+                    <del class="text-muted mx-1">₹ {{product_main.discount_price}}</del>
+                    <span class="fw-bold text-success"> {{product_main.get_discount_percentage}} % OFF</span> 
+
+                </div>
+                <div class="offer-box mt-2">
+                    <div id="offer_Session{{product_main.id}}">
+                        <span class="fw-semibold text-dark">🎉 Special Offer!</span>
+                        <span class="text-muted">Add More <b>{{product_main.product_quantity_offer}} </b> & Pay Only </span>
+                        <span class="text-success fw-bold">₹{{product_main.product_amount_offer}}</span>
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <div class="quantity-control">
+            <div class="quantity-btn" onclick="decrease_quantity({{product_main.id}},{{amount}},{{product_main.product_quantity_offer}},{{product_main.product_amount_offer}})">-
+            </div>
+            <input type="text" name="totalquantity" min="1" class="quantity-input" id="quantity_inputval{{product_main.id}}" value="{{quanityt}}" readonly>
+            <div class="quantity-btn" onclick="increase_quantity({{product_main.id}},{{amount}},{{product_main.product_quantity_offer}},{{product_main.product_amount_offer}})">+
+            </div>
+        </div>
+    </div>
+    {% elif product_inner %}
+    <div class="order-summary-item">
+        <div class="d-flex">
+            <img loading="lazy"  src="{% if product_inner.color_images %}{{product_inner.color_images.url}}{% endif %}" alt="{{product_inner.product.product_name}}"
+                class="product-image me-3">
+            <div>
+                <h6 class="mb-1">{{product_inner.product.product_name|truncatechars:20}}</h6>
+                <p class="text-muted mb-0">Color: {{product_inner.color}} Size: {{size}}</p>
+                <div class="d-flex">
+                    <p class="text-muted mb-0 fw-bold" id="total_amount{{product_inner.id}}"> ₹ {{amount}} </p>
+                    <del class="text-muted mx-1">₹ {{product_inner.product.discount_price}}</del>
+                    <span class="fw-bold text-success"> {{product_inner.product.get_discount_percentage}} % OFF</span> 
+
+                </div>
+                 <div class="offer-box mt-2">
+                    <div id="offer_Session{{product_inner.id}}">
+                        <span class="fw-semibold text-dark">🎉 Special Offer!</span>
+                        <span class="text-muted">Add More <b>{{product_inner.product.product_quantity_offer}} </b> & Pay Only </span>
+                        <span class="text-success fw-bold">₹{{product_inner.product.product_amount_offer}}</span>
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <div class="quantity-control">
+            <div class="quantity-btn" onclick="decrease_quantity({{product_inner.id}},{{amount}},{{product_inner.product.product_quantity_offer}}, {{product_inner.product.product_amount_offer}})">-
+            </div>
+            <input type="text" name="totalquantity" class="quantity-input" id="quantity_inputval{{product_inner.id}}"
+                value="{{quanityt}}" readonly>
+            <div class="quantity-btn" onclick="increase_quantity({{product_inner.id}},{{amount}},{{product_inner.product.product_quantity_offer}}, {{product_inner.product.product_amount_offer}})">+
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+    {% comment %} singal products end {% endcomment %}
+
+
+</div>

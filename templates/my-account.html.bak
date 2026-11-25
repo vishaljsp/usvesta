@@ -1,0 +1,524 @@
+{% extends 'base.html' %}
+{% block header %}
+
+<link rel="stylesheet" href="/static/css/profile.css">
+
+{% endblock header %}
+{% block mainbody %}
+
+
+<div class="breadcrumb-area">
+    <div class="mx-5">
+        <div class="breadcrumb-content">
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li class="active">My account</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- my account wrapper start -->
+<div class="my-account-wrapper pt-50 pb-100">
+    <div class="profile-dive">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- My Account Page Start -->
+                <div class="myaccount-page-wrapper">
+                    <!-- My Account Tab Menu Start -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4">
+                            <div class="myaccount-tab-menu nav" role="tablist">
+                                <a href="#dashboad" class="active" data-bs-toggle="tab">
+                                    <i class="fa fa-dashboard"></i> Dashboard
+                                </a>
+                                <a href="#orders" data-bs-toggle="tab">
+                                    <i class="fa fa-cart-arrow-down"></i> Orders
+                                </a>
+                                <a href="#account-info" data-bs-toggle="tab">
+                                    <i class="fa fa-user"></i> Account Details
+                                </a>
+                                <a href="/logout">
+                                    <i class="fa fa-sign-out"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                        <!-- My Account Tab Menu End -->
+
+                        <!-- My Account Tab Content Start -->
+                        <div class="col-lg-9 col-md-8">
+                            <div class="tab-content" id="myaccountContent">
+                                <!-- Single Tab Content Start -->
+                                <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
+                                    <div class="myaccount-content">
+                                        <h3>Dashboard</h3>
+                                        <div class="welcome">
+                                            <div class="profile-img-container my-1">
+                                                {% if request.user.profile_image %}
+                                                <img loading="lazy" id="profile-img"
+                                                    src="{{request.user.profile_image.url}}" class="profile-img"
+                                                    alt="{{request.user.first_name}}">
+                                                {% else %}
+                                                <img loading="lazy" id="profile-img" src="/static/images/user_profile.png"
+                                                    class="profile-img" alt="{{request.user.first_name}}">
+                                                {% endif %}
+                                                <div class="profile-edit-overlay">
+                                                    <i class="fas fa-camera profile-edit-icon"></i>
+                                                </div>
+                                            </div>
+                                            <p>Hello, <strong>{{request.user.first_name}}</strong>!</p>
+                                            <p><i class="fas fa-envelope me-2"></i><strong>Email: {{address_of_user.email}}</strong>
+                                                {{request.user.email}}</p>
+                                            <p>
+                                                <i class="fas fa-phone me-2"></i><strong>Phone: {{address_of_user.phone_numer}}</strong>
+                                                </p>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Single Tab Content End -->
+
+                                <!-- Single Tab Content Start -->
+                                <div class="tab-pane fade" id="orders" role="tabpanel">
+                                    <div class="myaccount-content">
+
+                                        <h3>Order History</h3>
+
+                                        
+                                        {% for a in orders_of_user %}
+
+                                        <a href="/order-details/{% if a.inner_color_product %}{{a.inner_color_product.product.uuid_product}}{% else %}{{a.product.uuid_product}}{% endif %}" class="text-decoration-none text-dark">
+
+                                            <div class="card mb-2 border-0 shadow-sm">
+
+                                                <div class="card-body">
+
+                                                    <div class="row align-items-center">
+
+                                                        <div class="col-3 col-md-2">
+                                                            <img src="{% if a.product %}{{a.product.product_image.url}}{% else %}{{a.inner_color_product.color_images.url}}{% endif %}"
+                                                                class="img-fluid rounded" style="height:70px;object-fit:contain;">
+                                                        </div>
+
+                                                        <div class="col-6 col-md-6">
+
+                                                            <h6 class="mb-1 text-truncate fw-semibold">
+                                                        
+                                                                {% if a.product %}
+                                                                {{a.product.product_name}}
+                                                                {% else %}
+                                                                {{a.inner_color_product.product.product_name}}
+                                                                {% endif %}
+                                                            </h6>
+
+                                                            <small class="text-muted">{{a.status}}</small>
+
+                                                        </div>
+
+                                                        <div class="col-md-2 d-none d-md-block">
+                                                            <strong>₹ {{a.total_price|floatformat:0}}</strong>
+                                                        </div>
+
+                                                        <div class="col-3 col-md-2 text-end">
+
+                                                            <span style="color:#062242;"><i class="fa fa-chevron-right text-muted"></i></span>
+                                                            <small>{{a.status}}</small>
+
+                                                            <div class="d-md-none">
+                                                                <small class="fw-bold">₹ {{a.total_price|floatformat:0}} </small>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </a>
+
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                                <!-- Single Tab Content End -->
+
+                                <!-- Single Tab Content Start -->
+                                <div class="tab-pane fade" id="account-info" role="tabpanel">
+                                    <div class="myaccount-content">
+                                        <h3>Account Details</h3>
+                                        <div class="account-details-form">
+                                            <form method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="profile-img-container my-1">
+                                                            {% if request.user.profile_image %}
+                                                            <img loading="lazy" id="profile-img"
+                                                                src="{{request.user.profile_image.url}}"
+                                                                class="profile-img" alt="{{request.user.first_name}}">
+                                                            {% else %}
+                                                            <img loading="lazy" id="profile-img"
+                                                                src="/static/images/user_profile.png" class="profile-img"
+                                                                alt="{{request.user.first_name}}">
+                                                            {% endif %}
+                                                            <div class="profile-edit-overlay">
+                                                                <i class="fas fa-camera profile-edit-icon"></i>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <label for="upload-img" class="btn btn-danger mx-5">Change
+                                                            Photo</label>
+                                                        <input type="file" id="upload-img" name="profile_image"
+                                                            style="display: none;">
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <div class="single-input-item">
+                                                            <label for="first-name" class="required">First Name</label>
+                                                            <input type="text" id="first-name" name="full_name"
+                                                                value="{{request.user.first_name}}" required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <div class="single-input-item">
+                                                            <label for="phone" class="required">Phone Number</label>
+                                                            <input type="tel" id="phone" name="phone"
+                                                                value="{{request.user.phone}}" required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="single-input-item">
+                                                    <label for="email" class="required">Email Address</label>
+                                                    <input type="email" id="email" name="email"
+                                                        value="{{request.user.email}}" required />
+                                                </div>
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                                        name="about" id="floatingTextarea2"
+                                                        style="height: 100px">{{request.user.about}}</textarea>
+                                                    <label for="floatingTextarea2">About</label>
+                                                </div>
+                                                <fieldset>
+                                                    <legend>Password Change</legend>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item">
+                                                                <label for="new-pwd">New Password</label>
+                                                                <input type="password" id="new-pwd" name="new_pwd" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item">
+                                                                <label for="confirm-pwd">Confirm New Password</label>
+                                                                <input type="password" id="confirm-pwd"
+                                                                    name="confirm_pwd" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                <div class="single-input-item">
+                                                    <button type="submit" class="check-btn sqr-btn">Save
+                                                        Changes</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Single Tab Content End -->
+                            </div>
+                        </div>
+                        <!-- My Account Tab Content End -->
+                    </div>
+                </div>
+                <!-- My Account Page End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="returnModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0 rounded-4">
+
+            <div class="modal-header bg-danger text-white rounded-top-4">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-arrow-return-left"></i> Request Product Return
+                </h5>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+
+            <div class="modal-body">
+
+                <form id="returnForm" method="post" action="/retun_request_cancel_requ" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="retun_model" id="retun_model">
+                    <!-- Reason -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Return Reason</label>
+
+                        <select class="form-select" name="retun_selectreason" required >
+                            <option value="">Select reason</option>
+                            <option>Wrong Size</option>
+                            <option>Damaged Product</option>
+                            <option>Wrong Product Delivered</option>
+                            <option>Quality Not As Expected</option>
+                            <option>Changed Mind</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Message -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Explain Issue</label>
+
+                        <textarea class="form-control" rows="4" name="retun_message"
+                            placeholder="Please explain why you want to return this product..." required></textarea>
+                    </div>
+
+
+                    <!-- Image Upload -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Upload Proof (Optional)</label>
+
+                        <input type="file" class="form-control" name="return_image" accept="image/*" required>
+                    </div>
+
+
+                    <!-- Warning -->
+                    <div class="alert alert-warning small">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        Returns are accepted within <b>7 days</b> of delivery.
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div class="modal-footer border-0">
+
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button type="submit" form="returnForm" class="btn btn-danger px-4">
+                    Submit Request
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- cnacel order  
+  -->
+
+<!-- Cancel Order Modal -->
+
+<div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content shadow border-0 rounded-4">
+
+
+            <!-- HEADER -->
+            <div class="modal-header bg-dark text-white">
+
+                <h5 class="modal-title fw-bold" id="cancelOrderLabel">
+
+                    Cancel Order
+
+                </h5>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <!-- BODY -->
+            <div class="modal-body">
+
+                <form id="cancelOrderForm" method="POST" method="post" action="/retun_request_cancel_requ">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" required name="cancel_order_id" id="cancel_order_id">
+
+
+                    <!-- Reason -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                            Cancel Reason
+
+                        </label>
+
+                        <select class="form-select" name="cancel_reason" required>
+
+                            <option value="">Select reason</option>
+
+                            <option>Ordered by mistake</option>
+
+                            <option>Found cheaper elsewhere</option>
+
+                            <option>Shipping time too long</option>
+
+                            <option>Change in plan</option>
+
+                            <option>Other</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Message -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                             Message
+
+                        </label>
+
+                        <textarea class="form-control" name="cancel_message" rows="4" required placeholder="Optional message...">
+
+                        </textarea>
+
+                    </div>
+
+
+                    <div class="alert alert-warning small">
+
+                        Order cancellation is allowed only before shipping.
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer border-0">
+
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+
+                    Close
+
+                </button>
+
+                <button type="submit" form="cancelOrderForm" class="btn btn-danger px-4">
+
+                    Cancel Order
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function initProfilePage(){
+
+    // image upload
+    let upload = document.getElementById("upload-img")
+
+    if(upload){
+        upload.addEventListener("change", function(event){
+
+            const file = event.target.files[0]
+
+            if(file){
+
+                const reader = new FileReader()
+
+                reader.onload = function(e){
+                    document.getElementById("profile-img").src = e.target.result
+                }
+
+                reader.readAsDataURL(file)
+
+            }
+
+        })
+    }
+
+
+    // click profile image
+    let profileContainer = document.querySelector(".profile-img-container")
+
+    if(profileContainer){
+        profileContainer.addEventListener("click", function(){
+            document.getElementById("upload-img").click()
+        })
+    }
+
+
+    // tracking bar
+    document.querySelectorAll('.tracking-container').forEach(container => {
+
+        const steps = container.querySelectorAll('.tracking-step')
+
+        const progressBar = container.querySelector('.tracking-progress')
+
+        let activeIndex = -1
+
+        steps.forEach((step, index) => {
+
+            if(step.classList.contains('active')){
+                activeIndex = index
+            }
+
+        })
+
+        if(activeIndex >= 0){
+
+            const progressWidth = (activeIndex / (steps.length - 1)) * 100
+
+            progressBar.style.width = `${progressWidth}%`
+
+        }
+
+    })
+
+}
+
+
+/* normal page load */
+
+document.addEventListener("DOMContentLoaded", initProfilePage)
+
+
+/* HTMX load */
+
+document.body.addEventListener("htmx:afterSwap", function(){
+
+    initProfilePage()
+
+})
+
+</script>
+
+{% endblock mainbody %}

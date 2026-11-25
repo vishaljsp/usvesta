@@ -1,0 +1,522 @@
+{% extends "base.html" %}
+{% block header %}
+
+
+<title>T Shirts for Men – Printed, Oversized, Gym & Casual | US Vesta</title>
+<meta name="description" content="Explore trendy t shirts for men including printed, oversized, gym, casual & summer tees at US Vesta. Premium fabrics, stylish designs & affordable prices.">
+<link rel="canonical" href="{{current_url}}" />
+<meta property="og:title" content="T Shirts for Men – Printed, Oversized, Gym & Casual | US Vesta" />
+<meta property="og:description" content="Explore trendy t shirts for men including printed, oversized, gym & casual tees." />
+<meta property="og:url" content="{{current_url}}" />
+
+<meta name="twitter:title" content="T Shirts for Men – Printed, Oversized, Gym & Casual | US Vesta" />
+<meta name="twitter:description" content="Explore trendy t shirts for men including printed, oversized, gym & casual tees." />
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Shop – T Shirts for Men",
+ "url": "{{ current_url }}"
+}
+</script>
+
+<link rel="stylesheet" href="/static/css/shop.css">
+{% endblock header %}
+
+{% block mainbody %}
+<div class="shop-page-padding">
+    <div class="container-fluid pt-1 pb-3 px-2 px-lg-3">
+
+        <!-- 🌟 MOBILE TOP FILTER BAR -->
+        <div class="mobile-filter-bar d-lg-none sticky-top bg-white py-2 px-3 border-bottom shadow-2xs" style="top: 85px; z-index: 95;">
+            <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-dark rounded-pill px-3 py-1.5 btn-sm d-flex align-items-center gap-2 fw-semibold" style="font-size: 0.82rem;" data-bs-toggle="offcanvas" data-bs-target="#mobileFilterOffcanvas">
+                    <i class="fas fa-sliders-h"></i> Filters
+                </button>
+
+                <span class="text-uppercase text-muted fw-bold small" id="itemCount" style="font-size: 0.78rem; letter-spacing: 0.5px;">{{ products_all|length }} items</span>
+
+                <div class="position-relative">
+                    <select class="form-select form-select-sm rounded-pill px-3 py-1.5 bg-white border-dark text-dark fw-semibold" id="mobileSortSelect" style="font-size: 0.8rem; width: 110px; cursor: pointer;" onchange="sortProducts(this.value)">
+                        <option value="featured">Sort By</option>
+                        <option value="price_low">Price: Low to High</option>
+                        <option value="price_high">Price: High to Low</option>
+                        <option value="name_asc">Name: A to Z</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row scroll-load">
+
+            
+            <!-- DESKTOP FILTER SIDEBAR -->
+            <div class="col-xxl-2 col-xl-3 col-lg-4 d-none d-lg-block">
+                <div class="filter-sidebar position-sticky">
+                    <!-- Filter Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 px-2">
+                        <span class="fw-bold text-dark" style="color: #052043 !important; font-size: 1.1rem;"><i class="fas fa-sliders-h me-2"></i>Filters</span>
+                        <a href="/shop" class="text-decoration-none text-muted small hover-accent"><i class="fas fa-sync-alt me-1"></i>Reset</a>
+                    </div>
+                    <!-- Search -->
+                    <div class="card p-2 mb-3 border-0 shadow-sm rounded-4">
+                        <h6 class="fw-bold mb-2 mt-1 px-1" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Search</h6>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0 text-muted" style="border-radius: 8px 0 0 8px; font-size: 0.75rem; padding: 0.35rem 0.6rem;"><i class="fas fa-search"></i></span>
+                            <input type="search" id="shop_search" placeholder="Type pattern..." class="form-control bg-light border-0" style="border-radius: 0 8px 8px 0; font-size: 0.75rem; padding: 0.35rem 0.6rem;">
+                        </div>
+                    </div>
+                    <!-- Price Slider -->
+                    <div class="mb-3.5 pt-2 border-top">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold text-uppercase small text-secondary" style="font-size: 0.75rem; letter-spacing: 0.5px;">Filter By Price</span>
+                            <span id="priceValue" class="badge bg-dark text-white rounded-pill px-2.5 py-1 fw-bold">₹{{max_price}}</span>
+                        </div>
+                        <input type="range" class="form-range" id="priceRange" min="0" max="{{max_price}}" value="{{max_price}}" step="10" oninput="syncMobilePrice(this.value)">
+                        <div class="d-flex justify-content-between text-muted fw-semibold small mt-1" style="font-size: 0.75rem;">
+                            <span>₹0</span>
+                            <span>Max: ₹{{max_price}}</span>
+                        </div>
+                    </div>
+                    <!-- Categories -->
+                    <div class="card p-2 border-0 shadow-sm rounded-4">
+                        <h6 class="fw-bold mb-2 mt-1 px-1" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Categories</h6>
+                        <div class="accordion" id="mainCatAccordion">
+                            {% for main_cat in categories_main %}
+                            <div class="accordion-item border-0 mb-2">
+                                <h2 class="accordion-header" id="headingCat{{ main_cat.id }}">
+                                    <button class="accordion-button rounded-2 text-dark fw-bold fs-6 py-2 px-3 shadow-none border-0 {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCat{{ main_cat.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" style="background-color: #f1f5f9 !important; color: #0f172a !important;">
+                                        {{ main_cat.name }} ({{ main_cat.sub_count }})
+                                    </button>
+                                </h2>
+                                <div id="collapseCat{{ main_cat.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#mainCatAccordion">
+                                    <div class="accordion-body px-0 py-2 d-flex flex-column gap-1">
+                                        {% for sub_cat in main_cat.product_sub_category_set.all %}
+                                        <a class="text-secondary text-decoration-none py-2 px-3 fw-semibold small rounded-2 hover-accent" href="/shop?categories={{ sub_cat.category_slug }}">
+                                            {{ sub_cat.name }} ({{ sub_cat.product_set.count }})
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-10 col-xl-9 col-lg-8 col-12">
+
+
+                <div class="row g-0"  id="productContainer">
+
+                {% for a in products_all %}
+                {% for c in a.color_product_set.all %}
+                    <div class="col-xxl-3 col-xl-4 col-lg-6 col-6 product-item show"
+                        data-price="{% if request.user.user_type == 'B2B' %}{{ a.b2b_price }}{% else %}{{ a.b2c_price }}{% endif %}" data-date="{{ c.id }}"  data-fullname="{{ a.product_name|lower }}"> 
+                        <div class="product-card0 transition-all h-100 border-end border-bottom" style="border-color: #eee !important;">
+                            <div class="product-img overflow-hidden position-relative bg-light">
+                                <a href="/products/{{ c.uuid_product|default:a.uuid_product|default:a.product_slug }}">
+                                    {% if a.product_quantity_offer %}
+                                    <span class="badge-offer">BUY {{a.product_quantity_offer}} @ {{a.product_amount_offer|floatformat:0}}</span>
+                                    {% endif %}
+
+                                    <img loading="lazy" class="img-fluid w-100 product-main-img" src="{{ c.color_images.url }}" alt="{{ a.product_name }}" onerror="this.src='/static/images/ttt.webp'">
+
+                                    <div class="rating">
+                                        ⭐ {{ a.average_rating|default:0|floatformat:1 }}
+                                    </div>
+                                </a>
+
+                                <!-- 🌟 Floating Share Icon (Top Right) -->
+                                <div class="product-hover-actions">
+                                    <button type="button" class="btn-action-icon" title="Share Product" onclick="shareProduct('{{ a.product_name|escapejs }}', '{{ c.uuid_product|default:a.uuid_product|default:a.product_slug }}')">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+
+                                <!-- 🌟 Sleek Plus Icon (Bottom Right Quick Add) -->
+                                <button type="button" class="btn-quick-add-plus" title="Add to Cart" onclick="Add_to_cart({{c.id}},this)" data-product="{{c.id}}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <div class="pt-2.5 pb-3 px-2 bg-white">
+                                <!-- 1. Unbold Title (Full Width Line 1) -->
+                                <a class="d-block text-dark text-uppercase text-decoration-none text-truncate mb-1" style="font-size: 0.88rem; font-weight: 500 !important; letter-spacing: 0.2px;" href="/products/{{ c.uuid_product|default:a.uuid_product|default:a.product_slug }}" title="{{ a.product_name }}">
+                                    {{ a.product_name|truncatechars:28 }}
+                                </a>
+
+                                <!-- 2. Subtext Row: Price + MRP + Discount Badge + Best Price (Line 2) -->
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-1 mt-1">
+                                    <div class="d-flex align-items-center gap-1.5">
+                                        {% if request.user.user_type == "B2B" %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2b_price }}</span>
+                                        {% else %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2c_price }}</span>
+                                        {% endif %}
+
+                                        {% if a.discount_price %}
+                                        <del class="text-muted small" style="font-size: 0.76rem;">₹{{a.discount_price}}</del>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "B2B" %}
+                                            {% widthratio a.b2b_price a.discount_price 100 as sale_percent %}
+                                        {% else %}
+                                            {% widthratio a.b2c_price a.discount_price 100 as sale_percent %}
+                                        {% endif %}
+
+                                        {% with percent=100|add:"-"|add:sale_percent %}
+                                        {% if percent > 0 %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{ percent|floatformat:0 }}% OFF</span>
+                                        {% endif %}
+                                        {% endwith %}
+                                    </div>
+
+                                    {% if a.product_quantity_offer %}
+                                    <span class="text-success fw-semibold small" style="font-size: 0.74rem;">
+                                        <i class="fas fa-tag me-0.5"></i>Best ₹{% widthratio a.product_amount_offer a.product_quantity_offer 1 %}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="col-xxl-3 col-xl-4 col-lg-6 col-6 product-item show"
+                  data-price="{{ a.b2c_price }}" data-date="{{ a.id }}"  data-fullname="{{ a.product_name|lower }}"> 
+                        <div class="product-card0 transition-all h-100 border-end border-bottom" style="border-color: #eee !important;">
+                            <div class="product-img overflow-hidden position-relative bg-light">
+                                <a href="/products/{{ a.uuid_product|default:a.product_slug }}">
+                                    {% if a.product_quantity_offer %}
+                                    <span class="badge-offer">BUY {{a.product_quantity_offer}} @ {{a.product_amount_offer|floatformat:0}}</span>
+                                    {% endif %}
+
+                                    <img loading="lazy" class="img-fluid w-100 product-main-img" src="{{ a.product_image.url }}" alt="{{ a.product_name }}" onerror="this.src='/static/images/ttt.webp'">
+
+                                    <div class="rating">
+                                        ⭐ {{ a.average_rating|default:0|floatformat:1 }}
+                                    </div>
+                                </a>
+
+                                <!-- 🌟 Floating Share Icon (Top Right) -->
+                                <div class="product-hover-actions">
+                                    <button type="button" class="btn-action-icon" title="Share Product" onclick="shareProduct('{{ a.product_name|escapejs }}', '{{ a.uuid_product|default:a.product_slug }}')">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+
+                                <!-- 🌟 Sleek Plus Icon (Bottom Right Quick Add) -->
+                                <button type="button" class="btn-quick-add-plus" title="Add to Cart" onclick="Add_to_cart({{a.id}},this)" data-product="{{a.id}}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <div class="pt-2.5 pb-3 px-2 bg-white">
+                                <!-- 1. Unbold Title (Full Width Line 1) -->
+                                <a class="d-block text-dark text-uppercase text-decoration-none text-truncate mb-1" style="font-size: 0.88rem; font-weight: 500 !important; letter-spacing: 0.2px;" href="/products/{{ a.uuid_product|default:a.product_slug }}" title="{{ a.product_name }}">
+                                    {{ a.product_name|truncatechars:28 }}
+                                </a>
+
+                                <!-- 2. Subtext Row: Price + MRP + Discount Badge + Best Price (Line 2) -->
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-1 mt-1">
+                                    <div class="d-flex align-items-center gap-1.5">
+                                        {% if request.user.user_type == "B2B" %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2b_price }}</span>
+                                        {% else %}
+                                        <span class="fw-bold text-dark" style="font-size: 0.95rem; font-weight: 700 !important;">₹ {{ a.b2c_price }}</span>
+                                        {% endif %}
+
+                                        {% if a.discount_price %}
+                                        <del class="text-muted small" style="font-size: 0.76rem;">₹{{a.discount_price}}</del>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "B2B" %}
+                                            {% widthratio a.b2b_price a.discount_price 100 as sale_percent %}
+                                        {% else %}
+                                            {% widthratio a.b2c_price a.discount_price 100 as sale_percent %}
+                                        {% endif %}
+
+                                        {% with percent=100|add:"-"|add:sale_percent %}
+                                        {% if percent > 0 %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill fw-bold" style="font-size: 0.65rem; padding: 2px 6px;">{{ percent|floatformat:0 }}% OFF</span>
+                                        {% endif %}
+                                        {% endwith %}
+                                    </div>
+
+                                    {% if a.product_quantity_offer %}
+                                    <span class="text-success fw-semibold small" style="font-size: 0.74rem;">
+                                        <i class="fas fa-tag me-0.5"></i>Best ₹{% widthratio a.product_amount_offer a.product_quantity_offer 1 %}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                {% endfor %}
+                <!-- Repeat above col for more products -->
+                <div id="loadIndicator" class="load-indicator d-none">
+                    <div class="loader-line"></div>
+                    <p>Loading more products...</p>
+                </div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+
+    
+<!-- 🌟 Ultra-Luxury Mobile Filter Bottom Sheet Offcanvas -->
+<div class="offcanvas offcanvas-bottom rounded-top-4 border-0 shadow-lg" tabindex="-1" id="mobileFilterOffcanvas" style="height: 55vh; border-radius: 20px 20px 0 0 !important; background: #ffffff;">
+    <div class="drag-handle mx-auto mt-2 mb-1 bg-secondary opacity-25 rounded-pill" style="width: 42px; height: 5px;"></div>
+    
+    <div class="offcanvas-header pt-1 pb-3 px-4 border-bottom">
+        <h5 class="offcanvas-title fw-bold text-dark text-uppercase d-flex align-items-center gap-2" style="font-size: 1.05rem; letter-spacing: 0.5px;">
+            <i class="fas fa-sliders-h text-primary"></i> FILTER PRODUCTS
+        </h5>
+        <button type="button" class="btn-close text-reset shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <div class="offcanvas-body p-4" style="overflow-y: auto;">
+        <!-- 🔍 Search Bar with Icon -->
+        <div class="mb-4">
+            <label class="fw-bold text-uppercase small text-secondary mb-1.5" style="font-size: 0.75rem; letter-spacing: 0.5px;">Search Products</label>
+            <div class="position-relative">
+                <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="font-size: 0.9rem;"></i>
+                <input type="search" id="shop_search_mobile" class="form-control rounded-pill ps-5 bg-light border-0" style="height: 44px; font-size: 0.88rem;" placeholder="Search t-shirts, oversized, etc...">
+            </div>
+        </div>
+
+        <!-- 📂 Categories Accordion on Mobile -->
+        <div class="pt-2 border-top mb-4">
+            <label class="fw-bold text-uppercase small text-secondary mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Categories</label>
+
+            <div class="accordion border-0" id="mobileCatAccordion">
+                {% for cat in categories_main %}
+                <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden bg-light shadow-2xs">
+                    <h2 class="accordion-header" id="headingMobileCat{{ cat.id }}">
+                        <button class="accordion-button collapsed bg-light border-0 py-3 px-3 text-dark fw-medium" style="font-size: 0.88rem;"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseMobileCat{{ cat.id }}">
+                            {{ cat.name }} <span class="badge bg-secondary-subtle text-secondary rounded-pill ms-auto me-2" style="font-size: 0.72rem;">{{cat.sub_count}}</span>
+                        </button>
+                    </h2>
+
+                    <div id="collapseMobileCat{{ cat.id }}" class="accordion-collapse collapse" data-bs-parent="#mobileCatAccordion">
+                        <div class="accordion-body bg-white py-2.5 px-3">
+                            {% for sub in sub_ct %}
+                                {% if sub.category.id == cat.id %}
+                                <a class="d-block py-1.5 text-decoration-none text-secondary hover-dark small d-flex justify-content-between align-items-center"
+                                   href="/shop?categories={{ sub.category_slug }}">
+                                    <span>{{ sub.name }}</span>
+                                    <span class="text-muted" style="font-size: 0.74rem;">({{sub.product_count}})</span>
+                                </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 🚀 Sticky Action Footer -->
+    <div class="p-3 bg-white border-top position-sticky bottom-0 shadow-lg d-flex gap-2">
+        <button type="button" class="btn btn-outline-dark rounded-pill py-2.5 px-3 w-50 fw-semibold" style="font-size: 0.85rem;" onclick="resetAllFilters()">
+            <i class="fas fa-undo me-1"></i> Reset
+        </button>
+        <button type="button" class="btn btn-dark rounded-pill py-2.5 px-3 w-50 fw-bold" style="font-size: 0.85rem;" data-bs-dismiss="offcanvas">
+            <i class="fas fa-check me-1"></i> Apply
+        </button>
+    </div>
+</div>
+</div>
+
+<script>
+
+function updatePriceDisplay(val) {
+    const numericVal = Math.round(parseFloat(val) || 0);
+    const formattedVal = "₹" + numericVal;
+    const priceValueDesktop = document.getElementById("priceValue");
+    if (priceValueDesktop) priceValueDesktop.innerText = formattedVal;
+}
+
+function syncMobilePrice(val) {
+    updatePriceDisplay(val);
+    filterProducts();
+}
+
+function filterProducts(){
+    const priceRangeDesktop = document.getElementById("priceRange");
+    const maxPrice = (priceRangeDesktop && priceRangeDesktop.value !== "") ? parseFloat(priceRangeDesktop.value) : 999999;
+
+    updatePriceDisplay(maxPrice);
+
+    const searchMobile = document.getElementById("shop_search_mobile");
+    const searchDesktop = document.getElementById("shop_search");
+    const keyword = (searchMobile && searchMobile.value ? searchMobile.value : (searchDesktop ? searchDesktop.value : '')).toLowerCase().trim();
+
+    let visibleCount = 0;
+
+    document.querySelectorAll(".product-item").forEach(product => {
+        const price = parseFloat(product.getAttribute('data-price') || 0);
+        const fullname = (product.getAttribute('data-fullname') || '').toLowerCase();
+
+        const priceMatch = isNaN(price) || price <= maxPrice;
+        const searchMatch = !keyword || fullname.includes(keyword);
+
+        if(priceMatch && searchMatch){
+            product.classList.remove("d-none");
+            product.style.display = "block";
+            visibleCount++;
+        }else{
+            product.style.display = "none";
+        }
+    });
+
+    let countElem = document.getElementById("itemCount");
+    let desktopCountElem = document.getElementById("desktopItemCount");
+    if (countElem) countElem.innerText = visibleCount + " items";
+    if (desktopCountElem) desktopCountElem.innerText = visibleCount;
+}
+
+function resetAllFilters() {
+    const priceRange = document.getElementById("priceRange");
+    const searchInput = document.getElementById("shop_search");
+    const searchInputMobile = document.getElementById("shop_search_mobile");
+
+    if (priceRange) {
+        priceRange.value = priceRange.max;
+        updatePriceDisplay(priceRange.max);
+    }
+    if (searchInput) searchInput.value = '';
+    if (searchInputMobile) searchInputMobile.value = '';
+
+    filterProducts();
+    sortProducts('featured');
+}
+
+// 🌟 100% Working Product Sorting Function
+function sortProducts(sortType) {
+    const container = document.getElementById("productContainer");
+    if (!container) return;
+
+    const products = Array.from(container.children);
+
+    products.sort((a, b) => {
+        const priceA = parseFloat(a.getAttribute("data-price") || 0);
+        const priceB = parseFloat(b.getAttribute("data-price") || 0);
+        const nameA = (a.getAttribute("data-fullname") || "").toLowerCase();
+        const nameB = (b.getAttribute("data-fullname") || "").toLowerCase();
+        const dateA = parseInt(a.getAttribute("data-date") || 0);
+        const dateB = parseInt(b.getAttribute("data-date") || 0);
+
+        if (sortType === "price_low") {
+            return priceA - priceB;
+        } else if (sortType === "price_high") {
+            return priceB - priceA;
+        } else if (sortType === "name_asc") {
+            return nameA.localeCompare(nameB);
+        } else if (sortType === "newest") {
+            return dateB - dateA;
+        } else {
+            return 0;
+        }
+    });
+
+    products.forEach(product => container.appendChild(product));
+
+    const sortLabels = {
+        'featured': 'SORT BY',
+        'price_low': 'PRICE: LOW TO HIGH',
+        'price_high': 'PRICE: HIGH TO LOW',
+        'name_asc': 'NAME: A TO Z'
+    };
+
+    const sortBtnMobile = document.getElementById("sortBtnMobile");
+    if (sortBtnMobile && sortLabels[sortType]) {
+        sortBtnMobile.innerHTML = sortLabels[sortType] + ' <i class="fas fa-chevron-down ms-1"></i>';
+    }
+}
+
+const priceRangeInput = document.getElementById("priceRange");
+if (priceRangeInput) priceRangeInput.addEventListener("input", filterProducts);
+
+const shopSearchInput = document.getElementById("shop_search");
+if (shopSearchInput) shopSearchInput.addEventListener("input", filterProducts);
+
+const mobileSearchInput = document.getElementById("shop_search_mobile");
+if (mobileSearchInput) {
+    mobileSearchInput.addEventListener("input", function() {
+        if (shopSearchInput) shopSearchInput.value = this.value;
+        filterProducts();
+    });
+}
+
+// 🌟 Share Product & Copy Link Helper
+function shareProduct(name, uuid) {
+    const url = window.location.origin + '/products/' + uuid;
+    if (navigator.share) {
+        navigator.share({
+            title: name + ' | US Vesta',
+            text: 'Check out ' + name + ' on US Vesta!',
+            url: url
+        }).catch(() => {
+            copyToClipboard(url);
+        });
+    } else {
+        copyToClipboard(url);
+    }
+}
+
+function copyToClipboard(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('✓ Link copied to clipboard!');
+        }).catch(() => {
+            fallbackCopy(text);
+        });
+    } else {
+        fallbackCopy(text);
+    }
+}
+
+function fallbackCopy(text) {
+    const tempInput = document.createElement('input');
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    showToast('✓ Link copied to clipboard!');
+}
+
+function showToast(message) {
+    let toast = document.getElementById('customToastAlert');
+    if (toast) toast.remove();
+    toast = document.createElement('div');
+    toast.id = 'customToastAlert';
+    toast.className = 'position-fixed bottom-0 end-0 p-3';
+    toast.style.zIndex = '999999';
+    toast.innerHTML = `
+        <div class="toast show align-items-center text-white bg-black border-0 rounded-3 shadow-lg" role="alert">
+            <div class="d-flex align-items-center justify-content-between p-3">
+                <div class="toast-body py-0 px-1 d-flex align-items-center gap-2" style="font-size: 0.85rem; font-weight: 500;">
+                    <i class="fas fa-check-circle text-success fs-6"></i>
+                    <span>${message}</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white ms-3" onclick="this.parentElement.parentElement.remove()"></button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => { if (toast) toast.remove(); }, 3500);
+}
+
+</script>
+{% endblock mainbody %}

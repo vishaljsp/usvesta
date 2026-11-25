@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="text-center">
+
+        <!-- Image -->
+        <img src="/static/500.gif" 
+            loading="lazy"
+             alt="500 Error" 
+             class="img-fluid mb-4">
+
+        <!-- Heading -->
+        <h1 class="display-5 fw-bold text-danger">500 - Server Error 😢</h1>
+
+        <!-- Description -->
+        <p class="text-muted mt-3 mb-4">
+            Oops! Something went wrong on our end.  
+            Our team is already working to fix it.  
+            Please try again after some time.
+        </p>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-center gap-3 flex-wrap m-5">
+
+            <a href="/" class="btn btn-primary px-4 py-2">
+                🏠 Back to Home
+            </a>
+
+            <button onclick="location.reload()" class="btn btn-outline-danger px-4 py-2">
+                🔄 Try Again
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock mainbody %}
