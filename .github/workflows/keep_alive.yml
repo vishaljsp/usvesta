@@ -1,0 +1,16 @@
+name: Keep Render Alive
+
+on:
+  schedule:
+    # Run every 10 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Website
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://usvesta.onrender.com/)
+          echo "Render ping response status: $response"
